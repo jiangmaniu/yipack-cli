@@ -1,6 +1,6 @@
 {
-    "name": "yipack",
-    "version": "1.0.0",
+    "name": "yipack-cli",
+    "version": "1.0.1",
     "description": "#### Description 易打包，命令行工具。",
     "main": "index.js",
     "bin": "index.js",
