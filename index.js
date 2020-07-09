@@ -1,9 +1,26 @@
 #!/usr/bin/env node
 const download = require("download-git-repo");
-download("https://gitee.com:banshiweichen/yipack#master", "./", { clone: true }, function (err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("yipack项目下载成功");
-    }
-});
+const fs = require("fs-extra");
+const path = require("path");
+const tempDir = path.resolve(process.cwd(), "temp");
+function _download() {
+    return new Promise((resole, reject) => {
+        download("https://gitee.com:banshiweichen/yipack#master", tempDir, { clone: true }, function (err) {
+            if (err) {
+                reject(err);
+            } else {
+                fs.copySync(tempDir, path.resolve(tempDir, ".."), { overwrite: true });
+                fs.removeSync(tempDir);
+                console.log("yipack下载成功");
+                resole();
+            }
+        });
+    });
+}
+
+async function execute() {
+    fs.removeSync(tempDir);
+    fs.ensureDirSync(tempDir);
+    await _download();
+}
+execute();
