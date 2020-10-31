@@ -58,21 +58,20 @@ module.exports = {
     },
     module: {
         rules: [
-            // {
-            //     test: /\.css$/,
-            //     use: [
-            //         //
-            //         { loader: myConfig.nodeEnv !== "production" ? "vue-style-loader" : MiniCssExtractPlugin.loader },
-            //         { loader: "css-loader", options: { sourceMap: true } },
-            //         { loader: "postcss-loader", options: { sourceMap: true } },
-            //     ],
-            //     sideEffects: true,
-            // },
+            {
+                test: /\.css$/,
+                use: [
+                    //
+                    { loader: myConfig.nodeEnv === "development" ? "vue-style-loader" : MiniCssExtractPlugin.loader },
+                    { loader: "css-loader", options: { sourceMap: true } },
+                    // { loader: "postcss-loader", options: { sourceMap: true } },
+                ],
+                sideEffects: true,
+            },
             {
                 test: /\.scss$/,
                 use: [
-                    // { loader: myConfig.nodeEnv !== "production" ? "vue-style-loader" : MiniCssExtractPlugin.loader },
-                    { loader: MiniCssExtractPlugin.loader },
+                    { loader: myConfig.nodeEnv === "development" ? "vue-style-loader" : MiniCssExtractPlugin.loader },
                     { loader: "css-loader", options: { sourceMap: true } },
                     // { loader: "postcss-loader", options: { sourceMap: true } },
                     { loader: "sass-loader", options: { sourceMap: true } },
@@ -118,6 +117,8 @@ module.exports = {
                                     useESModules: false,
                                 },
                             ],
+                            "@babel/plugin-proposal-optional-chaining",
+                            "@babel/plugin-proposal-nullish-coalescing-operator",
                         ],
                     },
                 },
