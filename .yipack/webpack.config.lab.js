@@ -3,13 +3,7 @@ const { merge } = require("webpack-merge");
 const { WebpackConfigDumpPlugin } = require("webpack-config-dump-plugin");
 const configCommon = require("./webpack.config.common.js");
 const myConfig = require("./webpack.config.my.js");
-console.log("process.cwd()");
-console.log(process.cwd());
-console.log("process.env.NODE_ENV");
-console.log(process.env.NODE_ENV);
 const config = merge(configCommon, {
-    mode: "development",
-    devtool: "inline-cheap-source-map",
     // optimization: {
     //     minimize: false,
     //     occurrenceOrder: false,
@@ -25,10 +19,15 @@ const config = merge(configCommon, {
     //     aggregateTimeout: 600,
     //     ignored: /node_modules|\.cache/,
     // },
+    devServer: {
+        contentBase: path.join(__dirname, "dist"),
+        clientLogLevel: "debug",
+        port: 9000,
+    },
     plugins: [
         //
         new WebpackConfigDumpPlugin({
-            outputPath: path.resolve(myConfig.webpackDir),
+            outputPath: path.resolve(myConfig.cacheDir),
             name: "webpack.config.dump.js",
             depth: 10,
             // keepCircularReferences: true,

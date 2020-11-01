@@ -1,15 +1,25 @@
 const path = require("path");
-// const Webpack = require("webpack");
+const Webpack = require("webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-// const ProgressBarPlugin = require("progress-bar-webpack-plugin");
+const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 // const Dotenv = require("dotenv-webpack");
 const myConfig = require("./webpack.config.my.js");
+/**
+ * loader配置文件
+ */
+const _loaderPostCssConfig = require("./loader/postcss-loader.config.js");
+const _loaderBabelConfig = require("./loader/babel-loader.config.js");
+const _loaderCssConfig = require("./loader/css-loader.config.js");
+const _loaderSassResourcesConfig = require("./loader/sass-resources-loader.config.js");
+const _loaderSassConfig = require("./loader/sass-loader.config.js");
 module.exports = {
+    mode: process.env.NODE_ENV,
+    devtool: process.env.NODE_ENV === "development" ? "eval-source-map" : "none",
     entry: path.resolve(myConfig.srcDir, "main.js"),
     output: {
         path: myConfig.distDir,
@@ -27,8 +37,6 @@ module.exports = {
             //
             path.resolve(myConfig.cliDir, "node_modules"),
             path.resolve(__dirname, "node_modules"),
-            // myConfig.cliDir,
-            // "../node_modules",
             "node_modules",
         ],
     },
@@ -62,66 +70,30 @@ module.exports = {
                 test: /\.css$/,
                 use: [
                     //
-                    { loader: myConfig.nodeEnv === "development" ? "vue-style-loader" : MiniCssExtractPlugin.loader },
-                    { loader: "css-loader", options: { sourceMap: true } },
-                    // { loader: "postcss-loader", options: { sourceMap: true } },
+                    {
+                        loader: myConfig.nodeEnv === "development" ? "vue-style-loader" : MiniCssExtractPlugin.loader,
+                    },
+                    _loaderCssConfig,
+                    _loaderPostCssConfig,
                 ],
                 sideEffects: true,
             },
             {
                 test: /\.scss$/,
                 use: [
-                    { loader: myConfig.nodeEnv === "development" ? "vue-style-loader" : MiniCssExtractPlugin.loader },
-                    { loader: "css-loader", options: { sourceMap: true } },
-                    // { loader: "postcss-loader", options: { sourceMap: true } },
-                    { loader: "sass-loader", options: { sourceMap: true } },
                     {
-                        loader: "sass-resources-loader",
-                        options: {
-                            sourceMap: true,
-                            resources: [path.resolve(myConfig.srcDir, "styles", "variable.scss")],
-                        },
+                        loader: myConfig.nodeEnv === "development" ? "vue-style-loader" : MiniCssExtractPlugin.loader,
                     },
+                    _loaderCssConfig,
+                    _loaderPostCssConfig,
+                    _loaderSassConfig,
+                    _loaderSassResourcesConfig,
                 ],
                 sideEffects: true,
             },
             {
                 test: /\.js$/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        cwd: myConfig.cliDir,
-                        // configFile: path.resolve(myConfig.cliDir, "babel.config.js"),
-                        // root: myConfig.cliDir,
-                        // babelrcRoots: [
-                        //     // Keep the root as a root
-                        //     myConfig.cliDir,
-                        // ],
-                        presets: [
-                            [
-                                "@babel/preset-env",
-                                {
-                                    useBuiltIns: "usage",
-                                    corejs: "3",
-                                },
-                            ],
-                        ],
-                        plugins: [
-                            [
-                                "@babel/plugin-transform-runtime",
-                                {
-                                    absoluteRuntime: false,
-                                    corejs: 3,
-                                    helpers: true,
-                                    regenerator: true,
-                                    useESModules: false,
-                                },
-                            ],
-                            "@babel/plugin-proposal-optional-chaining",
-                            "@babel/plugin-proposal-nullish-coalescing-operator",
-                        ],
-                    },
-                },
+                use: [_loaderBabelConfig],
                 exclude: /node_modules/,
             },
             {
@@ -198,7 +170,7 @@ module.exports = {
             template: path.resolve(myConfig.srcDir, "tpls", "index.html"),
         }),
         new VueLoaderPlugin(),
-        // new ProgressBarPlugin({}),
+        new ProgressBarPlugin({}),
         // new Webpack.ProvidePlugin({
         //     _: 'lodash'
         // })

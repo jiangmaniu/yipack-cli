@@ -15,14 +15,18 @@
         "type": "git",
         "url": "https://gitee.com/banshiweichen/yipack-cli.git"
     },
+    "browserslist": [
+        "> 1%",
+        "ie > 8",
+        "last 2 versions",
+        "last 3 iOS versions"
+    ],
     "keywords": [],
     "author": "chensuiyi <bimostyle@qq.com>",
     "license": "ISC",
     "dependencies": {
         "@babel/runtime": "^7.12.1",
-        "@babel/runtime-corejs3": "^7.12.1",
-        "download-git-repo": "^3.0.2",
-        "fs-extra": "^9.0.1"
+        "@babel/runtime-corejs3": "^7.12.1"
     },
     "devDependencies": {
         "@babel/core": "^7.12.3",
@@ -30,16 +34,23 @@
         "@babel/plugin-proposal-optional-chaining": "^7.12.1",
         "@babel/plugin-transform-runtime": "^7.12.1",
         "@babel/preset-env": "^7.12.1",
+        "autoprefixer": "^10.0.1",
         "babel-loader": "^8.1.0",
         "clean-webpack-plugin": "^3.0.0",
         "commander": "^6.2.0",
         "copy-webpack-plugin": "^6.2.1",
         "core-js": "^3.6.5",
         "css-loader": "^5.0.0",
+        "download-git-repo": "^3.0.2",
+        "figlet": "^1.5.0",
+        "fs-extra": "^9.0.1",
         "html-webpack-plugin": "^4.5.0",
+        "lodash": "^4.17.20",
         "mini-css-extract-plugin": "^1.2.1",
         "node-sass": "^4.14.1",
         "postcss-loader": "^4.0.4",
+        "postcss-px-to-viewport": "^1.1.1",
+        "progress-bar-webpack-plugin": "^2.1.0",
         "sass-loader": "^10.0.4",
         "sass-resources-loader": "^2.1.1",
         "shelljs": "^0.8.4",
@@ -51,6 +62,7 @@
         "webpack": "^5.3.2",
         "webpack-cli": "^4.1.0",
         "webpack-config-dump-plugin": "^3.0.1",
+        "webpack-dev-server": "^3.11.0",
         "webpack-merge": "^5.2.0"
     }
 }
