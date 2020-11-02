@@ -7,7 +7,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
-// const Dotenv = require("dotenv-webpack");
+const Dotenv = require("dotenv-webpack");
 const myConfig = require("./webpack.config.my.js");
 /**
  * loader配置文件
@@ -19,14 +19,15 @@ const _loaderSassResourcesConfig = require("./loader/sass-resources-loader.confi
 const _loaderSassConfig = require("./loader/sass-loader.config.js");
 module.exports = {
     mode: process.env.NODE_ENV,
-    devtool: process.env.NODE_ENV === "development" ? "eval-source-map" : "none",
+    devtool: process.env.NODE_ENV === "development" ? "eval-source-map" : "hidden-source-map",
     entry: path.resolve(myConfig.srcDir, "main.js"),
     output: {
         path: myConfig.distDir,
         filename: "js/[name].js",
         publicPath: "./",
     },
-    stats: "errors-warnings",
+    // stats: "errors-warnings",
+    stats: "none",
     cache: true,
     resolve: {
         alias: {
@@ -54,10 +55,10 @@ module.exports = {
     // node: {
     //     fs: "empty",
     // },
-    // performance: {
-    //     maxEntrypointSize: 1024 * 1024,
-    //     maxAssetSize: 1024 * 1024,
-    // },
+    performance: {
+        maxEntrypointSize: 1024 * 1024,
+        maxAssetSize: 1024 * 1024,
+    },
     optimization: {
         // 运行时
         // runtimeChunk: {
@@ -118,32 +119,32 @@ module.exports = {
                 },
                 exclude: /node_modules/,
             },
-            // {
-            //     test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
-            //     use: {
-            //         loader: "url-loader",
-            //         options: {
-            //             limit: 1000,
-            //             name: "[hash:7].[ext]",
-            //             outputPath: "fonts",
-            //             esModule: false,
-            //         },
-            //     },
-            //     exclude: /node_modules/,
-            // },
-            // {
-            //     test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
-            //     use: {
-            //         loader: "url-loader",
-            //         options: {
-            //             limit: 1000,
-            //             name: "[hash:7].[ext]",
-            //             outputPath: "video",
-            //             esModule: false,
-            //         },
-            //     },
-            //     exclude: /node_modules/,
-            // },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 1000,
+                        name: "[hash:7].[ext]",
+                        outputPath: "fonts",
+                        esModule: false,
+                    },
+                },
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 1000,
+                        name: "[hash:7].[ext]",
+                        outputPath: "video",
+                        esModule: false,
+                    },
+                },
+                exclude: /node_modules/,
+            },
         ],
     },
     plugins: [
@@ -160,12 +161,12 @@ module.exports = {
         }),
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
-            // hmr: myConfig.nodeEnv === "development",
-            // reloadAll: myConfig.nodeEnv === "development",
+            hmr: process.env.NODE_ENV === "development",
+            reloadAll: process.env.NODE_ENV === "development",
         }),
-        // new Dotenv({
-        //     path: myConfig.srcDir + '/env/' + myConfig.nodeEnv + '.env'
-        // }),
+        new Dotenv({
+            path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
+        }),
         new HtmlWebpackPlugin({
             template: path.resolve(myConfig.srcDir, "tpls", "index.html"),
         }),

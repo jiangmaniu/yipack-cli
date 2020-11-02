@@ -40,10 +40,12 @@
         "copy-webpack-plugin": "^6.2.1",
         "core-js": "^3.6.5",
         "css-loader": "^5.0.0",
+        "dotenv-webpack": "^5.0.0",
         "download-git-repo": "^3.0.2",
         "figlet": "^1.5.0",
         "fs-extra": "^9.0.1",
-        "html-webpack-plugin": "^4.5.0",
+        "get-port": "^5.1.1",
+        "html-webpack-plugin": "^5.0.0-alpha.9",
         "lodash": "^4.17.20",
         "mini-css-extract-plugin": "^1.2.1",
         "node-sass": "^4.14.1",
@@ -63,6 +65,5 @@
         "webpack-config-dump-plugin": "^3.0.1",
         "webpack-dev-server": "^3.11.0",
         "webpack-merge": "^5.2.0"
-    },
-    "devDependencies": {}
+    }
 }

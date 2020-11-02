@@ -20,17 +20,19 @@ const config = merge(configCommon, {
     //     ignored: /node_modules|\.cache/,
     // },
     devServer: {
+        quiet: true,
         contentBase: path.join(__dirname, "dist"),
-        clientLogLevel: "debug",
-        port: 9000,
+        clientLogLevel: "silent",
+        stats: "none",
     },
     plugins: [
         //
         new WebpackConfigDumpPlugin({
             outputPath: path.resolve(myConfig.cacheDir),
             name: "webpack.config.dump.js",
-            depth: 10,
-            // keepCircularReferences: true,
+            keepCircularReferences: true,
+            showFunctionNames: false,
+            includeFalseValues: true,
         }),
     ],
 });

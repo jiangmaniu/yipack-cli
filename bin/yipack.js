@@ -3,9 +3,11 @@ const myConfig = require("../.yipack/webpack.config.my.js");
 const figletFont = require("../.yipack/fonts/Epic.js");
 const download = require("download-git-repo");
 const webpack = require("webpack");
+const { merge } = require("webpack-merge");
 const webpackDevServer = require("webpack-dev-server");
 const fs = require("fs-extra");
 const path = require("path");
+const getPort = require("get-port");
 const tempDir = path.resolve(myConfig.rootDir, "temp");
 const initDir = path.resolve(myConfig.rootDir);
 const _ = require("lodash");
@@ -57,11 +59,19 @@ program
     //
     .command("dev")
     .description("启动开发环境")
-    .action((source) => {
-        const webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.lab.js"));
-        webpack(webpackConfig, (err, stats) => {
-            console.log(err);
-            console.log(stats.errors);
+    .action(async (source) => {
+        shell.env["NODE_ENV"] = "development";
+        let port = await getPort({ port: getPort.makeRange(8000, 9000) });
+        let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
+        let devServerConfig = merge(webpackConfig.devServer, {
+            noInfo: true,
+            clientLogLevel: "silent",
+            quiet: true,
+        });
+        let compiler = webpack(webpackConfig);
+        let server = new webpackDevServer(compiler, devServerConfig);
+        server.listen(port, "127.0.0.1", () => {
+            console.log(`Starting server on http://127.0.0.1:${port}`);
         });
     });
 
@@ -70,31 +80,26 @@ program
     .command("lab")
     .description("启动实验环境")
     .action((source) => {
-        // shell.cd(path.resolve(__dirname));
         shell.env["NODE_ENV"] = "development";
-
         const webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.lab.js"));
         webpack(webpackConfig, (err, stats) => {
             if (err) {
                 console.log(err);
-            } else {
             }
         });
-        // let server = new webpackDevServer(compiler, {});
-        // server.listen(9000, "127.0.0.1", () => {
-        //     console.log("Starting server on http://localhost:8080");
-        // });
     });
 
 program
     //
     .command("build")
     .description("打包编译项目")
-    .action((source) => {
-        const webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.lab.js"));
+    .action(async (source) => {
+        shell.env["NODE_ENV"] = "production";
+        const webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
         webpack(webpackConfig, (err, stats) => {
-            console.log(err);
-            console.log(stats.errors);
+            if (err) {
+                console.log(err);
+            }
         });
     });
 program
