@@ -4,7 +4,8 @@
     "description": "易打包，命令行工具。",
     "main": "index.js",
     "bin": {
-        "yipack": "bin/yipack.js"
+        "yipack-cli": "bin/yipack-cli.js",
+        "yipack": "bin/yipack-cli.js"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",

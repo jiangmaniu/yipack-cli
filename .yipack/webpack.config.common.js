@@ -23,7 +23,7 @@ module.exports = {
     entry: path.resolve(myConfig.srcDir, "main.js"),
     output: {
         path: myConfig.distDir,
-        filename: "js/[name].js",
+        filename: "[name].js",
         publicPath: "./",
     },
     // stats: "errors-warnings",
@@ -160,7 +160,7 @@ module.exports = {
             ],
         }),
         new MiniCssExtractPlugin({
-            filename: "css/[name].css",
+            filename: "[name].css",
             hmr: process.env.NODE_ENV === "development",
             reloadAll: process.env.NODE_ENV === "development",
         }),
@@ -172,8 +172,8 @@ module.exports = {
         }),
         new VueLoaderPlugin(),
         new ProgressBarPlugin({}),
-        // new Webpack.ProvidePlugin({
-        //     _: 'lodash'
-        // })
+        new Webpack.ProvidePlugin({
+            _: "lodash",
+        }),
     ],
 };
