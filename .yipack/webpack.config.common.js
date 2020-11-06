@@ -113,7 +113,7 @@ module.exports = {
                     options: {
                         limit: 1000,
                         name: "[hash:7].[ext]",
-                        outputPath: "assets",
+                        outputPath: "images",
                         esModule: false,
                     },
                 },
@@ -139,7 +139,7 @@ module.exports = {
                     options: {
                         limit: 1000,
                         name: "[hash:7].[ext]",
-                        outputPath: "video",
+                        outputPath: "videos",
                         esModule: false,
                     },
                 },

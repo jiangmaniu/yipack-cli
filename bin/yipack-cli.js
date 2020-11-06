@@ -44,9 +44,22 @@ async function init() {
         console.log(err);
     }
 }
-program
-    //
-    .version("0.0.1", "-v, --version", "显示yipack版本");
+
+function getNames(name) {
+    // 页面名称转化 HelL_o-wOrld
+    let lowerCaseName = _.toLower(name); // hell_o-world
+    let kebabCaseName = _.kebabCase(lowerCaseName); // hell-o-world
+    let camelCaseName = _.camelCase(kebabCaseName); // hellOWorld
+    let startCaseName = _.replace(_.startCase(camelCaseName), /\s+/g, ""); // HellOWorld
+
+    return {
+        lowerCaseName,
+        kebabCaseName,
+        startCaseName,
+        camelCaseName,
+    };
+}
+program.name("yipack").usage("[command] [options]");
 program
     //
     .command("init")
@@ -104,157 +117,104 @@ program
     });
 program
     //
-    .command("new-page")
-    .arguments("<页面名称>", "页面名称")
-    .description("创建页面元素")
-    .action((pageName) => {
-        // 页面名称转化
-        let lowerCaseName = _.toLower(pageName);
-        // console.log(lowerCaseName);
-        let kebabCaseName = _.kebabCase(lowerCaseName);
-        // console.log(kebabCaseName);
-        let camelCaseName = _.camelCase(kebabCaseName);
-        // console.log(camelCaseName);
-        let startCaseName = _.replace(_.startCase(camelCaseName), /\s+/g, "");
-        // console.log(startCaseName);
+    .command("new")
+    .option("-p,--page <name>", "创建页面")
+    .option("-c,--comp <name>", "创建组件")
+    .description("创建元素")
+    .action((cmd) => {
+        if (cmd.page) {
+            let names = getNames(cmd.page);
+            // 创建目录
+            let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
+            fs.ensureDirSync(pageDirPath);
 
-        let paramsName = {
-            lowerCaseName,
-            kebabCaseName,
-            startCaseName,
-            camelCaseName,
-        };
-        // 页面目录路径
-        let dirPath = path.resolve(myConfig.srcDir, "pages", camelCaseName);
-        if (fs.existsSync(dirPath)) {
-            console.log(`pages/${camelCaseName} 页面目录已存在`);
-            return;
-        }
-        // 页面文件路径
-        let htmlFilePath = path.resolve(myConfig.srcDir, "pages", camelCaseName, "index.vue");
-        if (fs.existsSync(htmlFilePath)) {
-            console.log(`pages/${camelCaseName}/index.vue 页面模板已存在`);
-            return;
-        }
-        // 页面路由路径
-        let routePath = path.resolve(myConfig.srcDir, "pages", camelCaseName, "route.js");
-        if (fs.existsSync(routePath)) {
-            console.log(`pages/${camelCaseName}/route.js 页面路由已存在`);
-            return;
-        }
+            // 创建图片目录
+            let imageDirPath = path.resolve(myConfig.srcDir, "images", names.camelCaseName);
+            fs.ensureDirSync(imageDirPath);
 
-        // 页面模板字符
-        let htmlStrings = require("../.yipack/page/html.js");
-        // 页面编译器
-        let htmlCompile = _.template(htmlStrings);
-        // 页面源码
-        let htmlText = htmlCompile(paramsName);
-        // 创建页面目录
-        let resDir = fs.mkdirSync(dirPath, { recursive: true });
-        if (resDir) {
-            console.log(resDir);
-            return;
-        }
-        // 创建页面文件
-        let resHtml = fs.writeFileSync(htmlFilePath, htmlText);
-        if (resHtml) {
-            console.log(resHtml);
-            return;
-        }
+            // 创建页面
+            let htmlFilePath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
+            let htmlFileData = _.template(require("../.yipack/page/html.js"))(names);
+            fs.outputFileSync(htmlFilePath, htmlFileData);
 
-        // 路由模板字符
-        let routeStrings = require("../.yipack/page/route.js");
-        // 路由编译器
-        let routeCompile = _.template(routeStrings);
-        // 路由源码
-        let routeText = routeCompile(paramsName);
-        // 创建路由文件
-        let resRoute = fs.writeFileSync(routePath, routeText);
-        if (resRoute) {
-            console.log(resRoute);
+            // 创建路由
+            let routeFilePath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "route.js");
+            let routeFileData = _.template(require("../.yipack/page/route.js"))(names);
+            fs.outputFileSync(routeFilePath, routeFileData);
+
+            console.log("页面元素创建成功");
             return;
         }
-        console.log("页面元素创建成功");
+        if (cmd.comp) {
+            let names = getNames(cmd.comp);
+            // 创建组件
+            let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
+            let htmlFileData = _.template(require("../.yipack/comp/html.js"))(names);
+            fs.outputFileSync(htmlFilePath, htmlFileData);
+
+            console.log("组件元素创建成功");
+            return;
+        }
     });
-
 program
     //
-    .command("new-comp")
-    .arguments("<组件名称>", "组件名称")
-    .description("创建全局组件元素")
-    .action((compName) => {
-        // 页面名称转化
-        let lowerCaseName = _.toLower(compName);
-        let kebabCaseName = _.kebabCase(lowerCaseName);
-        let camelCaseName = _.camelCase(kebabCaseName);
-        let startCaseName = _.replace(_.startCase(camelCaseName), /\s+/g, "");
+    .command("del")
+    .option("-p,--page <name>", "删除页面")
+    .option("-c,--comp <name>", "删除组件")
+    .description("删除元素")
+    .action((cmd) => {
+        if (cmd.page) {
+            let names = getNames(cmd.page);
+            // 创建目录
+            let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
+            fs.removeSync(pageDirPath);
 
-        let paramsName = {
-            lowerCaseName,
-            kebabCaseName,
-            startCaseName,
-            camelCaseName,
-        };
-        // 页面目录路径
-        let dirPath = path.resolve(myConfig.srcDir, "comps", camelCaseName);
-        if (fs.existsSync(dirPath)) {
-            console.log(`comps/${camelCaseName} 组件目录已存在`);
+            console.log("页面元素删除成功");
             return;
         }
-        // 页面文件路径
-        let htmlFilePath = path.resolve(myConfig.srcDir, "comps", camelCaseName, "index.vue");
-        if (fs.existsSync(htmlFilePath)) {
-            console.log(`comps/${camelCaseName}/index.vue 组件模板已存在`);
-            return;
-        }
+        if (cmd.comp) {
+            let names = getNames(cmd.comp);
+            // 创建组件
+            let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName);
+            fs.removeSync(htmlFilePath);
 
-        // 组件模板字符
-        let htmlStrings = require("../.yipack/comp/html.js");
-        // 组件编译器
-        let htmlCompile = _.template(htmlStrings);
-        // 组件源码
-        let htmlText = htmlCompile(paramsName);
-        // 创建组件目录
-        let resDir = fs.mkdirSync(dirPath, { recursive: true });
-        if (resDir) {
-            console.log(resDir);
+            console.log("组件元素删除成功");
             return;
         }
-        // 创建组件文件
-        let resHtml = fs.writeFileSync(htmlFilePath, htmlText);
-        if (resHtml) {
-            console.log(resHtml);
-            return;
-        }
-
-        console.log("组件元素创建成功");
     });
+// program
+//     //
+//     .command("format")
+//     .option("-p,--page <name>", "格式化页面")
+//     .option("-c,--comp <name>", "格式化组件")
+//     .description("格式化元素")
+//     .action((cmd) => {
+//         if (cmd.page) {
+//             let names = getNames(cmd.page);
+//             // 创建目录
+//             let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
+//             let js = require(`vue-loader!${pageDirPath}.vue?vue&type=script`);
+//             console.log(js);
+//             // fs.removeSync(pageDirPath);
 
+//             console.log("页面元素格式化成功");
+//             return;
+//         }
+//         if (cmd.comp) {
+//             let names = getNames(cmd.comp);
+//             // 创建组件
+//             let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
+//             fs.removeSync(htmlFilePath, htmlFileData);
+
+//             console.log("组件元素删除成功");
+//             return;
+//         }
+//     });
 program
     //
+    .version("0.0.1", "-v, --version", "显示yipack版本")
     .helpOption("-h, --help", "显示帮助信息")
-    .helpInformation((info) => {
-        // console.log("ddddddd");
-        // let text = "YIPACK - " + pkg.version;
-        // figlet(
-        //     text,
-        //     {
-        //         font: "figletFont",
-        //         horizontalLayout: "default",
-        //         verticalLayout: "default",
-        //         width: 200,
-        //         whitespaceBreak: false,
-        //     },
-        //     function(err, data) {
-        //         if (err) {
-        //             console.log(err);
-        //         } else {
-        //             console.log(data);
-        //         }
-        //     }
-        // );
-        // return info;
-    });
+    .helpInformation();
 program
     //
     .parse(process.argv);
