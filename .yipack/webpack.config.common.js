@@ -1,6 +1,5 @@
 const path = require("path");
 const Webpack = require("webpack");
-
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -8,6 +7,10 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+
+/**
+ * 配置文件
+ */
 const myConfig = require("./webpack.config.my.js");
 /**
  * loader配置文件
@@ -15,8 +18,13 @@ const myConfig = require("./webpack.config.my.js");
 const _loaderPostCssConfig = require("./loader/postcss-loader.config.js");
 const _loaderBabelConfig = require("./loader/babel-loader.config.js");
 const _loaderCssConfig = require("./loader/css-loader.config.js");
-const _loaderSassResourcesConfig = require("./loader/sass-resources-loader.config.js");
 const _loaderSassConfig = require("./loader/sass-loader.config.js");
+const _loaderStyleConfig = require("./loader/style-loader.config.js");
+const _loaderSassResourcesConfig = require("./loader/sass-resources-loader.config.js");
+
+/**
+ * 导出配置
+ */
 module.exports = {
     mode: process.env.NODE_ENV,
     devtool: process.env.NODE_ENV === "development" ? "eval-source-map" : "hidden-source-map",
@@ -27,7 +35,7 @@ module.exports = {
         publicPath: "./",
     },
     // stats: "errors-warnings",
-    stats: "none",
+    // stats: "none",
     cache: true,
     resolve: {
         alias: {
@@ -71,9 +79,7 @@ module.exports = {
                 test: /\.css$/,
                 use: [
                     //
-                    {
-                        loader: myConfig.nodeEnv === "development" ? "vue-style-loader" : MiniCssExtractPlugin.loader,
-                    },
+                    _loaderStyleConfig,
                     _loaderCssConfig,
                     _loaderPostCssConfig,
                 ],
@@ -82,9 +88,8 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                    {
-                        loader: myConfig.nodeEnv === "development" ? "vue-style-loader" : MiniCssExtractPlugin.loader,
-                    },
+                    //
+                    _loaderStyleConfig,
                     _loaderCssConfig,
                     _loaderPostCssConfig,
                     _loaderSassConfig,
@@ -162,7 +167,6 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "[name].css",
             hmr: process.env.NODE_ENV === "development",
-            reloadAll: process.env.NODE_ENV === "development",
         }),
         new Dotenv({
             path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),

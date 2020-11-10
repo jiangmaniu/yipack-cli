@@ -77,9 +77,10 @@ program
         let port = await getPort({ port: getPort.makeRange(8000, 9000) });
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
         let devServerConfig = merge(webpackConfig.devServer, {
-            noInfo: true,
+            noInfo: false,
             clientLogLevel: "silent",
-            quiet: true,
+            quiet: false,
+            hot: true,
         });
         let compiler = webpack(webpackConfig);
         let server = new webpackDevServer(compiler, devServerConfig);
@@ -212,7 +213,7 @@ program
 //     });
 program
     //
-    .version("0.0.1", "-v, --version", "显示yipack版本")
+    .version(pkg.version, "-v, --version", "显示yipack版本")
     .helpOption("-h, --help", "显示帮助信息")
     .helpInformation();
 program
