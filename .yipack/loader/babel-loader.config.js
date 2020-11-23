@@ -1,4 +1,4 @@
-const myConfig = require("../webpack.config.my.js");
+let myConfig = require("../webpack.config.my.js");
 module.exports = {
     loader: "babel-loader",
     options: {

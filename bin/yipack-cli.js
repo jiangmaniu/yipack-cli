@@ -1,23 +1,23 @@
 #!/usr/bin/env node
-const myConfig = require("../.yipack/webpack.config.my.js");
-const figletFont = require("../.yipack/fonts/Epic.js");
-const download = require("download-git-repo");
-const webpack = require("webpack");
-const { merge } = require("webpack-merge");
-const webpackDevServer = require("webpack-dev-server");
-const fs = require("fs-extra");
-const path = require("path");
-const getPort = require("get-port");
-const tempDir = path.resolve(myConfig.rootDir, "temp");
-const initDir = path.resolve(myConfig.rootDir);
-const _ = require("lodash");
-const { program } = require("commander");
-const shell = require("shelljs");
-const figlet = require("figlet");
+// 自带模块
+let path = require("path");
+// 第三方模块
+let _ = require("lodash");
+let fs = require("fs-extra");
+let download = require("download-git-repo");
+let webpack = require("webpack");
+let { merge } = require("webpack-merge");
+let getPort = require("get-port");
+let webpackDevServer = require("webpack-dev-server");
+let { program } = require("commander");
+let shell = require("shelljs");
+// 配置相关
+let myConfig = require("../.yipack/webpack.config.my.js");
+let tempDir = path.resolve(myConfig.rootDir, "temp");
+let initDir = path.resolve(myConfig.rootDir);
+let pkg = require("../package.json");
+let yipackConfig = require("../.yipack/yipack.config.js");
 
-figlet.parseFont("figletFont", figletFont);
-
-const pkg = require("../package.json");
 // 下载项目
 async function downloadProject() {
     return new Promise((resolve, reject) => {
@@ -76,16 +76,29 @@ program
         shell.env["NODE_ENV"] = "development";
         let port = await getPort({ port: getPort.makeRange(8000, 9000) });
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
-        let devServerConfig = merge(webpackConfig.devServer, {
-            noInfo: false,
-            clientLogLevel: "silent",
-            quiet: false,
-            hot: true,
-        });
+        // 获取或设置默认的开发环境配置
+        if (_.isObject(yipackConfig.devServer) === false) {
+            yipackConfig.devServer = {};
+        }
+
+        // 合并配置参数
+        let devServerConfig = merge(
+            webpackConfig.devServer,
+            {
+                host: "127.0.0.1",
+                noInfo: false,
+                clientLogLevel: "silent",
+                quiet: true,
+                hot: true,
+            },
+            yipackConfig.devServer
+        );
+        // 判断协议类型
+        let protocol = devServerConfig.https === true ? "https" : "http";
         let compiler = webpack(webpackConfig);
         let server = new webpackDevServer(compiler, devServerConfig);
-        server.listen(port, "127.0.0.1", () => {
-            console.log(`Starting server on http://127.0.0.1:${port}`);
+        server.listen(port, devServerConfig.host, () => {
+            console.log(`Starting server on ${protocol}://${devServerConfig.host}:${port}`);
         });
     });
 
@@ -95,7 +108,7 @@ program
     .description("启动实验环境")
     .action((source) => {
         shell.env["NODE_ENV"] = "development";
-        const webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.lab.js"));
+        let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.lab.js"));
         webpack(webpackConfig, (err, stats) => {
             if (err) {
                 console.log(err);
@@ -109,7 +122,7 @@ program
     .description("打包编译项目")
     .action(async (source) => {
         shell.env["NODE_ENV"] = "production";
-        const webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
+        let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
         webpack(webpackConfig, (err, stats) => {
             if (err) {
                 console.log(err);
@@ -183,34 +196,73 @@ program
             return;
         }
     });
-// program
-//     //
-//     .command("format")
-//     .option("-p,--page <name>", "格式化页面")
-//     .option("-c,--comp <name>", "格式化组件")
-//     .description("格式化元素")
-//     .action((cmd) => {
-//         if (cmd.page) {
-//             let names = getNames(cmd.page);
-//             // 创建目录
-//             let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
-//             let js = require(`vue-loader!${pageDirPath}.vue?vue&type=script`);
-//             console.log(js);
-//             // fs.removeSync(pageDirPath);
+program
+    //
+    .command("format")
+    .option("-p,--page <name>", "格式化页面")
+    .option("-c,--comp <name>", "格式化组件")
+    .description("格式化元素")
+    .action((cmd) => {
+        if (cmd.page) {
+            let names = getNames(cmd.page);
+            // 创建目录
+            let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
+            let js = require(`vue-loader!${pageDirPath}.vue?vue&type=script`);
+            console.log(js);
+            // fs.removeSync(pageDirPath);
 
-//             console.log("页面元素格式化成功");
-//             return;
-//         }
-//         if (cmd.comp) {
-//             let names = getNames(cmd.comp);
-//             // 创建组件
-//             let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
-//             fs.removeSync(htmlFilePath, htmlFileData);
+            console.log("页面元素格式化成功");
+            return;
+        }
+        if (cmd.comp) {
+            let names = getNames(cmd.comp);
+            // 创建组件
+            let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
+            fs.removeSync(htmlFilePath, htmlFileData);
 
-//             console.log("组件元素删除成功");
-//             return;
-//         }
-//     });
+            console.log("组件元素删除成功");
+            return;
+        }
+    });
+program
+    //
+    .command("doctor")
+    .option("-p,--page <name>", "检测页面")
+    .option("-c,--comp <name>", "检测组件")
+    .description("检查元素")
+    .action((cmd) => {
+        if (cmd.page) {
+            let names = getNames(cmd.page);
+            // 创建目录
+            let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
+            let js = require(`vue-loader!${pageDirPath}.vue?vue&type=script`);
+            console.log(js);
+            // fs.removeSync(pageDirPath);
+
+            console.log("页面元素格式化成功");
+            return;
+        }
+        if (cmd.comp) {
+            let names = getNames(cmd.comp);
+            // 创建组件
+            let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
+            fs.removeSync(htmlFilePath, htmlFileData);
+
+            console.log("组件元素删除成功");
+            return;
+        }
+        // 目录数组
+        console.log("src目录元素检查");
+        let dirsArray = ["audio", "comps", "env", "fonts", "images", "layout", "mixin", "pages", "plugins", "router", "static", "styles", "tpls", "videos", "vuex", "App.vue", "main.js"];
+        for (let value of dirsArray) {
+            let _path = path.resolve(myConfig.rootDir, value);
+            if (fs.existsSync(_path) === false) {
+                console.log(`${_path}存在`);
+            } else {
+                console.error(`${_path}不存在`);
+            }
+        }
+    });
 program
     //
     .version(pkg.version, "-v, --version", "显示yipack版本")

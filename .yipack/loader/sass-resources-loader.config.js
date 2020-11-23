@@ -1,5 +1,5 @@
-const path = require("path");
-const myConfig = require("../webpack.config.my.js");
+let path = require("path");
+let myConfig = require("../webpack.config.my.js");
 module.exports = {
     loader: "sass-resources-loader",
     options: {
