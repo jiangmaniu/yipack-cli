@@ -88,13 +88,16 @@ program
                 host: "127.0.0.1",
                 noInfo: false,
                 clientLogLevel: "silent",
-                quiet: true,
+                quiet: false,
                 hot: true,
+                inline: true,
             },
             yipackConfig.devServer
         );
         // 判断协议类型
         let protocol = devServerConfig.https === true ? "https" : "http";
+        // 模块热替换
+        webpackDevServer.addDevServerEntrypoints(webpackConfig, devServerConfig);
         let compiler = webpack(webpackConfig);
         let server = new webpackDevServer(compiler, devServerConfig);
         server.listen(port, devServerConfig.host, () => {
