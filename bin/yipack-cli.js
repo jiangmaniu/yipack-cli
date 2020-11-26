@@ -7,8 +7,11 @@ let fs = require("fs-extra");
 let download = require("download-git-repo");
 let webpack = require("webpack");
 let { merge } = require("webpack-merge");
-// let getPort = require("get-port");
-let getPort = require("get-port-please");
+let portfinder = require("portfinder");
+let updateNotifier = require("update-notifier");
+// let vueTemplateCompiler = require("vue-template-compiler");
+// let vueCompilerSfc = require("@vue/compiler-sfc");
+// let vueLoader = require("vue-loader");
 let webpackDevServer = require("webpack-dev-server");
 let { program } = require("commander");
 let shell = require("shelljs");
@@ -75,7 +78,8 @@ program
     .description("启动开发环境")
     .action(async (source) => {
         shell.env["NODE_ENV"] = "development";
-        let port = await getPort();
+        updateNotifier({ pkg }).notify();
+        let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
         // 获取或设置默认的开发环境配置
         if (_.isObject(yipackConfig.devServer) === false) {
@@ -84,21 +88,22 @@ program
         let currentDevServer = {
             host: "127.0.0.1",
             // noInfo: false,
-            // contentBase: myConfig.distDir,
-            clientLogLevel: "info",
+            contentBase: myConfig.distDir,
+            // clientLogLevel: "info",
             // quiet: false,
             hot: true,
             inline: true,
             publicPath: "/",
-            // compress: true,
+            compress: true,
             // lazy: false,
-            // hotOnly: true,
-            // index: "index.html",
-            // injectHot: true,
-            // liveReload: false,
+            hotOnly: true,
+            index: "index.html",
+            injectHot: true,
+            liveReload: true,
             // noInfo: false,
             open: false,
-            stats: "normal",
+            // stats: "normal",
+            stats: "none",
             // watchContentBase: false,
         };
 
@@ -132,7 +137,7 @@ program
 program
     //
     .command("build")
-    .option("--analyzer", "打开分析模式", false)
+    .option("--analyzer", "启动分析模式", false)
     .description("打包编译项目")
     .action(async (cmd) => {
         shell.env["NODE_ENV"] = "production";
@@ -192,6 +197,7 @@ program
     .option("-c,--comp <name>", "删除组件")
     .description("删除元素")
     .action((cmd) => {
+        // 删除页面
         if (cmd.page) {
             let names = getNames(cmd.page);
             // 创建目录
@@ -201,6 +207,7 @@ program
             console.log("页面元素删除成功");
             return;
         }
+        // 删除组件
         if (cmd.comp) {
             let names = getNames(cmd.comp);
             // 创建组件
@@ -211,73 +218,79 @@ program
             return;
         }
     });
-program
-    //
-    .command("format")
-    .option("-p,--page <name>", "格式化页面")
-    .option("-c,--comp <name>", "格式化组件")
-    .description("格式化元素")
-    .action((cmd) => {
-        if (cmd.page) {
-            let names = getNames(cmd.page);
-            // 创建目录
-            let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
-            let js = require(`vue-loader!${pageDirPath}.vue?vue&type=script`);
-            console.log(js);
-            // fs.removeSync(pageDirPath);
+// program
+//     //
+//     .command("format")
+//     .option("-p,--page <name>", "格式化页面")
+//     .option("-c,--comp <name>", "格式化组件")
+//     .description("格式化元素")
+//     .action((cmd) => {
+//         if (cmd.page) {
+//             let names = getNames(cmd.page);
 
-            console.log("页面元素格式化成功");
-            return;
-        }
-        if (cmd.comp) {
-            let names = getNames(cmd.comp);
-            // 创建组件
-            let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
-            fs.removeSync(htmlFilePath, htmlFileData);
+//             // 创建目录
+//             let file = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
+//             // let js = require("vue-loader!" + pageDirPath + ".vue?vue&type=script");
+//             // let ddd = vueTemplateCompiler.compile("<div>1111</div>");
+//             // let js = require("vue-loader");
+//             // console.log(ddd);
+//             // fs.removeSync(pageDirPath);
+//             // let dd = vueCompilerSfc.parse(fs.readFileSync(file));
+//             // console.log(dd);
+//             console.log(new vueLoader.VueLoaderPlugin(fs.readFileSync(file)));
 
-            console.log("组件元素删除成功");
-            return;
-        }
-    });
-program
-    //
-    .command("doctor")
-    .option("-p,--page <name>", "检测页面")
-    .option("-c,--comp <name>", "检测组件")
-    .description("检查元素")
-    .action((cmd) => {
-        if (cmd.page) {
-            let names = getNames(cmd.page);
-            // 创建目录
-            let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
-            let js = require(`vue-loader!${pageDirPath}.vue?vue&type=script`);
-            console.log(js);
-            // fs.removeSync(pageDirPath);
+//             console.log("页面元素格式化成功");
+//             return;
+//         }
+//         if (cmd.comp) {
+//             let names = getNames(cmd.comp);
+//             // 创建组件
+//             let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
+//             fs.removeSync(htmlFilePath, htmlFileData);
 
-            console.log("页面元素格式化成功");
-            return;
-        }
-        if (cmd.comp) {
-            let names = getNames(cmd.comp);
-            // 创建组件
-            let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
-            fs.removeSync(htmlFilePath, htmlFileData);
+//             console.log("组件元素删除成功");
+//             return;
+//         }
+//     });
+// program
+//     //
+//     .command("doctor")
+//     .option("-p,--page <name>", "检测页面")
+//     .option("-c,--comp <name>", "检测组件")
+//     .description("检查元素")
+//     .action((cmd) => {
+//         if (cmd.page) {
+//             let names = getNames(cmd.page);
+//             // 创建目录
+//             let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
+//             let js = require(`vue-loader!${pageDirPath}.vue?vue&type=script`);
+//             console.log(js);
+//             // fs.removeSync(pageDirPath);
 
-            console.log("组件元素删除成功");
-            return;
-        }
-        // 目录数组
-        console.log("src目录元素检查");
-        let dirsArray = ["audio", "comps", "env", "fonts", "images", "layout", "mixin", "pages", "plugins", "router", "static", "styles", "tpls", "videos", "vuex", "App.vue", "main.js"];
-        for (let value of dirsArray) {
-            let _path = path.resolve(myConfig.rootDir, value);
-            if (fs.existsSync(_path) === false) {
-                console.log(`${_path}存在`);
-            } else {
-                console.error(`${_path}不存在`);
-            }
-        }
-    });
+//             console.log("页面元素格式化成功");
+//             return;
+//         }
+//         if (cmd.comp) {
+//             let names = getNames(cmd.comp);
+//             // 创建组件
+//             let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
+//             fs.removeSync(htmlFilePath, htmlFileData);
+
+//             console.log("组件元素删除成功");
+//             return;
+//         }
+//         // 目录数组
+//         console.log("src目录元素检查");
+//         let dirsArray = ["audio", "comps", "env", "fonts", "images", "layout", "mixin", "pages", "plugins", "router", "static", "styles", "tpls", "videos", "vuex", "App.vue", "main.js"];
+//         for (let value of dirsArray) {
+//             let _path = path.resolve(myConfig.rootDir, value);
+//             if (fs.existsSync(_path) === false) {
+//                 console.log(`${_path}存在`);
+//             } else {
+//                 console.error(`${_path}不存在`);
+//             }
+//         }
+//     });
 program
     //
     .version(pkg.version, "-v, --version", "显示yipack版本")
