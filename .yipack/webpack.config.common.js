@@ -35,17 +35,12 @@ let _loaderSassResourcesConfig = require("./loader/sass-resources-loader.config.
 module.exports = merge(
     {
         mode: process.env.NODE_ENV,
-
         entry: path.resolve(myConfig.srcDir, "main.js"),
         output: {
             path: myConfig.distDir,
             filename: "[name].js",
             publicPath: "./",
         },
-        // stats: "errors-warnings",
-        stats: "verbose",
-        // stats: "none",
-
         resolve: {
             alias: {
                 "@src": myConfig.srcDir,
@@ -74,14 +69,14 @@ module.exports = merge(
         // },
         performance: {
             hints: "warning",
-            maxEntrypointSize: 1024 * 1024,
-            maxAssetSize: 1024 * 1024,
+            maxEntrypointSize: 1024 * 1024 * 10,
+            maxAssetSize: 1024 * 1024 * 10,
         },
         optimization: {
             // 运行时
-            runtimeChunk: {
-                name: "runtime",
-            },
+            // runtimeChunk: {
+            //     name: "runtime",
+            // },
         },
         module: {
             rules: [
@@ -110,7 +105,7 @@ module.exports = merge(
                 {
                     test: /\.js$/,
                     use: [_loaderBabelConfig],
-                    include: myConfig.srcDir,
+                    // include: myConfig.srcDir,
                     exclude: /node_modules/,
                 },
                 {

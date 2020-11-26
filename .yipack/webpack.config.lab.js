@@ -13,11 +13,9 @@ let currentConfig = {
         // 副作用
         sideEffects: "flag",
     },
-    devServer: {
-        quiet: false,
-        contentBase: myConfig.distDir,
-        clientLogLevel: "silent",
-    },
+    // 限制并行处理的模块数量。可以用于调优性能或获取更可靠的性能分析结果
+    parallelism: 100,
+    profile: true,
     plugins: [
         //
         new WebpackConfigDumpPlugin({

@@ -12,29 +12,19 @@ let currentConfig = {
         moduleIds: "named",
         chunkIds: "named",
         // 副作用
-        sideEffects: "flag",
-        optimization: {
-            removeAvailableModules: false,
-            removeEmptyChunks: false,
-            splitChunks: false,
-        },
+        // sideEffects: "flag",
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        splitChunks: false,
     },
     // 限制并行处理的模块数量。可以用于调优性能或获取更可靠的性能分析结果
-    parallelism: 1,
-    profile: true,
+    // parallelism: 100,
+    // profile: true,
     // watchOptions: {
     //     poll: 1000,
     //     aggregateTimeout: 600,
     //     ignored: /node_modules|\.cache/,
     // },
-    devServer: {
-        quiet: false,
-        contentBase: myConfig.distDir,
-        // clientLogLevel: "silent",
-        // stats: "none",
-        hot: true,
-        publicPath: "/",
-    },
     plugins: [
         //
         new Webpack.HotModuleReplacementPlugin(),
