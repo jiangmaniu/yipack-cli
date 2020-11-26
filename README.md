@@ -3,7 +3,7 @@
 > 一个神奇的vue.js单页应用项目开发脚手架
 
 ## 文档地址
-[yipack易打包](https://banshiweichen.gitee.io/yipack-site)
+[yipack易打包](https://chensuiyi.com/#/code?menu=code)
 
 ## 概述
 
