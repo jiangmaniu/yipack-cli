@@ -73,36 +73,40 @@ program
     .command("dev")
     .description("启动开发环境")
     .action(async (source) => {
-        shell.env["NODE_ENV"] = "development";
-        let port = await getPort({ port: getPort.makeRange(8000, 9000) });
-        let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
-        // 获取或设置默认的开发环境配置
-        if (_.isObject(yipackConfig.devServer) === false) {
-            yipackConfig.devServer = {};
-        }
+        try {
+            shell.env["NODE_ENV"] = "development";
+            let port = await getPort();
+            let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
+            // 获取或设置默认的开发环境配置
+            if (_.isObject(yipackConfig.devServer) === false) {
+                yipackConfig.devServer = {};
+            }
 
-        // 合并配置参数
-        let devServerConfig = merge(
-            webpackConfig.devServer,
-            {
-                host: "127.0.0.1",
-                noInfo: false,
-                clientLogLevel: "silent",
-                quiet: false,
-                hot: true,
-                inline: true,
-            },
-            yipackConfig.devServer
-        );
-        // 判断协议类型
-        let protocol = devServerConfig.https === true ? "https" : "http";
-        // 模块热替换
-        webpackDevServer.addDevServerEntrypoints(webpackConfig, devServerConfig);
-        let compiler = webpack(webpackConfig);
-        let server = new webpackDevServer(compiler, devServerConfig);
-        server.listen(port, devServerConfig.host, () => {
-            console.log(`Starting server on ${protocol}://${devServerConfig.host}:${port}`);
-        });
+            // 合并配置参数
+            let devServerConfig = merge(
+                webpackConfig.devServer,
+                {
+                    host: "127.0.0.1",
+                    noInfo: false,
+                    clientLogLevel: "silent",
+                    quiet: false,
+                    hot: true,
+                    inline: true,
+                },
+                yipackConfig.devServer
+            );
+            // 判断协议类型
+            let protocol = devServerConfig.https === true ? "https" : "http";
+            // 模块热替换
+            webpackDevServer.addDevServerEntrypoints(webpackConfig, devServerConfig);
+            let compiler = webpack(webpackConfig);
+            let server = new webpackDevServer(compiler, devServerConfig);
+            server.listen(port, devServerConfig.host, () => {
+                console.log(`Starting server on ${protocol}://${devServerConfig.host}:${port}`);
+            });
+        } catch (err) {
+            console.log(err);
+        }
     });
 
 program
@@ -122,9 +126,11 @@ program
 program
     //
     .command("build")
+    .option("--analyzer", "打开分析模式", false)
     .description("打包编译项目")
-    .action(async (source) => {
+    .action(async (cmd) => {
         shell.env["NODE_ENV"] = "production";
+        shell.env["NODE_ANALYZER"] = cmd.analyzer;
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
         webpack(webpackConfig, (err, stats) => {
             if (err) {
