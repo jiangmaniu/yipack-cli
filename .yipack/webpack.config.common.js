@@ -61,6 +61,7 @@ module.exports = merge(
                 "node_modules",
             ],
         },
+        stats: "errors-warnings",
         // externals: {
         //     jquery: "$",
         // },

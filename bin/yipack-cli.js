@@ -103,7 +103,7 @@ program
             // noInfo: false,
             open: false,
             // stats: "normal",
-            stats: "none",
+            stats: "errors-warnings",
             // watchContentBase: false,
         };
 
