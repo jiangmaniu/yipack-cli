@@ -162,9 +162,9 @@ program
             let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
             fs.ensureDirSync(pageDirPath);
 
-            // 创建图片目录
-            let imageDirPath = path.resolve(myConfig.srcDir, "assets", "images", names.camelCaseName);
-            fs.ensureDirSync(imageDirPath);
+            // 创建图片目录 并不是每个页面都有图片
+            // let imageDirPath = path.resolve(myConfig.srcDir, "assets", "images", names.camelCaseName);
+            // fs.ensureDirSync(imageDirPath);
 
             // 创建页面
             let htmlFilePath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
