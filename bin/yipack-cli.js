@@ -163,7 +163,7 @@ program
             fs.ensureDirSync(pageDirPath);
 
             // 创建图片目录
-            let imageDirPath = path.resolve(myConfig.srcDir, "images", names.camelCaseName);
+            let imageDirPath = path.resolve(myConfig.srcDir, "assets", "images", names.camelCaseName);
             fs.ensureDirSync(imageDirPath);
 
             // 创建页面
