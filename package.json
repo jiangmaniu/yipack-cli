@@ -1,7 +1,7 @@
 {
     "name": "yipack-cli",
     "version": "2.0.2",
-    "description": "易打包，命令行工具。",
+    "description": "易打包，命令行工具",
     "main": "index.js",
     "bin": {
         "yipack-cli": "bin/yipack-cli.js",
@@ -23,7 +23,12 @@
         "last 2 versions",
         "last 3 iOS versions"
     ],
-    "keywords": [],
+    "keywords": [
+        "vue.js",
+        "vue-cli",
+        "webpack",
+        "脚手架"
+    ],
     "author": "chensuiyi <bimostyle@qq.com>",
     "license": "MIT",
     "dependencies": {

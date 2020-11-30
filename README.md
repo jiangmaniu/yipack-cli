@@ -5,6 +5,12 @@
 ## 文档地址
 [yipack易打包](https://chensuiyi.com/#/code?menu=code)
 
+
+## 仓库
+
+[码云](https://gitee.com/banshiweichen/yipack-cli)
+[github](https://github.com/chenbimo/yipck-cli)
+
 ## 概述
 
 `yipack` 可以帮你快速生成项目开发骨架，不同于 `vue-cli`，`yipack` 不会给你太多选择。`yipack` 崇尚的是【约定大于配置】的开发理念，所有的一切，都已经准备好了。你所需要做的就是——撸起袖子加油干！
