@@ -125,7 +125,7 @@ module.exports = merge(
                         options: {
                             limit: 1000,
                             name: "[hash:7].[ext]",
-                            outputPath: "images",
+                            outputPath: "assets/images",
                             esModule: false,
                         },
                     },
@@ -138,7 +138,7 @@ module.exports = merge(
                         options: {
                             limit: 1000,
                             name: "[hash:7].[ext]",
-                            outputPath: "fonts",
+                            outputPath: "assets/fonts",
                             esModule: false,
                         },
                     },
@@ -151,7 +151,7 @@ module.exports = merge(
                         options: {
                             limit: 1000,
                             name: "[hash:7].[ext]",
-                            outputPath: "videos",
+                            outputPath: "assets/videos",
                             esModule: false,
                         },
                     },
