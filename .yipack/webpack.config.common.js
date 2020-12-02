@@ -38,7 +38,7 @@ module.exports = merge(
         entry: path.resolve(myConfig.srcDir, "main.js"),
         output: {
             path: myConfig.distDir,
-            filename: "[name].js",
+            filename: "[name].[fullhash:7].js",
             publicPath: "./",
         },
         resolve: {
@@ -182,7 +182,7 @@ module.exports = merge(
                 ],
             }),
             new MiniCssExtractPlugin({
-                filename: "[name].css",
+                filename: "[name].[fullhash:7].css",
             }),
             new Dotenv({
                 path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
