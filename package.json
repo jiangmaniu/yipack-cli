@@ -27,7 +27,7 @@
         "脚手架"
     ],
     "author": "chensuiyi <bimostyle@qq.com>",
-    "license": "MIT",
+    "license": "Apache v2",
     "dependencies": {
         "@babel/core": "^7.12.7",
         "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
