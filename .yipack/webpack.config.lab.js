@@ -4,7 +4,7 @@ let { WebpackConfigDumpPlugin } = require("webpack-config-dump-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 let configCommon = require("./webpack.config.common.js");
 let myConfig = require("./webpack.config.my.js");
-let yipackConfig = require("../.yipack/yipack.config.js");
+let yipackConfig = require("./yipack.config.js");
 let currentConfig = {
     devtool: "eval-source-map",
     optimization: {

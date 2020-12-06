@@ -13,7 +13,7 @@ let Dotenv = require("dotenv-webpack");
  * 配置文件
  */
 let myConfig = require("./webpack.config.my.js");
-let yipackConfig = require("../.yipack/yipack.config.js");
+let yipackConfig = require("./yipack.config.js");
 /**
  * loader配置文件
  */

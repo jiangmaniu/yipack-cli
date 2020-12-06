@@ -4,7 +4,7 @@ let { WebpackConfigDumpPlugin } = require("webpack-config-dump-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 let configCommon = require("./webpack.config.common.js");
 let myConfig = require("./webpack.config.my.js");
-let yipackConfig = require("../.yipack/yipack.config.js");
+let yipackConfig = require("./yipack.config.js");
 let currentConfig = {
     // 生成环境禁用缓存
     cache: false,
@@ -61,11 +61,6 @@ let currentConfig = {
             },
         },
     },
-    // watchOptions: {
-    //     poll: 1000,
-    //     aggregateTimeout: 600,
-    //     ignored: /node_modules|\.cache/,
-    // },
     plugins: [
         //
     ],

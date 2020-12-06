@@ -4,26 +4,44 @@ let fs = require("fs-extra");
 let _ = require("lodash");
 let myConfig = require("../.yipack/webpack.config.my.js");
 let yipackConfigPath = path.resolve(myConfig.rootDir, "yipack.config.js");
-let yipackConfig = {};
+let yipackConfig = {
+    /**
+     * 描述：是否开启手机自适应模式
+     * 默认值：false
+     */
+    px2viewport: {
+        enable: false,
+    },
+    /**
+     * 描述：本地开发模式配置
+     * 默认值：{}
+     */
+    devServer: {},
+    /**
+     * 默认自带库
+     */
+    providePlugin: {
+        _: "lodash",
+    },
+    /**
+     * 自定义webpack相关配置
+     * loader 和 plugin 相关配置不支持在以下 webpack 属性中配置
+     */
+    webpack: {
+        // 通用配置
+        common: {},
+        // 开发配置
+        dev: {},
+        // 发布配置
+        pro: {},
+        // 实验配置
+        lab: {},
+    },
+};
 if (fs.existsSync(yipackConfigPath)) {
     let yipackConfig2 = require(yipackConfigPath);
     if (_.isObject(yipackConfig2)) {
-        yipackConfig = yipackConfig2;
-    }
-    if (_.isObject(yipackConfig.providePlugin) === false) {
-        yipackConfig.providePlugin = {};
-    }
-    if (_.isObject(yipackConfig.webpack) === false || _.isObject(yipackConfig.webpack.common) === false) {
-        yipackConfig.webpack.common = {};
-    }
-    if (_.isObject(yipackConfig.webpack) === false || _.isObject(yipackConfig.webpack.dev) === false) {
-        yipackConfig.webpack.dev = {};
-    }
-    if (_.isObject(yipackConfig.webpack) === false || _.isObject(yipackConfig.webpack.pro) === false) {
-        yipackConfig.webpack.pro = {};
-    }
-    if (_.isObject(yipackConfig.webpack) === false || _.isObject(yipackConfig.webpack.lab) === false) {
-        yipackConfig.webpack.lab = {};
+        yipackConfig = _.merge(yipackConfig, yipackConfig2);
     }
 }
 module.exports = yipackConfig;
