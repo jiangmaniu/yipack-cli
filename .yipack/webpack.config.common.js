@@ -106,7 +106,6 @@ module.exports = merge(
                 {
                     test: /\.js$/,
                     use: [_loaderBabelConfig],
-                    // include: myConfig.srcDir,
                     exclude: /node_modules/,
                 },
                 {
@@ -116,7 +115,6 @@ module.exports = merge(
                             loader: "vue-loader",
                         },
                     ],
-                    exclude: /node_modules/,
                 },
                 {
                     test: /\.(png|jpg|gif|jpeg|webp)$/,
@@ -129,7 +127,6 @@ module.exports = merge(
                             esModule: false,
                         },
                     },
-                    exclude: /node_modules/,
                 },
                 {
                     test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
@@ -142,7 +139,6 @@ module.exports = merge(
                             esModule: false,
                         },
                     },
-                    exclude: /node_modules/,
                 },
                 {
                     test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
@@ -155,7 +151,6 @@ module.exports = merge(
                             esModule: false,
                         },
                     },
-                    exclude: /node_modules/,
                 },
                 {
                     test: /\.(md)$/,
@@ -165,7 +160,6 @@ module.exports = merge(
                             esModule: false,
                         },
                     },
-                    exclude: /node_modules/,
                 },
             ],
         },
