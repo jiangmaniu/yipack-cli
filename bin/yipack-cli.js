@@ -153,40 +153,78 @@ program
     //
     .command("new")
     .option("-p,--page <name>", "创建页面")
+    .option("-i,--child <name>", "创建二级页面")
     .option("-c,--comp <name>", "创建组件")
     .description("创建元素")
     .action((cmd) => {
         if (cmd.page) {
-            let names = getNames(cmd.page);
+            let namesPage = getNames(cmd.page);
             // 创建目录
-            let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
-            fs.ensureDirSync(pageDirPath);
+            let pageDirPath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName);
+            // 如果页面目录还不存在，则创建页面目录
+            if (fs.existsSync(pageDirPath) === false) {
+                fs.ensureDirSync(pageDirPath);
 
-            // 创建图片目录 并不是每个页面都有图片
-            // let imageDirPath = path.resolve(myConfig.srcDir, "assets", "images", names.camelCaseName);
-            // fs.ensureDirSync(imageDirPath);
+                // 创建页面
+                let htmlFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "index.vue");
+                let htmlFileData = _.template(require("../.yipack/template/pageHtml.js"))(namesPage);
+                fs.outputFileSync(htmlFilePath, htmlFileData);
 
-            // 创建页面
-            let htmlFilePath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
-            let htmlFileData = _.template(require("../.yipack/page/html.js"))(names);
-            fs.outputFileSync(htmlFilePath, htmlFileData);
+                // 创建路由
+                let routeFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "route.js");
+                let routeFileData = _.template(require("../.yipack/template/pageRoute.js"))(namesPage);
+                fs.outputFileSync(routeFilePath, routeFileData);
 
-            // 创建路由
-            let routeFilePath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "route.js");
-            let routeFileData = _.template(require("../.yipack/page/route.js"))(names);
-            fs.outputFileSync(routeFilePath, routeFileData);
+                console.log("页面创建成功");
+            } else {
+                console.log("页面已存在");
+            }
+            if (cmd.child) {
+                let namesChild = getNames(cmd.child);
+                // 创建二级页面
+                let htmlFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "children", namesChild.camelCaseName, "index.vue");
+                if (fs.existsSync(htmlFilePath) === false) {
+                    let names = {
+                        page: {
+                            lowerCaseName: namesPage.lowerCaseName,
+                            kebabCaseName: namesPage.kebabCaseName,
+                            startCaseName: namesPage.startCaseName,
+                            camelCaseName: namesPage.camelCaseName,
+                        },
+                        child: {
+                            lowerCaseName: namesChild.lowerCaseName,
+                            kebabCaseName: namesChild.kebabCaseName,
+                            startCaseName: namesChild.startCaseName,
+                            camelCaseName: namesChild.camelCaseName,
+                        },
+                    };
+                    let htmlFileData = _.template(require("../.yipack/template/childHtml.js"))(names);
+                    fs.outputFileSync(htmlFilePath, htmlFileData);
+                    console.log("二级页面创建成功");
+                    // 创建二级路由
+                    let routeFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "children", namesChild.camelCaseName, "route2.js");
+                    let routeFileData = _.template(require("../.yipack/template/childRoute.js"))(names);
+                    fs.outputFileSync(routeFilePath, routeFileData);
+                } else {
+                    console.log("二级页面已存在");
+                }
+            }
 
-            console.log("页面元素创建成功");
             return;
         }
         if (cmd.comp) {
             let names = getNames(cmd.comp);
+
             // 创建组件
             let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
-            let htmlFileData = _.template(require("../.yipack/comp/html.js"))(names);
-            fs.outputFileSync(htmlFilePath, htmlFileData);
+            if (fs.existsSync(htmlFilePath) === false) {
+                let htmlFileData = _.template(require("../.yipack/template/compHtml.js"))(names);
+                fs.outputFileSync(htmlFilePath, htmlFileData);
+                console.log("组件创建成功");
+            } else {
+                console.log("组件已存在");
+            }
 
-            console.log("组件元素创建成功");
             return;
         }
     });

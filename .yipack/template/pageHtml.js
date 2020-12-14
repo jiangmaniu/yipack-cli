@@ -1,5 +1,5 @@
 module.exports = `<template>
-    <div class="page-<%= kebabCaseName %>"></div>
+    <div class="page-<%= kebabCaseName %>"><%= kebabCaseName %></div>
 </template>
 
 <script>
