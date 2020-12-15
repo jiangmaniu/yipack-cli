@@ -179,6 +179,9 @@ program
             } else {
                 console.log("页面已存在");
             }
+            // 创建子目录
+            let htmlFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "children");
+            fs.ensureDirSync(htmlFilePath);
             if (cmd.child) {
                 let namesChild = getNames(cmd.child);
                 // 创建二级页面

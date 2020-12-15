@@ -21,8 +21,8 @@ let currentConfig = {
     watch: true,
     // 监听文件改动，增量编译
     watchOptions: {
-        aggregateTimeout: 500,
-        poll: 1000,
+        // aggregateTimeout: 500,
+        // poll: 1000,
         ignored: /node_modules/,
     },
     plugins: [
