@@ -26,7 +26,7 @@ if (yipackConfig.px2viewport && yipackConfig.px2viewport.enable === true) {
 module.exports = {
     loader: "postcss-loader",
     options: {
-        sourceMap: process.env.NODE_ENV === "development" ? true : false,
+        sourceMap: process.env.NODE_MODE === "development" ? true : false,
         postcssOptions: {
             plugins: postcssPlugin,
         },

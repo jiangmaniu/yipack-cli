@@ -75,9 +75,11 @@ program
 program
     //
     .command("dev")
+    .option("--env <name>", "环境配置文件", "")
     .description("启动开发环境")
-    .action(async (source) => {
-        shell.env["NODE_ENV"] = "development";
+    .action(async (cmd) => {
+        shell.env["NODE_MODE"] = "development";
+        shell.env["NODE_ENV"] = cmd.env;
         updateNotifier({ pkg }).notify();
         let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
@@ -116,7 +118,7 @@ program
         let compiler = webpack(webpackConfig);
         let server = new webpackDevServer(compiler, devServerConfig);
         server.listen(port, devServerConfig.host, () => {
-            console.log(`Starting server on ${protocol}://${devServerConfig.host}:${port}`);
+            console.log(`开发环境已启动：${protocol}://${devServerConfig.host}:${port}`);
         });
     });
 
@@ -125,7 +127,7 @@ program
     .command("lab")
     .description("启动实验环境")
     .action((source) => {
-        shell.env["NODE_ENV"] = "development";
+        shell.env["NODE_MODE"] = "development";
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.lab.js"));
         webpack(webpackConfig, (err, stats) => {
             if (err) {
@@ -137,11 +139,13 @@ program
 program
     //
     .command("build")
+    .option("--env <name>", "指定环境配置文件")
     .option("--analyzer", "启动分析模式", false)
     .description("打包编译项目")
     .action(async (cmd) => {
-        shell.env["NODE_ENV"] = "production";
+        shell.env["NODE_MODE"] = "production";
         shell.env["NODE_ANALYZER"] = cmd.analyzer;
+        shell.env["NODE_ENV"] = cmd.env;
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
         webpack(webpackConfig, (err, stats) => {
             if (err) {
@@ -153,63 +157,95 @@ program
     //
     .command("new")
     .option("-p,--page <name>", "创建页面")
-    .option("-i,--child <name>", "创建二级页面")
+    .option("--sp,--sub-page <name>", "创建二级页面")
+    .option("--sv,--sub-view <name>", "创建二级视图")
     .option("-c,--comp <name>", "创建组件")
     .description("创建元素")
     .action((cmd) => {
         if (cmd.page) {
-            let namesPage = getNames(cmd.page);
+            let rootPageNames = getNames(cmd.page);
             // 创建目录
-            let pageDirPath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName);
+            let pageDirPath = path.resolve(myConfig.srcDir, "pages", rootPageNames.camelCaseName);
             // 如果页面目录还不存在，则创建页面目录
             if (fs.existsSync(pageDirPath) === false) {
                 fs.ensureDirSync(pageDirPath);
 
                 // 创建页面
-                let htmlFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "index.vue");
-                let htmlFileData = _.template(require("../.yipack/template/pageHtml.js"))(namesPage);
+                let htmlFilePath = path.resolve(pageDirPath, "index.vue");
+                let htmlFileData = _.template(require("../.yipack/template/pageHtml.js"))(rootPageNames);
                 fs.outputFileSync(htmlFilePath, htmlFileData);
 
                 // 创建路由
-                let routeFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "route.js");
-                let routeFileData = _.template(require("../.yipack/template/pageRoute.js"))(namesPage);
+                let routeFilePath = path.resolve(pageDirPath, "route.js");
+                let routeFileData = _.template(require("../.yipack/template/pageRoute.js"))(rootPageNames);
                 fs.outputFileSync(routeFilePath, routeFileData);
 
                 console.log("页面创建成功");
             } else {
                 console.log("页面已存在");
             }
-            // 创建子目录
-            let htmlFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "children");
-            fs.ensureDirSync(htmlFilePath);
-            if (cmd.child) {
-                let namesChild = getNames(cmd.child);
+
+            // 创建二级页面
+            if (cmd.subPage) {
+                let subPageNames = getNames(cmd.subPage);
+                let names = {
+                    page: {
+                        lowerCaseName: rootPageNames.lowerCaseName,
+                        kebabCaseName: rootPageNames.kebabCaseName,
+                        startCaseName: rootPageNames.startCaseName,
+                        camelCaseName: rootPageNames.camelCaseName,
+                    },
+                    sp: {
+                        lowerCaseName: subPageNames.lowerCaseName,
+                        kebabCaseName: subPageNames.kebabCaseName,
+                        startCaseName: subPageNames.startCaseName,
+                        camelCaseName: subPageNames.camelCaseName,
+                    },
+                };
                 // 创建二级页面
-                let htmlFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "children", namesChild.camelCaseName, "index.vue");
+                let htmlFilePath = path.resolve(pageDirPath, "subPages", subPageNames.camelCaseName, "index.vue");
                 if (fs.existsSync(htmlFilePath) === false) {
-                    let names = {
-                        page: {
-                            lowerCaseName: namesPage.lowerCaseName,
-                            kebabCaseName: namesPage.kebabCaseName,
-                            startCaseName: namesPage.startCaseName,
-                            camelCaseName: namesPage.camelCaseName,
-                        },
-                        child: {
-                            lowerCaseName: namesChild.lowerCaseName,
-                            kebabCaseName: namesChild.kebabCaseName,
-                            startCaseName: namesChild.startCaseName,
-                            camelCaseName: namesChild.camelCaseName,
-                        },
-                    };
-                    let htmlFileData = _.template(require("../.yipack/template/childHtml.js"))(names);
+                    let htmlFileData = _.template(require("../.yipack/template/subPageHtml.js"))(names);
                     fs.outputFileSync(htmlFilePath, htmlFileData);
                     console.log("二级页面创建成功");
                     // 创建二级路由
-                    let routeFilePath = path.resolve(myConfig.srcDir, "pages", namesPage.camelCaseName, "children", namesChild.camelCaseName, "route2.js");
-                    let routeFileData = _.template(require("../.yipack/template/childRoute.js"))(names);
+                    let routeFilePath = path.resolve(pageDirPath, "subPages", subPageNames.camelCaseName, "routePage.js");
+                    let routeFileData = _.template(require("../.yipack/template/subPageRoute.js"))(names);
                     fs.outputFileSync(routeFilePath, routeFileData);
+                    console.log("二级页面路由创建成功");
                 } else {
                     console.log("二级页面已存在");
+                }
+            }
+            if (cmd.subView) {
+                let subViewNames = getNames(cmd.subView);
+                let names = {
+                    page: {
+                        lowerCaseName: rootPageNames.lowerCaseName,
+                        kebabCaseName: rootPageNames.kebabCaseName,
+                        startCaseName: rootPageNames.startCaseName,
+                        camelCaseName: rootPageNames.camelCaseName,
+                    },
+                    sv: {
+                        lowerCaseName: subViewNames.lowerCaseName,
+                        kebabCaseName: subViewNames.kebabCaseName,
+                        startCaseName: subViewNames.startCaseName,
+                        camelCaseName: subViewNames.camelCaseName,
+                    },
+                };
+                // 创建二级页面
+                let htmlFilePath = path.resolve(pageDirPath, "subViews", subViewNames.camelCaseName, "index.vue");
+                if (fs.existsSync(htmlFilePath) === false) {
+                    let htmlFileData = _.template(require("../.yipack/template/subViewHtml.js"))(names);
+                    fs.outputFileSync(htmlFilePath, htmlFileData);
+                    console.log("二级视图创建成功");
+                    // 创建二级路由
+                    let routeFilePath = path.resolve(pageDirPath, "subViews", subViewNames.camelCaseName, "routeView.js");
+                    let routeFileData = _.template(require("../.yipack/template/subViewRoute.js"))(names);
+                    fs.outputFileSync(routeFilePath, routeFileData);
+                    console.log("二级视图路由创建成功");
+                } else {
+                    console.log("二级视图已存在");
                 }
             }
 

@@ -1,13 +1,20 @@
 module.exports = `
-// 自动导入二级页面路由（勿动）
-// =====================================================
-let routeList = [];
-let importAll = require.context("@src/pages/<%= camelCaseName %>/children", true, /route2\\.js$/);
-importAll.keys().map((path) => {
-    let router = importAll(path).default || importAll(path);
-    routeList.push(router);
+// 自动导入路由（勿动）------------------------------------------------------
+let R = {
+    pages: [],
+    views: [],
+    pageImport: {},
+    viewImport: {}
+};
+R.pageImport = require.context('@src/pages/<%= camelCaseName %>', true, /routePage\\.js$/);
+R.pageImport.keys().map((path) => {
+    R.pages.push(R.pageImport(path).default || R.pageImport(path));
 });
-// =====================================================
+R.viewImport = require.context('@src/pages/<%= camelCaseName %>', true, /routeView\\.js$/);
+R.viewImport.keys().map((path) => {
+    R.views.push(R.viewImport(path).default || R.viewImport(path));
+});
+// 自动导入路由（勿动）------------------------------------------------------
 
 export default {
     path: '/<%= kebabCaseName %>',
@@ -15,8 +22,9 @@ export default {
     children: [
         {
             path: '/',
-            component: () => import('@src/pages/<%= camelCaseName %>/index.vue')
+            component: () => import('@src/pages/<%= camelCaseName %>/index.vue'),
+            children: [...R.views]
         },
-        ...routeList
+        ...R.pages
     ]
 };`;

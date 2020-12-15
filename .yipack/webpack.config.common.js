@@ -32,162 +32,171 @@ let _loaderSassResourcesConfig = require("./loader/sass-resources-loader.config.
 /**
  * 导出配置
  */
-module.exports = merge(
-    {
-        mode: process.env.NODE_ENV,
-        entry: path.resolve(myConfig.srcDir, "main.js"),
-        output: {
-            path: myConfig.distDir,
-            filename: "[name].[fullhash:7].js",
-            publicPath: "./",
+let commonConfig = {
+    mode: process.env.NODE_MODE,
+    entry: path.resolve(myConfig.srcDir, "main.js"),
+    output: {
+        path: myConfig.distDir,
+        filename: "[name].[fullhash:7].js",
+        publicPath: "./",
+    },
+    resolve: {
+        alias: {
+            "@src": myConfig.srcDir,
+            "@static": path.resolve(myConfig.srcDir, "static"),
         },
-        resolve: {
-            alias: {
-                "@src": myConfig.srcDir,
-                "@static": path.resolve(myConfig.srcDir, "static"),
-            },
-            modules: [
-                //
-                path.resolve(myConfig.cliDir, "node_modules"),
-                path.resolve(__dirname, "node_modules"),
-                "node_modules",
-            ],
-        },
-        resolveLoader: {
-            modules: [
-                //
-                path.resolve(myConfig.cliDir, ".yipack"),
-                path.resolve(myConfig.cliDir, "node_modules"),
-                "node_modules",
-            ],
-        },
-        stats: "errors-warnings",
-        // externals: {
-        //     jquery: "$",
-        // },
-        // node: {
-        //     fs: "empty",
-        // },
-        performance: {
-            hints: "warning",
-            maxEntrypointSize: 1024 * 1024 * 10,
-            maxAssetSize: 1024 * 1024 * 10,
-        },
-        optimization: {
-            // 运行时
-            // runtimeChunk: {
-            //     name: "runtime",
-            // },
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.css$/,
-                    use: [
-                        //
-                        _loaderStyleConfig,
-                        _loaderCssConfig,
-                        _loaderPostCssConfig,
-                    ],
-                    sideEffects: true,
-                },
-                {
-                    test: /\.scss$/,
-                    use: [
-                        //
-                        _loaderStyleConfig,
-                        _loaderCssConfig,
-                        _loaderPostCssConfig,
-                        _loaderSassConfig,
-                        _loaderSassResourcesConfig,
-                    ],
-                    sideEffects: true,
-                },
-                {
-                    test: /\.js$/,
-                    use: [_loaderBabelConfig],
-                    exclude: /node_modules/,
-                },
-                {
-                    test: /\.vue$/,
-                    use: [
-                        {
-                            loader: "vue-loader",
-                        },
-                    ],
-                },
-                {
-                    test: /\.(png|jpg|gif|jpeg|webp)$/,
-                    use: {
-                        loader: "url-loader",
-                        options: {
-                            limit: 1000,
-                            name: "[hash:7].[ext]",
-                            outputPath: "assets/images",
-                            esModule: false,
-                        },
-                    },
-                },
-                {
-                    test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
-                    use: {
-                        loader: "url-loader",
-                        options: {
-                            limit: 1000,
-                            name: "[hash:7].[ext]",
-                            outputPath: "assets/fonts",
-                            esModule: false,
-                        },
-                    },
-                },
-                {
-                    test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
-                    use: {
-                        loader: "url-loader",
-                        options: {
-                            limit: 1000,
-                            name: "[hash:7].[ext]",
-                            outputPath: "assets/videos",
-                            esModule: false,
-                        },
-                    },
-                },
-                {
-                    test: /\.(md)$/,
-                    use: {
-                        loader: "raw-loader",
-                        options: {
-                            esModule: false,
-                        },
-                    },
-                },
-            ],
-        },
-        plugins: [
+        modules: [
             //
-            new CleanWebpackPlugin(),
-            new CopyWebpackPlugin({
-                patterns: [
-                    {
-                        from: path.resolve(myConfig.srcDir, "static"),
-                        to: path.resolve(myConfig.distDir, "static"),
-                        cacheTransform: true,
-                    },
-                ],
-            }),
-            new MiniCssExtractPlugin({
-                filename: "[name].[fullhash:7].css",
-            }),
-            new Dotenv({
-                path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
-            }),
-            new HtmlWebpackPlugin({
-                template: path.resolve(myConfig.srcDir, "tpls", "index.html"),
-            }),
-            new VueLoaderPlugin(),
-            new ProgressBarPlugin({}),
-            new Webpack.ProvidePlugin(yipackConfig.providePlugin),
+            path.resolve(myConfig.cliDir, "node_modules"),
+            path.resolve(__dirname, "node_modules"),
+            "node_modules",
         ],
     },
-    yipackConfig.webpack.common
-);
+    resolveLoader: {
+        modules: [
+            //
+            path.resolve(myConfig.cliDir, ".yipack"),
+            path.resolve(myConfig.cliDir, "node_modules"),
+            "node_modules",
+        ],
+    },
+    stats: "errors-warnings",
+    // externals: {
+    //     jquery: "$",
+    // },
+    // node: {
+    //     fs: "empty",
+    // },
+    performance: {
+        hints: "warning",
+        maxEntrypointSize: 1024 * 1024 * 10,
+        maxAssetSize: 1024 * 1024 * 10,
+    },
+    optimization: {
+        // 运行时
+        // runtimeChunk: {
+        //     name: "runtime",
+        // },
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    //
+                    _loaderStyleConfig,
+                    _loaderCssConfig,
+                    _loaderPostCssConfig,
+                ],
+                sideEffects: true,
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    //
+                    _loaderStyleConfig,
+                    _loaderCssConfig,
+                    _loaderPostCssConfig,
+                    _loaderSassConfig,
+                    _loaderSassResourcesConfig,
+                ],
+                sideEffects: true,
+            },
+            {
+                test: /\.js$/,
+                use: [_loaderBabelConfig],
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.vue$/,
+                use: [
+                    {
+                        loader: "vue-loader",
+                    },
+                ],
+            },
+            {
+                test: /\.(png|jpg|gif|jpeg|webp)$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 1000,
+                        name: "[hash:7].[ext]",
+                        outputPath: "assets/images",
+                        esModule: false,
+                    },
+                },
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 1000,
+                        name: "[hash:7].[ext]",
+                        outputPath: "assets/fonts",
+                        esModule: false,
+                    },
+                },
+            },
+            {
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 1000,
+                        name: "[hash:7].[ext]",
+                        outputPath: "assets/videos",
+                        esModule: false,
+                    },
+                },
+            },
+            {
+                test: /\.(md)$/,
+                use: {
+                    loader: "raw-loader",
+                    options: {
+                        esModule: false,
+                    },
+                },
+            },
+        ],
+    },
+    plugins: [
+        //
+        new CleanWebpackPlugin(),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(myConfig.srcDir, "static"),
+                    to: path.resolve(myConfig.distDir, "static"),
+                    cacheTransform: true,
+                },
+            ],
+        }),
+        new MiniCssExtractPlugin({
+            filename: "[name].[fullhash:7].css",
+        }),
+
+        new HtmlWebpackPlugin({
+            template: path.resolve(myConfig.srcDir, "tpls", "index.html"),
+        }),
+        new VueLoaderPlugin(),
+        new ProgressBarPlugin({}),
+        new Webpack.ProvidePlugin(yipackConfig.providePlugin),
+    ],
+};
+if (process.env.NODE_ENV) {
+    commonConfig.plugins.push(
+        new Dotenv({
+            path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
+        })
+    );
+} else {
+    commonConfig.plugins.push(
+        new Dotenv({
+            path: path.resolve(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
+        })
+    );
+}
+module.exports = merge(commonConfig, yipackConfig.webpack.common);
