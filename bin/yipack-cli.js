@@ -138,7 +138,7 @@ program
 program
     //
     .command("build")
-    .option("--env <name>", "指定环境配置文件")
+    .option("--env <name>", "指定环境配置文件", "")
     .option("--analyzer", "启动分析模式", false)
     .description("打包编译项目")
     .action(async (cmd) => {
@@ -149,6 +149,8 @@ program
         webpack(webpackConfig, (err, stats) => {
             if (err) {
                 console.log(err);
+            } else {
+                console.log(stats);
             }
         });
     });

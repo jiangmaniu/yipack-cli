@@ -79,6 +79,8 @@ let commonConfig = {
         // },
     },
     module: {
+        // noParse: /vue|jquery/,
+        // unsafeCache: process.env.NODE_MODE === "production" ? false : true,
         rules: [
             {
                 test: /\.css$/,
@@ -177,7 +179,9 @@ let commonConfig = {
         new MiniCssExtractPlugin({
             filename: "[name].[fullhash:7].css",
         }),
-
+        new Dotenv({
+            path: path.resolve(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
+        }),
         new HtmlWebpackPlugin({
             template: path.resolve(myConfig.srcDir, "tpls", "index.html"),
         }),
@@ -186,17 +190,17 @@ let commonConfig = {
         new Webpack.ProvidePlugin(yipackConfig.providePlugin),
     ],
 };
-if (process.env.NODE_ENV) {
-    commonConfig.plugins.push(
-        new Dotenv({
-            path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
-        })
-    );
-} else {
-    commonConfig.plugins.push(
-        new Dotenv({
-            path: path.resolve(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
-        })
-    );
-}
+// if (!!process.env.NODE_ENV) {
+//     commonConfig.plugins.push(
+//         new Dotenv({
+//             path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
+//         })
+//     );
+// } else {
+//     commonConfig.plugins.push(
+//         new Dotenv({
+//             path: path.resolve(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
+//         })
+//     );
+// }
 module.exports = merge(commonConfig, yipackConfig.webpack.common);
