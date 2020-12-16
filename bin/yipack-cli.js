@@ -8,7 +8,7 @@ let download = require("download-git-repo");
 let webpack = require("webpack");
 let { merge } = require("webpack-merge");
 let portfinder = require("portfinder");
-let updateNotifier = require("update-notifier");
+// let updateNotifier = require("update-notifier");
 // let vueTemplateCompiler = require("vue-template-compiler");
 // let vueCompilerSfc = require("@vue/compiler-sfc");
 // let vueLoader = require("vue-loader");
@@ -80,7 +80,6 @@ program
     .action(async (cmd) => {
         shell.env["NODE_MODE"] = "development";
         shell.env["NODE_ENV"] = cmd.env;
-        updateNotifier({ pkg }).notify();
         let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
         // 获取或设置默认的开发环境配置
