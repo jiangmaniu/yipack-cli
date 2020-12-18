@@ -150,7 +150,7 @@ program
             if (err) {
                 console.log(err);
             } else {
-                console.log(stats);
+                // console.log(stats);
             }
         });
     });
