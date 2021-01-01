@@ -6,7 +6,7 @@ let configCommon = require("./webpack.config.common.js");
 let myConfig = require("./webpack.config.my.js");
 let yipackConfig = require("./yipack.config.js");
 let currentConfig = {
-    // 生成环境禁用缓存
+    // 生产环境禁用缓存
     cache: false,
     parallelism: 100,
     profile: false,
@@ -84,5 +84,5 @@ if (process.env.NODE_ANALYZER === "true") {
         })
     );
 }
-let config = merge(configCommon, currentConfig, yipackConfig.webpack.pro);
+let config = merge(configCommon, currentConfig);
 module.exports = config;

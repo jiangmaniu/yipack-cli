@@ -33,5 +33,5 @@ let currentConfig = {
         }),
     ],
 };
-let config = merge(configCommon, currentConfig, yipackConfig.webpack.lab);
+let config = merge(configCommon, currentConfig);
 module.exports = config;

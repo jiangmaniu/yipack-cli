@@ -8,6 +8,8 @@ let CopyWebpackPlugin = require("copy-webpack-plugin");
 let MiniCssExtractPlugin = require("mini-css-extract-plugin");
 let ProgressBarPlugin = require("progress-bar-webpack-plugin");
 let Dotenv = require("dotenv-webpack");
+let WebpackBar = require("webpackbar");
+let FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 
 /**
  * 配置文件
@@ -34,7 +36,14 @@ let _loaderSassResourcesConfig = require("./loader/sass-resources-loader.config.
  */
 let commonConfig = {
     mode: process.env.NODE_MODE,
+    name: "yipack-webpack-config",
+    profile: true,
+    recordsPath: path.resolve(myConfig.cacheDir, "records.json"),
+    // 入口
     entry: path.resolve(myConfig.srcDir, "main.js"),
+    // 基础目录，绝对路径，用于从配置中解析入口点(entry point)和 加载器(loader)。
+    context: myConfig.rootDir,
+    // 出口
     output: {
         path: myConfig.distDir,
         filename: "[name].[fullhash:7].js",
@@ -60,13 +69,18 @@ let commonConfig = {
             "node_modules",
         ],
     },
+    // 打包发生错误时停止打包
+    bail: true,
+    infrastructureLogging: {
+        level: "info",
+    },
     stats: "errors-warnings",
-    // externals: {
-    //     jquery: "$",
-    // },
-    // node: {
-    //     fs: "empty",
-    // },
+    externals: {},
+    node: {
+        global: false,
+        __filename: false,
+        __dirname: false,
+    },
     performance: {
         hints: "warning",
         maxEntrypointSize: 1024 * 1024 * 10,
@@ -178,14 +192,15 @@ let commonConfig = {
         new MiniCssExtractPlugin({
             filename: "[name].[fullhash:7].css",
         }),
-        // new Dotenv({
-        //     path: path.resolve(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
-        // }),
         new HtmlWebpackPlugin({
             template: path.resolve(myConfig.srcDir, "tpls", "index.html"),
         }),
         new VueLoaderPlugin(),
-        new ProgressBarPlugin({}),
+        // new ProgressBarPlugin({}),
+        new WebpackBar({
+            name: "yipack-cli",
+        }),
+        new FriendlyErrorsWebpackPlugin(),
         new Webpack.ProvidePlugin(yipackConfig.providePlugin),
     ],
 };
@@ -202,4 +217,4 @@ if (process.env.NODE_ENV) {
         })
     );
 }
-module.exports = merge(commonConfig, yipackConfig.webpack.common);
+module.exports = commonConfig;

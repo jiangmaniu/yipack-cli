@@ -8,7 +8,7 @@ let currentConfig = {
     // 开发环境开启缓存
     cache: true,
     devtool: "eval-source-map",
-
+    parallelism: 1,
     optimization: {
         moduleIds: "named",
         chunkIds: "named",
@@ -30,5 +30,5 @@ let currentConfig = {
         new Webpack.HotModuleReplacementPlugin(),
     ],
 };
-let config = merge(configCommon, currentConfig, yipackConfig.webpack.dev);
+let config = merge(configCommon, currentConfig);
 module.exports = config;

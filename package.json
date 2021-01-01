@@ -46,6 +46,7 @@
         "dotenv-webpack": "^5.1.0",
         "download-git-repo": "^3.0.2",
         "file-loader": "^6.2.0",
+        "friendly-errors-webpack-plugin": "^1.7.0",
         "fs-extra": "^9.0.1",
         "html-webpack-plugin": "^4.5.0",
         "lodash": "^4.17.20",
@@ -70,6 +71,7 @@
         "webpack-cli": "^4.2.0",
         "webpack-config-dump-plugin": "^3.0.1",
         "webpack-dev-server": "^3.11.0",
-        "webpack-merge": "^5.7.0"
+        "webpack-merge": "^5.7.0",
+        "webpackbar": "^5.0.0-3"
     }
 }

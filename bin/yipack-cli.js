@@ -17,15 +17,13 @@ let { program } = require("commander");
 let shell = require("shelljs");
 // 配置相关
 let myConfig = require("../.yipack/webpack.config.my.js");
-let tempDir = path.resolve(myConfig.rootDir, "temp");
-let initDir = path.resolve(myConfig.rootDir);
-let pkg = require("../package.json");
+let yipackPackage = require("../package.json");
 let yipackConfig = require("../.yipack/yipack.config.js");
 
 // 下载项目
 async function downloadProject() {
     return new Promise((resolve, reject) => {
-        download("https://gitee.com:banshiweichen/yipack-template#master", tempDir, { clone: true }, function(err) {
+        download("https://gitee.com:banshiweichen/yipack-template#master", myConfig.tempDir, { clone: true }, function(err) {
             if (err) {
                 reject(err);
             } else {
@@ -37,11 +35,11 @@ async function downloadProject() {
 // 初始化项目
 async function init() {
     try {
-        fs.removeSync(tempDir);
-        fs.ensureDirSync(tempDir);
+        fs.removeSync(myConfig.tempDir);
+        fs.ensureDirSync(myConfig.tempDir);
         await downloadProject();
-        fs.copySync(tempDir, initDir, { overwrite: true });
-        fs.removeSync(tempDir);
+        fs.copySync(myConfig.tempDir, myConfig.rootDir, { overwrite: true });
+        fs.removeSync(myConfig.tempDir);
         console.log("yipack模板下载成功");
     } catch (err) {
         console.log("yipack模板下载失败");
@@ -63,41 +61,41 @@ function getNames(name) {
         camelCaseName,
     };
 }
-program.name("yipack").usage("[command] [options]");
+program
+    .storeOptionsAsProperties(false)
+    .passCommandToAction(false)
+    .name("yipack")
+    .usage("[命令] [参数]");
 program
     //
     .command("init")
     .description("创建项目和结构")
-    .action(async (source) => {
+    .action(async (cmd) => {
         await init();
     });
 
+// dev
 program
-    //
     .command("dev")
     .option("--env <name>", "环境配置文件", "")
     .description("启动开发环境")
     .action(async (cmd) => {
         shell.env["NODE_MODE"] = "development";
         shell.env["NODE_ENV"] = cmd.env;
-        let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
-        // 获取或设置默认的开发环境配置
-        if (_.isObject(yipackConfig.devServer) === false) {
-            yipackConfig.devServer = {};
-        }
         let currentDevServer = {
             host: "127.0.0.1",
             // noInfo: false,
             contentBase: myConfig.distDir,
             // clientLogLevel: "info",
-            // quiet: false,
+            quiet: true,
             hot: true,
             inline: true,
             publicPath: "/",
             compress: true,
             // lazy: false,
             hotOnly: true,
+            overlay: true,
             index: "index.html",
             injectHot: true,
             liveReload: true,
@@ -108,7 +106,7 @@ program
             // watchContentBase: false,
         };
 
-        // 合并配置参数
+        // 合并开发服务配置参数
         let devServerConfig = merge(currentDevServer, yipackConfig.devServer);
         // 判断协议类型
         let protocol = devServerConfig.https === true ? "https" : "http";
@@ -116,13 +114,16 @@ program
         webpackDevServer.addDevServerEntrypoints(webpackConfig, devServerConfig);
         let compiler = webpack(webpackConfig);
         let server = new webpackDevServer(compiler, devServerConfig);
+        // 获取端口
+        let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
+        port = yipackConfig.devServer.port || port;
         server.listen(port, devServerConfig.host, () => {
             console.log(`开发环境已启动：${protocol}://${devServerConfig.host}:${port}`);
         });
     });
 
+// lab
 program
-    //
     .command("lab")
     .description("启动实验环境")
     .action((source) => {
@@ -135,8 +136,8 @@ program
         });
     });
 
+// build
 program
-    //
     .command("build")
     .option("--env <name>", "指定环境配置文件", "")
     .option("--analyzer", "启动分析模式", false)
@@ -154,8 +155,8 @@ program
             }
         });
     });
+// new
 program
-    //
     .command("new")
     .option("-p,--page <name>", "创建页面")
     .option("--sp,--sub-page <name>", "创建二级页面")
@@ -371,9 +372,13 @@ program
 //     });
 program
     //
-    .version(pkg.version, "-v, --version", "显示yipack版本")
-    .helpOption("-h, --help", "显示帮助信息")
-    .helpInformation();
+    .version(yipackPackage.version, "-v, --version", "显示yipack版本")
+    .helpOption("-h, --help", "显示帮助信息");
+program.on("--help", () => {
+    console.log("");
+    console.log("Example call:");
+    console.log("  $ custom-help --help");
+});
 program
     //
     .parse(process.argv);
