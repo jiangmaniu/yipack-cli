@@ -323,9 +323,17 @@ program
 //     .action((cmd) => {
 //         if (cmd.page) {
 //             let names = getNames(cmd.page);
+//             let filePath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
+//             let fileData = fs.readFileSync(filePath).toString("utf-8");
+//             let scriptData = fileData.replace(/<script>([\s\S]+)<\/script>/gim, function(match, p1) {
+//                 console.log(match);
+//                 console.log(p1);
 
-//             // 创建目录
-//             let file = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
+//                 let data = eval(p1);
+
+//                 console.log(data);
+//                 console.log(aaa);
+//             });
 //             // let js = require("vue-loader!" + pageDirPath + ".vue?vue&type=script");
 //             // let ddd = vueTemplateCompiler.compile("<div>1111</div>");
 //             // let js = require("vue-loader");
@@ -333,7 +341,7 @@ program
 //             // fs.removeSync(pageDirPath);
 //             // let dd = vueCompilerSfc.parse(fs.readFileSync(file));
 //             // console.log(dd);
-//             console.log(new vueLoader.VueLoaderPlugin(fs.readFileSync(file)));
+//             // console.log(new vueLoader.VueLoaderPlugin(fs.readFileSync(file)));
 
 //             console.log("页面元素格式化成功");
 //             return;

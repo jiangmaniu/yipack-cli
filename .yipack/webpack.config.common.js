@@ -8,6 +8,7 @@ let CopyWebpackPlugin = require("copy-webpack-plugin");
 let MiniCssExtractPlugin = require("mini-css-extract-plugin");
 let ProgressBarPlugin = require("progress-bar-webpack-plugin");
 let Dotenv = require("dotenv-webpack");
+let ESLintPlugin = require("eslint-webpack-plugin");
 
 /**
  * 配置文件
@@ -196,6 +197,7 @@ let commonConfig = {
         new VueLoaderPlugin(),
         new ProgressBarPlugin({}),
         new Webpack.ProvidePlugin(yipackConfig.providePlugin),
+        new ESLintPlugin(yipackConfig.eslint),
     ],
 };
 if (process.env.NODE_ENV) {
