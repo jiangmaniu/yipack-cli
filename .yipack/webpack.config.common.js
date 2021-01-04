@@ -8,8 +8,6 @@ let CopyWebpackPlugin = require("copy-webpack-plugin");
 let MiniCssExtractPlugin = require("mini-css-extract-plugin");
 let ProgressBarPlugin = require("progress-bar-webpack-plugin");
 let Dotenv = require("dotenv-webpack");
-let WebpackBar = require("webpackbar");
-let FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 
 /**
  * 配置文件
@@ -197,9 +195,6 @@ let commonConfig = {
         }),
         new VueLoaderPlugin(),
         new ProgressBarPlugin({}),
-        // new WebpackBar({
-        //     name: "yipack-cli",
-        // }),
         new Webpack.ProvidePlugin(yipackConfig.providePlugin),
     ],
 };
