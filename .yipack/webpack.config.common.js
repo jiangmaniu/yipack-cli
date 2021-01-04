@@ -70,7 +70,7 @@ let commonConfig = {
         ],
     },
     // 打包发生错误时停止打包
-    bail: true,
+    bail: false,
     infrastructureLogging: {
         level: "info",
     },
@@ -196,11 +196,10 @@ let commonConfig = {
             template: path.resolve(myConfig.srcDir, "tpls", "index.html"),
         }),
         new VueLoaderPlugin(),
-        // new ProgressBarPlugin({}),
-        new WebpackBar({
-            name: "yipack-cli",
-        }),
-        new FriendlyErrorsWebpackPlugin(),
+        new ProgressBarPlugin({}),
+        // new WebpackBar({
+        //     name: "yipack-cli",
+        // }),
         new Webpack.ProvidePlugin(yipackConfig.providePlugin),
     ],
 };

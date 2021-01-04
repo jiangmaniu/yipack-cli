@@ -8,7 +8,8 @@ let download = require("download-git-repo");
 let webpack = require("webpack");
 let { merge } = require("webpack-merge");
 let portfinder = require("portfinder");
-// let updateNotifier = require("update-notifier");
+let FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+let updateNotifier = require("update-notifier");
 // let vueTemplateCompiler = require("vue-template-compiler");
 // let vueCompilerSfc = require("@vue/compiler-sfc");
 // let vueLoader = require("vue-loader");
@@ -82,43 +83,59 @@ program
     .action(async (cmd) => {
         shell.env["NODE_MODE"] = "development";
         shell.env["NODE_ENV"] = cmd.env;
+        updateNotifier({ pkg: yipackPackage }).notify();
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
         let currentDevServer = {
             host: "127.0.0.1",
             // noInfo: false,
             contentBase: myConfig.distDir,
-            // clientLogLevel: "info",
-            quiet: true,
+            clientLogLevel: "debug",
+            quiet: false,
             hot: true,
             inline: true,
             publicPath: "/",
             compress: true,
             // lazy: false,
             hotOnly: true,
-            overlay: true,
+            // 全屏显示错误
+            overlay: false,
             index: "index.html",
             injectHot: true,
-            liveReload: true,
+            // liveReload: true,
             // noInfo: false,
             open: false,
             // stats: "normal",
             stats: "errors-warnings",
             // watchContentBase: false,
         };
-
+        // 获取端口
+        let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
+        port = yipackConfig.devServer.port || port;
         // 合并开发服务配置参数
         let devServerConfig = merge(currentDevServer, yipackConfig.devServer);
         // 判断协议类型
         let protocol = devServerConfig.https === true ? "https" : "http";
+        webpackConfig.plugins.push(
+            new FriendlyErrorsWebpackPlugin({
+                compilationSuccessInfo: {
+                    messages: [`应用已启动：${protocol}://${devServerConfig.host}:${port}`],
+                    notes: ["yipack-cli脚手架使用文档请访问域名 [ chensuiyi.com ]"],
+                },
+                // onErrors: (severity, errors) => {
+                //     console.log("=======");
+                //     console.log(severity);
+                //     console.log(errors);
+                // },
+            })
+        );
+
         // 模块热替换
         webpackDevServer.addDevServerEntrypoints(webpackConfig, devServerConfig);
         let compiler = webpack(webpackConfig);
         let server = new webpackDevServer(compiler, devServerConfig);
-        // 获取端口
-        let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
-        port = yipackConfig.devServer.port || port;
+
         server.listen(port, devServerConfig.host, () => {
-            console.log(`开发环境已启动：${protocol}://${devServerConfig.host}:${port}`);
+            // console.log(`开发环境已启动：${protocol}://${devServerConfig.host}:${port}`);
         });
     });
 
