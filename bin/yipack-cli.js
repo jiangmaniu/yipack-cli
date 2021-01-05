@@ -101,7 +101,7 @@ program
             overlay: false,
             index: "index.html",
             injectHot: true,
-            // liveReload: true,
+            liveReload: false,
             // noInfo: false,
             open: false,
             // stats: "normal",
