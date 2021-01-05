@@ -16,7 +16,32 @@ let currentConfig = {
         // sideEffects: "flag",
         removeAvailableModules: false,
         removeEmptyChunks: false,
-        splitChunks: false,
+        // 副作用
+        sideEffects: true,
+        splitChunks: {
+            chunks: "all",
+            minSize: 1024 * 1024,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 10,
+            name: false,
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    minChunks: 1,
+                    priority: -10,
+                    name(module) {
+                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                        return `npm.${packageName.replace("@", "")}`;
+                    },
+                },
+                default: {
+                    minChunks: 5,
+                    priority: -20,
+                    reuseExistingChunk: true,
+                    name: "default.vendors",
+                },
+            },
+        },
     },
     // watch: true,
     // 监听文件改动，增量编译
