@@ -15,7 +15,9 @@ let yipackConfig = {
     providePlugin: {},
     // 开发配置
     devServer: {},
-    eslint: {},
+    eslint: {
+        extensions: ["js", "vue"],
+    },
 };
 if (fs.existsSync(projectConfigPath)) {
     // 项目yipack配置参数
