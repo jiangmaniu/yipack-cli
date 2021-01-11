@@ -74,7 +74,7 @@ let commonConfig = {
         level: "info",
     },
     stats: "errors-warnings",
-    externals: {},
+    externals: yipackConfig.externals,
     node: {
         global: false,
         __filename: false,

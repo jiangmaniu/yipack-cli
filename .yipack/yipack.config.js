@@ -13,6 +13,7 @@ let yipackConfig = {
         enable: false,
     },
     providePlugin: {},
+    externals: {},
     // 开发配置
     devServer: {},
     eslint: {
