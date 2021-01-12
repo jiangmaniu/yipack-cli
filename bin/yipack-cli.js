@@ -83,6 +83,7 @@ program
     .action(async (cmd) => {
         shell.env["NODE_MODE"] = "development";
         shell.env["NODE_ENV"] = cmd.env;
+        shell.env["NODE_COUNT"] = "start";
         updateNotifier({ pkg: yipackPackage }).notify();
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
         let currentDevServer = {
@@ -107,6 +108,7 @@ program
             // stats: "normal",
             stats: "errors-warnings",
             // watchContentBase: false,
+            writeToDisk: true,
         };
         // 获取端口
         let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
@@ -139,20 +141,6 @@ program
         });
     });
 
-// lab
-program
-    .command("lab")
-    .description("启动实验环境")
-    .action((source) => {
-        shell.env["NODE_MODE"] = "development";
-        let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.lab.js"));
-        webpack(webpackConfig, (err, stats) => {
-            if (err) {
-                console.log(err);
-            }
-        });
-    });
-
 // build
 program
     .command("build")
@@ -165,10 +153,92 @@ program
         shell.env["NODE_ENV"] = cmd.env;
         let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
         webpack(webpackConfig, (err, stats) => {
+            /**
+             * stats.compilation
+             * hooks
+                name
+                startTime
+                endTime
+                compiler
+                resolverFactory
+                inputFileSystem
+                fileSystemInfo
+                requestShortener
+                compilerPath
+                logger
+                options
+                outputOptions
+                bail
+                profile
+                mainTemplate
+                chunkTemplate
+                runtimeTemplate
+                moduleTemplates
+                moduleGraph
+                chunkGraph
+                codeGenerationResults
+                factorizeQueue
+                addModuleQueue
+                buildQueue
+                rebuildQueue
+                processDependenciesQueue
+                creatingModuleDuringBuild
+                entries
+                globalEntry
+                entrypoints
+                asyncEntrypoints
+                chunks
+                chunkGroups
+                namedChunkGroups
+                namedChunks
+                modules
+                _modules
+                records
+                additionalChunkAssets
+                assets
+                assetsInfo
+                _assetsRelatedIn
+                errors
+                warnings
+                children
+                logging
+                dependencyFactories
+                dependencyTemplates
+                childrenCounters
+                usedChunkIds
+                usedModuleIds
+                needAdditionalPass
+                builtModules
+                codeGeneratedModules
+                _rebuildingModules
+                emittedAssets
+                comparedForEmitAssets
+                fileDependencies
+                contextDependencies
+                missingDependencies
+                buildDependencies
+                compilationDependencies
+                _modulesCache
+                _assetsCache
+                _codeGenerationCache
+                fullHash
+                hash
+             */
             if (err) {
                 console.log(err);
             } else {
-                // console.log(stats);
+                let fileds = [
+                    //
+                    "name",
+                    "startTime",
+                    "endTime",
+                    "bail",
+                    "profile",
+                    "errors",
+                    "assets",
+                ];
+                let result = _.pick(stats.compilation, fileds);
+                console.log(result);
             }
         });
     });
