@@ -16,13 +16,8 @@ let currentConfig = {
         // minimize: false,
         // namedModules: true,
         // namedChunks: true,
-        // moduleIds: "deterministic",
-        // runtimeChunk: {
-        //     name: "runtime",
-        // },
-        moduleIds: "named",
-        // chunkIds: "deterministic",
-        chunkIds: "named",
+        moduleIds: "deterministic",
+        chunkIds: "deterministic",
         // 在设置为 true 时，告知 webpack 通过将导入修改为更短的字符串，来减少 WASM 大小。
         mangleWasmImports: true,
         // 会影响webpack性能，默认禁用
@@ -54,13 +49,13 @@ let currentConfig = {
         splitChunks: {
             automaticNameDelimiter: "~",
             chunks: "all",
-            maxAsyncRequests: 5,
+            maxAsyncRequests: 3,
             maxInitialRequests: 30,
             minChunks: 5,
             minSize: 1024 * 1024,
-            maxSize: 0,
-            maxAsyncSize: 0,
-            maxInitialSize: 0,
+            // maxSize: 0,
+            // maxAsyncSize: 0,
+            // maxInitialSize: 0,
             usedExports: true,
             name: false,
             // name: (_module, _chunks, cacheGroupKey) => {

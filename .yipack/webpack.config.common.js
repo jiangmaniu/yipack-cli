@@ -130,8 +130,8 @@ let commonConfig = {
     externals: yipackConfig.externals,
     node: {
         global: false,
-        __filename: false,
-        __dirname: false,
+        __filename: true,
+        __dirname: true,
     },
     performance: {
         hints: "warning",
@@ -237,7 +237,6 @@ let commonConfig = {
                 {
                     from: path.resolve(myConfig.srcDir, "static"),
                     to: path.resolve(myConfig.distDir, "static"),
-                    cacheTransform: true,
                 },
             ],
         }),
@@ -258,6 +257,11 @@ if (process.env.NODE_ENV) {
     commonConfig.plugins.push(
         new Dotenv({
             path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
+            safe: true,
+            allowEmptyValues: true,
+            systemvars: true,
+            silent: false,
+            defaults: false,
         })
     );
 } else {

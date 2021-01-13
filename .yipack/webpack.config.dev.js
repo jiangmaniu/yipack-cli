@@ -13,53 +13,73 @@ let currentConfig = {
     // 打包发生错误时停止打包
     bail: false,
     optimization: {
+        // minimize: false,
+        // namedModules: true,
+        // namedChunks: true,
         moduleIds: "named",
         chunkIds: "named",
-        // 副作用
-        // sideEffects: "flag",
+        // 在设置为 true 时，告知 webpack 通过将导入修改为更短的字符串，来减少 WASM 大小。
+        mangleWasmImports: false,
+        // 会影响webpack性能，默认禁用
         removeAvailableModules: false,
+        // 移除空的chunks
         removeEmptyChunks: false,
+        // 合并相同模块的chunks，生产模式优化
+        mergeDuplicateChunks: false,
+        // 生成模式优化，其他模式禁用，加载较大的chunk后，是否引入子集一起打包
+        flagIncludedChunks: false,
+        // 为export * from 生成更高效的代码，摇树优化
+        providedExports: false,
+        // 由webpack决定每个模块的导出内容，与providedExports有关，摇树优化
+        usedExports: false,
+        // 合并模块，生产模式启用，与providedExports和usedExports有关
+        concatenateModules: false,
         // 副作用
-        sideEffects: "flag",
+        sideEffects: true,
+        // 压缩导出
+        mangleExports: false,
+        // 内部图分析，用于摇树优化
+        innerGraph: false,
+        // 资源变动不重新计算内容hash
+        realContentHash: true,
+        // 先对记录
+        portableRecords: false,
         splitChunks: {
+            automaticNameDelimiter: "~",
             chunks: "all",
             maxAsyncRequests: 5,
-            maxInitialRequests: 10,
-            minChunks: 1,
-            minSize: 0,
-            maxSize: 0,
-            maxAsyncSize: 0,
-            maxInitialSize: 0,
-            // name: (_module, _chunks, cacheGroupKey) => {
-            //     return `${cacheGroupKey}`;
-            // },
+            maxInitialRequests: 30,
+            minChunks: 5,
+            minSize: 1024 * 1024,
+            // maxSize: 0,
+            // maxAsyncSize: 0,
+            // maxInitialSize: 0,
+            usedExports: false,
+            name: false,
             cacheGroups: {
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
-                    minChunks: 1,
                     priority: -10,
+                    // 重用已打包模块
                     reuseExistingChunk: true,
+                    enforce: false,
                     name(_module) {
                         let packageName = _module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
                         return `npm.${packageName.replace("@", "")}`;
                     },
                 },
                 default: {
-                    minChunks: 1,
                     priority: -20,
+                    // 重用已打包模块
                     reuseExistingChunk: true,
-                    name: "default.vendors",
+                    enforce: false,
+                    name(_module) {
+                        return "default.vendors";
+                    },
                 },
             },
         },
     },
-    // watch: true,
-    // 监听文件改动，增量编译
-    // watchOptions: {
-    // aggregateTimeout: 500,
-    // poll: 1000,
-    // ignored: /node_modules/,
-    // },
     plugins: [
         //
         new Webpack.HotModuleReplacementPlugin(),

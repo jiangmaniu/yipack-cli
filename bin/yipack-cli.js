@@ -79,6 +79,7 @@ program
 program
     .command("dev")
     .option("--env <name>", "环境配置文件", "")
+    .option("--write", "写入硬盘", false)
     .description("启动开发环境")
     .action(async (cmd) => {
         shell.env["NODE_MODE"] = "development";
@@ -108,7 +109,7 @@ program
             // stats: "normal",
             stats: "errors-warnings",
             // watchContentBase: false,
-            writeToDisk: true,
+            writeToDisk: cmd.write,
         };
         // 获取端口
         let port = await portfinder.getPortPromise({ port: 8000, stopPort: 9000 });
