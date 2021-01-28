@@ -22,9 +22,9 @@ let yipackPackage = require("../package.json");
 let yipackConfig = require("../.yipack/yipack.config.js");
 
 // 下载项目
-async function downloadProject() {
+async function downloadProject(gitUrl) {
     return new Promise((resolve, reject) => {
-        download("https://gitee.com:banshiweichen/yipack-template#master", myConfig.tempDir, { clone: true }, function(err) {
+        download(gitUrl, myConfig.tempDir, { clone: true }, function(err) {
             if (err) {
                 reject(err);
             } else {
@@ -33,17 +33,38 @@ async function downloadProject() {
         });
     });
 }
-// 初始化项目
-async function init() {
+// 初始化yipack开发模板
+async function initYipackTemplate() {
     try {
         fs.removeSync(myConfig.tempDir);
         fs.ensureDirSync(myConfig.tempDir);
-        await downloadProject();
+        await downloadProject("https://gitee.com:banshiweichen/yipack-template#master");
         fs.copySync(myConfig.tempDir, myConfig.rootDir, { overwrite: true });
         fs.removeSync(myConfig.tempDir);
         console.log("yipack模板下载成功");
     } catch (err) {
         console.log("yipack模板下载失败");
+        console.log(err);
+    }
+}
+
+// 初始化后台管理模板
+async function initAdminTemplate() {
+    try {
+        let files = fs.readdirSync(myConfig.rootDir);
+        if (files.length > 0) {
+            console.log("请在空目录下载yiadmin模板");
+            return;
+        }
+
+        fs.removeSync(myConfig.tempDir);
+        fs.ensureDirSync(myConfig.tempDir);
+        await downloadProject("https://gitee.com:banshiweichen/yiadmin#master");
+        fs.copySync(myConfig.tempDir, myConfig.rootDir, { overwrite: true });
+        fs.removeSync(myConfig.tempDir);
+        console.log("yiadmin模板下载成功");
+    } catch (err) {
+        console.log("yiadmin模板下载失败");
         console.log(err);
     }
 }
@@ -72,7 +93,7 @@ program
     .command("init")
     .description("创建项目和结构")
     .action(async (cmd) => {
-        await init();
+        await initYipackTemplate();
     });
 
 // dev
@@ -236,7 +257,6 @@ program
                     "bail",
                     "profile",
                     "errors",
-                    "assets",
                 ];
                 let result = _.pick(stats.compilation, fileds);
                 console.log(result);
@@ -383,6 +403,15 @@ program
 
             console.log("组件元素删除成功");
             return;
+        }
+    });
+program
+    .command("template")
+    .option("--admin", "初始化后台管理模板", false)
+    .description("初始化后台管理模板")
+    .action((cmd) => {
+        if (cmd.admin === true) {
+            initAdminTemplate();
         }
     });
 // program
