@@ -53,7 +53,7 @@ async function initAdminTemplate() {
     try {
         let files = fs.readdirSync(myConfig.rootDir);
         if (files.length > 0) {
-            console.log("请在空目录下载yiadmin模板");
+            console.log("请在空目录下载yiadmin后台项目模板");
             return;
         }
 
@@ -62,9 +62,29 @@ async function initAdminTemplate() {
         await downloadProject("https://gitee.com:banshiweichen/yiadmin#master");
         fs.copySync(myConfig.tempDir, myConfig.rootDir, { overwrite: true });
         fs.removeSync(myConfig.tempDir);
-        console.log("yiadmin模板下载成功");
+        console.log("yiadmin项目模板下载成功");
     } catch (err) {
-        console.log("yiadmin模板下载失败");
+        console.log("yiadmin项目模板下载失败");
+        console.log(err);
+    }
+}
+// 初始化api项目模板
+async function initApiTemplate() {
+    try {
+        let files = fs.readdirSync(myConfig.rootDir);
+        if (files.length > 0) {
+            console.log("请在空目录下载yima接口开发项目模板");
+            return;
+        }
+
+        fs.removeSync(myConfig.tempDir);
+        fs.ensureDirSync(myConfig.tempDir);
+        await downloadProject("https://gitee.com:banshiweichen/yima#master");
+        fs.copySync(myConfig.tempDir, myConfig.rootDir, { overwrite: true });
+        fs.removeSync(myConfig.tempDir);
+        console.log("yima项目模板下载成功");
+    } catch (err) {
+        console.log("yima项目模板下载失败");
         console.log(err);
     }
 }
@@ -91,7 +111,7 @@ program
 program
     //
     .command("init")
-    .description("创建项目和结构")
+    .description("初始化通用前端项目模板")
     .action(async (cmd) => {
         await initYipackTemplate();
     });
@@ -406,12 +426,23 @@ program
         }
     });
 program
-    .command("template")
-    .option("--admin", "初始化后台管理模板", false)
-    .description("初始化后台管理模板")
+    .command("tpl")
+    .option("--init", "初始化通用前端项目模板", false)
+    .option("--admin", "初始化后台项目模板", false)
+    .option("--api", "初始化接口项目模板", false)
+    .description("初始化项目模板")
     .action((cmd) => {
         if (cmd.admin === true) {
             initAdminTemplate();
+            return;
+        }
+        if (cmd.api === true) {
+            initApiTemplate();
+            return;
+        }
+        if (cmd.init === true) {
+            initYipackTemplate();
+            return;
         }
     });
 // program
