@@ -59,6 +59,10 @@ let commonConfig = {
             path.resolve(__dirname, "node_modules"),
             "node_modules",
         ],
+        fallback: {
+            crypto: require.resolve("crypto-browserify"),
+            stream: require.resolve("stream-browserify"),
+        },
     },
     resolveLoader: {
         modules: [
