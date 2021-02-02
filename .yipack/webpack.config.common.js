@@ -133,7 +133,7 @@ let commonConfig = {
     },
     externals: yipackConfig.externals,
     node: {
-        global: false,
+        global: true,
         __filename: true,
         __dirname: true,
     },
@@ -257,11 +257,11 @@ let commonConfig = {
         new ESLintPlugin(yipackConfig.eslint),
     ],
 };
-if (process.env.NODE_ENV) {
+if (process.env.NODE_ENV && process.env.NODE_ENV !== "undefined") {
     commonConfig.plugins.push(
         new Dotenv({
             path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
-            safe: true,
+            safe: false,
             allowEmptyValues: true,
             systemvars: true,
             silent: false,
@@ -272,6 +272,11 @@ if (process.env.NODE_ENV) {
     commonConfig.plugins.push(
         new Dotenv({
             path: path.resolve(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
+            safe: false,
+            allowEmptyValues: true,
+            systemvars: true,
+            silent: false,
+            defaults: false,
         })
     );
 }

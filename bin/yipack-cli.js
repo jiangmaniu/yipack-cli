@@ -4,42 +4,35 @@ let path = require("path");
 // 第三方模块
 let _ = require("lodash");
 let fs = require("fs-extra");
-let { program } = require("commander");
+let commander = require("commander");
+let program = new commander.Command();
 let shell = require("shelljs");
 let { table } = require("table");
 // 配置相关
 let myConfig = require("../.yipack/webpack.config.my.js");
 let yipackPackage = require("../package.json");
 let yipackConfig = require("../.yipack/yipack.config.js");
-
+let tool = require("./tool.js");
 program
-    .storeOptionsAsProperties(false)
-    .passCommandToAction(false)
+    .storeOptionsAsProperties(false) // ；屏蔽参数作为cmd的属性
+    .allowExcessArguments(false) // 严格控制参数顺序
     .name("yipack")
-    .usage("[命令] [参数]");
-program
-    //
-    .command("init")
-    .description("初始化通用前端项目模板")
-    .action(async (cmd) => {
-        await initYipackTemplate();
-    });
-
+    .usage("<命令> [参数]");
 program
     .command("dev")
-    .option("--env <name>", "环境配置文件", "")
+    .addOption(new commander.Option("--env <配置文件名称>", "指定环境配置文件").choices(tool.getEnvNames()))
     .option("--write", "写入硬盘", false)
     .description("启动开发环境")
-    .action(async (cmd) => {
+    .action((cmd) => {
         require("./dev/index.js")(cmd);
     });
 
 program
     .command("build")
-    .option("--env <name>", "指定环境配置文件", "")
+    .addOption(new commander.Option("--env <配置文件名称>", "指定环境配置文件").choices(tool.getEnvNames()))
     .option("--analyzer", "启动分析模式", false)
     .description("打包编译项目")
-    .action(async (cmd) => {
+    .action((cmd) => {
         require("./build/index.js")(cmd);
     });
 program
@@ -79,23 +72,26 @@ program
     });
 program
     .command("tpl")
-    .option("--init", "初始化通用前端项目模板", false)
-    .option("--admin", "初始化后台项目模板", false)
-    .option("--api", "初始化接口项目模板", false)
+    .addOption(new commander.Option("-t,--type <模板名称>", "初始化项目模板").choices(["init", "admin", "api", "mini"]))
     .description("初始化项目模板")
     .action((cmd) => {
-        if (cmd.admin === true) {
+        if (cmd.type === "admin") {
             require("./tpl/admin.js")();
             return;
         }
-        if (cmd.api === true) {
+        if (cmd.type === "api") {
             require("./tpl/api.js")();
             return;
         }
-        if (cmd.init === true) {
+        if (cmd.type === "init") {
             require("./tpl/init.js")();
             return;
         }
+        // TODO: 小程序模板
+        // if (cmd.type === "mini") {
+        //     require("./tpl/mini.js")();
+        //     return;
+        // }
     });
 // program
 //     //
@@ -180,13 +176,20 @@ program
 //     });
 program
     //
-    .version(yipackPackage.version, "-v, --version", "显示yipack版本")
-    .helpOption("-h, --help", "显示帮助信息");
+    .version(yipackPackage.version, "-v, --version", "显示yipack版本");
+program.helpInformation();
 program.on("--help", () => {
-    console.log("");
-    console.log("查看子命令参数");
-    console.log("yipack 子命令 --help");
+    // let data = [
+    //     ["查看所有命令", "yipack all"],
+    //     ["查看子命令帮助", "yipack <子命令> --help"],
+    //     ["查看官方文档", "https://chensuiyi.com"],
+    //     ["启动开发环境", "yipack dev [参数]"],
+    //     ["打包编译项目", "yipack build [参数]"],
+    //     ["创建元素", "yipack new [参数]"],
+    //     ["初始化项目模板", "yipack tpl <--type=模板名称>"],
+    //     ["查看项目相关信息", "yipack show [参数]"],
+    //     ["检测项目健康性", "yipack doctor [参数]"],
+    // ];
+    // console.log(table(data));
 });
-program
-    //
-    .parse(process.argv);
+program.parse(process.argv);

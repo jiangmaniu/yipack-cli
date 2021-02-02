@@ -3,6 +3,7 @@ let path = require("path");
 // 第三方模块
 let _ = require("lodash");
 let download = require("download-git-repo");
+let fs = require("fs-extra");
 // 配置相关
 let myConfig = require("../.yipack/webpack.config.my.js");
 let yipackPackage = require("../package.json");
@@ -32,4 +33,20 @@ exports.getNames = function getNames(name) {
         startCaseName,
         camelCaseName,
     };
+};
+
+exports.getEnvNames = function getEnvNames() {
+    let arrs = [];
+    let envPath = path.resolve(myConfig.srcDir, "env");
+    if (fs.existsSync(envPath)) {
+        let envs = fs.readdirSync(envPath, { withFileTypes: true });
+        envs.forEach((file) => {
+            if (file.isFile() === true) {
+                arrs.push(path.basename(file.name, ".env"));
+            }
+        });
+        return arrs;
+    } else {
+        return [];
+    }
 };

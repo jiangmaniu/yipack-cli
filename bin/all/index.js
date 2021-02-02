@@ -33,9 +33,9 @@ module.exports = async function newComp(cmd) {
     console.log(chalk.green("yipack new --sv,--sub-view <子视图名称> 一键创建子视图"));
     console.log("------------------------------");
     console.log(chalk.blueBright("yipack tpl 初始化项目模板"));
-    console.log(chalk.green("yipack tpl --init 初始化通用前端项目模板"));
-    console.log(chalk.green("yipack tpl --admin 初始化后台项目模板"));
-    console.log(chalk.green("yipack tpl --api 初始化接口项目模板"));
+    console.log(chalk.green("yipack tpl --type=init 初始化通用前端项目模板"));
+    console.log(chalk.green("yipack tpl --type=admin 初始化后台项目模板"));
+    console.log(chalk.green("yipack tpl --type=api 初始化接口项目模板"));
     console.log("------------------------------");
     console.log(chalk.blueBright("yipack show 查看项目相关信息"));
     console.log(chalk.green("yipack show --pages 查看所有页面"));
