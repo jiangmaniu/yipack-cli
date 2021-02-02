@@ -50,6 +50,27 @@ program
             require("./new/comp.js")(cmd);
         }
     });
+// TODO: 重命名元素
+program
+    .command("rename")
+    .option("-p,--page <原页面名称>", "原页面")
+    .option("--new-page <新页面名称>", "新页面")
+    .option("--sp,--sub-page <原子页面名称>", "原子页面")
+    .option("--new-sp,--new-sub-page <新子页面名称>", "新子页面")
+    .option("--sv,--sub-view <原子视图名称>", "原子视图")
+    .option("--new-sv,--new-sub-view <新子视图名称>", "新子视图")
+    .option("-c,--comp <原组件名称>", "原组件")
+    .option("--new-comp <新组件名称>", "新组件")
+    .description("修改元素")
+    .action((cmd) => {
+        console.log(cmd);
+        if (cmd.page) {
+            // require("./new/page.js")(cmd);
+        }
+        if (cmd.comp) {
+            // require("./new/comp.js")(cmd);
+        }
+    });
 program
     .command("show")
     .option("-p,--pages", "查看所有页面")
@@ -87,11 +108,10 @@ program
             require("./tpl/init.js")();
             return;
         }
-        // TODO: 小程序模板
-        // if (cmd.type === "mini") {
-        //     require("./tpl/mini.js")();
-        //     return;
-        // }
+        if (cmd.type === "mini") {
+            require("./tpl/mini.js")();
+            return;
+        }
     });
 // program
 //     //
@@ -135,48 +155,25 @@ program
 //             return;
 //         }
 //     });
-// program
-//     //
-//     .command("doctor")
-//     .option("-p,--page <name>", "检测页面")
-//     .option("-c,--comp <name>", "检测组件")
-//     .description("检查元素")
-//     .action((cmd) => {
-//         if (cmd.page) {
-//             let names = getNames(cmd.page);
-//             // 创建目录
-//             let pageDirPath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName);
-//             let js = require(`vue-loader!${pageDirPath}.vue?vue&type=script`);
-//             console.log(js);
-//             // fs.removeSync(pageDirPath);
-
-//             console.log("页面元素格式化成功");
-//             return;
-//         }
-//         if (cmd.comp) {
-//             let names = getNames(cmd.comp);
-//             // 创建组件
-//             let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
-//             fs.removeSync(htmlFilePath, htmlFileData);
-
-//             console.log("组件元素删除成功");
-//             return;
-//         }
-//         // 目录数组
-//         console.log("src目录元素检查");
-//         let dirsArray = ["audio", "comps", "env", "fonts", "images", "layout", "mixin", "pages", "plugins", "router", "static", "styles", "tpls", "videos", "vuex", "App.vue", "main.js"];
-//         for (let value of dirsArray) {
-//             let _path = path.resolve(myConfig.rootDir, value);
-//             if (fs.existsSync(_path) === false) {
-//                 console.log(`${_path}存在`);
-//             } else {
-//                 console.error(`${_path}不存在`);
-//             }
-//         }
-//     });
 program
     //
-    .version(yipackPackage.version, "-v, --version", "显示yipack版本");
+    .command("doctor")
+    .option("-a,--all", "检测所有元素")
+    .description("检查元素")
+    .action((cmd) => {
+        // 目录数组
+        console.log("src目录元素检查");
+        let dirsArray = ["audio", "comps", "env", "fonts", "images", "layout", "mixin", "pages", "plugins", "router", "static", "styles", "tpls", "videos", "vuex", "App.vue", "main.js"];
+        for (let value of dirsArray) {
+            let _path = path.resolve(myConfig.rootDir, value);
+            if (fs.existsSync(_path) === false) {
+                console.log(`${_path}存在`);
+            } else {
+                console.error(`${_path}不存在`);
+            }
+        }
+    });
+program.version(yipackPackage.version, "-v, --version", "显示yipack版本");
 program.helpInformation();
 program.on("--help", () => {
     // let data = [
