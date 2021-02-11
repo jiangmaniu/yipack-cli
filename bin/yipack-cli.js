@@ -38,16 +38,18 @@ program
 program
     .command("new")
     .option("-p,--page <name>", "创建页面")
-    .option("--sp,--sub-page <name>", "创建二级页面")
-    .option("--sv,--sub-view <name>", "创建二级视图")
+    .option("--sp,--sub-page <name>", "创建子页面")
+    .option("--sv,--sub-view <name>", "创建子视图")
     .option("-c,--comp <name>", "创建组件")
     .description("创建元素")
     .action((cmd) => {
+        if (cmd.comp && !cmd.page && !cmd.subPage && !cmd.subView) {
+            require("./new/comp.js")(cmd);
+            return;
+        }
         if (cmd.page) {
             require("./new/page.js")(cmd);
-        }
-        if (cmd.comp) {
-            require("./new/comp.js")(cmd);
+            return;
         }
     });
 // TODO: 重命名元素
@@ -126,7 +128,7 @@ program
 //     .action((cmd) => {
 //         if (cmd.page) {
 //             let names = getNames(cmd.page);
-//             let filePath = path.resolve(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
+//             let filePath = path.join(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
 //             let fileData = fs.readFileSync(filePath).toString("utf-8");
 //             let scriptData = fileData.replace(/<script>([\s\S]+)<\/script>/gim, function(match, p1) {
 //                 console.log(match);
@@ -152,7 +154,7 @@ program
 //         if (cmd.comp) {
 //             let names = getNames(cmd.comp);
 //             // 创建组件
-//             let htmlFilePath = path.resolve(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
+//             let htmlFilePath = path.join(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
 //             fs.removeSync(htmlFilePath, htmlFileData);
 
 //             console.log("组件元素删除成功");
@@ -169,7 +171,7 @@ program
         console.log("src目录元素检查");
         let dirsArray = ["audio", "comps", "env", "fonts", "images", "layout", "mixin", "pages", "plugins", "router", "static", "styles", "tpls", "videos", "vuex", "App.vue", "main.js"];
         for (let value of dirsArray) {
-            let _path = path.resolve(myConfig.rootDir, value);
+            let _path = path.join(myConfig.rootDir, value);
             if (fs.existsSync(_path) === false) {
                 console.log(`${_path}存在`);
             } else {

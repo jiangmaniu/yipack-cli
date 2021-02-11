@@ -3,7 +3,7 @@ let path = require("path");
 let fs = require("fs-extra");
 let _ = require("lodash");
 let myConfig = require("../.yipack/webpack.config.my.js");
-let projectConfigPath = path.resolve(myConfig.rootDir, "yipack.config.js");
+let projectConfigPath = path.join(myConfig.rootDir, "yipack.config.js");
 let yipackConfig = {
     /**
      * 描述：是否开启手机自适应模式

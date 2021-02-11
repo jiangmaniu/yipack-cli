@@ -1,12 +1,12 @@
 module.exports = `<template>
-    <div class="comp-<%= kebabCaseName %>">
-        <%= kebabCaseName %>
+    <div class="comp-<%= page.kebabCaseName %>_<%= comp.kebabCaseName %>">
+        page-<%= page.kebabCaseName %>_comp-<%= comp.kebabCaseName %>
     </div>
 </template>
 
 <script>
 export default {
-    name: "<%= startCaseName %>",
+    name: "<%= comp.startCaseName %>",
     data(){
         return {
 
@@ -26,13 +26,13 @@ export default {
 
 <style lang="scss" scoped>
 // 作用域样式，不影响下级元素
-.comp-<%= kebabCaseName %> {
+.comp-<%= page.kebabCaseName %>_<%= comp.kebabCaseName %> {
 }
 </style>
 
 <style lang="scss">
 // 样式穿透，修改组件或框架的样式
-.comp-<%= kebabCaseName %> {
+.comp-<%= page.kebabCaseName %>_<%= comp.kebabCaseName %> {
 }
 </style>
 `;

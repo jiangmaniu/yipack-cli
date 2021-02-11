@@ -1,14 +1,38 @@
 module.exports = `<template>
-    <div class="page-<%= page.kebabCaseName %>_<%= sp.kebabCaseName %>"><%= page.kebabCaseName %>_sub-page-<%= sp.kebabCaseName %></div>
+    <div class="page-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %>">
+        <%= page.kebabCaseName %>_sub-page-<%= sub.kebabCaseName %>
+    </div>
 </template>
 
 <script>
 export default {
-    name: "<%= page.startCaseName %><%= sp.startCaseName %>",
+    name: "<%= page.startCaseName %><%= sub.startCaseName %>",
+    data(){
+        return {
+
+        }
+    },
+    created(){
+
+    },
+    mounted(){
+
+    },
+    methods:{
+
+    }
 };
 </script>
 
-<style lang="scss">
-.page-<%= page.kebabCaseName %>_<%= sp.kebabCaseName %> {
+<style lang="scss" scoped>
+// 作用域样式，不影响下级元素
+.page-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %> {
 }
-</style>`;
+</style>
+
+<style lang="scss">
+// 样式穿透，修改组件或框架的样式
+.page-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %> {
+}
+</style>
+`;

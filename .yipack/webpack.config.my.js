@@ -1,11 +1,11 @@
 let path = require("path");
-let cliDir = path.resolve(__dirname, "..");
-let rootDir = path.resolve(process.cwd());
-let srcDir = path.resolve(rootDir, "src");
-let distDir = path.resolve(rootDir, "dist");
-let webpackDir = path.resolve(rootDir, ".yipack");
-let tempDir = path.resolve(rootDir, "temp");
-let cacheDir = path.resolve(rootDir, ".cache");
+let cliDir = path.join(__dirname, "..");
+let rootDir = path.join(process.cwd());
+let srcDir = path.join(rootDir, "src");
+let distDir = path.join(rootDir, "dist");
+let webpackDir = path.join(rootDir, ".yipack");
+let tempDir = path.join(rootDir, "temp");
+let cacheDir = path.join(rootDir, ".cache");
 module.exports = {
     cliDir,
     rootDir,

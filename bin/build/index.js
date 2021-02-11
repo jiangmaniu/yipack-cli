@@ -14,7 +14,7 @@ module.exports = async function build(cmd) {
     shell.env["NODE_MODE"] = "production";
     shell.env["NODE_ANALYZER"] = cmd.analyzer;
     shell.env["NODE_ENV"] = cmd.env;
-    let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
+    let webpackConfig = require(path.join(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
     webpack(webpackConfig, (err, stats) => {
         /**
              * stats.compilation

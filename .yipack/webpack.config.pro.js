@@ -92,7 +92,7 @@ let currentConfig = {
 if (process.env.NODE_ANALYZER === "true") {
     currentConfig.plugins.push(
         new WebpackConfigDumpPlugin({
-            outputPath: path.resolve(myConfig.cacheDir),
+            outputPath: path.join(myConfig.cacheDir),
             name: "webpack.config.dump.js",
             keepCircularReferences: true,
             showFunctionNames: false,

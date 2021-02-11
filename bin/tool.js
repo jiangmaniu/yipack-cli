@@ -8,6 +8,7 @@ let fs = require("fs-extra");
 let myConfig = require("../.yipack/webpack.config.my.js");
 let yipackPackage = require("../package.json");
 let yipackConfig = require("../.yipack/yipack.config.js");
+const comp = require("./new/comp.js");
 // 下载项目
 exports.downloadProject = async function downloadProject(gitUrl) {
     return new Promise((resolve, reject) => {
@@ -35,9 +36,38 @@ exports.getNames = function getNames(name) {
     };
 };
 
+exports.getAllNames = function getAllNames(rootNames, subNames, compNames) {
+    let hash = {};
+    if (rootNames) {
+        hash.page = {
+            lowerCaseName: rootNames.lowerCaseName,
+            kebabCaseName: rootNames.kebabCaseName,
+            startCaseName: rootNames.startCaseName,
+            camelCaseName: rootNames.camelCaseName,
+        };
+    }
+    if (subNames) {
+        hash.sub = {
+            lowerCaseName: subNames.lowerCaseName,
+            kebabCaseName: subNames.kebabCaseName,
+            startCaseName: subNames.startCaseName,
+            camelCaseName: subNames.camelCaseName,
+        };
+    }
+    if (compNames) {
+        hash.comp = {
+            lowerCaseName: compNames.lowerCaseName,
+            kebabCaseName: compNames.kebabCaseName,
+            startCaseName: compNames.startCaseName,
+            camelCaseName: compNames.camelCaseName,
+        };
+    }
+    return hash;
+};
+
 exports.getEnvNames = function getEnvNames() {
     let arrs = [];
-    let envPath = path.resolve(myConfig.srcDir, "env");
+    let envPath = path.join(myConfig.srcDir, "env");
     if (fs.existsSync(envPath)) {
         let envs = fs.readdirSync(envPath, { withFileTypes: true });
         envs.forEach((file) => {

@@ -20,7 +20,7 @@ module.exports = async function dev(cmd) {
     shell.env["NODE_ENV"] = cmd.env;
     shell.env["NODE_COUNT"] = "start";
     updateNotifier({ pkg: yipackPackage }).notify();
-    let webpackConfig = require(path.resolve(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
+    let webpackConfig = require(path.join(myConfig.cliDir, ".yipack", "webpack.config.dev.js"));
     let currentDevServer = {
         host: "127.0.0.1",
         // noInfo: false,

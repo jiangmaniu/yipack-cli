@@ -37,9 +37,9 @@ let commonConfig = {
     mode: process.env.NODE_MODE,
     name: "yipack-webpack-config",
     profile: true,
-    recordsPath: path.resolve(myConfig.cacheDir, "records.json"),
+    recordsPath: path.join(myConfig.cacheDir, "records.json"),
     // 入口
-    entry: path.resolve(myConfig.srcDir, "main.js"),
+    entry: path.join(myConfig.srcDir, "main.js"),
     // 基础目录，绝对路径，用于从配置中解析入口点(entry point)和 加载器(loader)。
     context: myConfig.rootDir,
     // 出口
@@ -51,12 +51,12 @@ let commonConfig = {
     resolve: {
         alias: {
             "@src": myConfig.srcDir,
-            "@static": path.resolve(myConfig.srcDir, "static"),
+            "@static": path.join(myConfig.srcDir, "static"),
         },
         modules: [
             //
-            path.resolve(myConfig.cliDir, "node_modules"),
-            path.resolve(__dirname, "node_modules"),
+            path.join(myConfig.cliDir, "node_modules"),
+            path.join(__dirname, "node_modules"),
             "node_modules",
         ],
         fallback: {
@@ -67,8 +67,8 @@ let commonConfig = {
     resolveLoader: {
         modules: [
             //
-            path.resolve(myConfig.cliDir, ".yipack"),
-            path.resolve(myConfig.cliDir, "node_modules"),
+            path.join(myConfig.cliDir, ".yipack"),
+            path.join(myConfig.cliDir, "node_modules"),
             "node_modules",
         ],
     },
@@ -239,8 +239,8 @@ let commonConfig = {
         new CopyWebpackPlugin({
             patterns: [
                 {
-                    from: path.resolve(myConfig.srcDir, "static"),
-                    to: path.resolve(myConfig.distDir, "static"),
+                    from: path.join(myConfig.srcDir, "static"),
+                    to: path.join(myConfig.distDir, "static"),
                 },
             ],
         }),
@@ -249,7 +249,7 @@ let commonConfig = {
         }),
         new HtmlWebpackPlugin({
             minify: false,
-            template: path.resolve(myConfig.srcDir, "tpls", "index.html"),
+            template: path.join(myConfig.srcDir, "tpls", "index.html"),
         }),
         new VueLoaderPlugin(),
         new ProgressBarPlugin({}),
@@ -260,7 +260,7 @@ let commonConfig = {
 if (process.env.NODE_ENV && process.env.NODE_ENV !== "undefined") {
     commonConfig.plugins.push(
         new Dotenv({
-            path: path.resolve(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
+            path: path.join(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
             safe: false,
             allowEmptyValues: true,
             systemvars: true,
@@ -271,7 +271,7 @@ if (process.env.NODE_ENV && process.env.NODE_ENV !== "undefined") {
 } else {
     commonConfig.plugins.push(
         new Dotenv({
-            path: path.resolve(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
+            path: path.join(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
             safe: false,
             allowEmptyValues: true,
             systemvars: true,

@@ -36,6 +36,8 @@ module.exports = async function newComp(cmd) {
     console.log(chalk.green("yipack tpl --type=init 初始化通用前端项目模板"));
     console.log(chalk.green("yipack tpl --type=admin 初始化后台项目模板"));
     console.log(chalk.green("yipack tpl --type=api 初始化接口项目模板"));
+    console.log(chalk.green("yipack tpl --type=mini 初始化uniapp项目模板"));
+    console.log(chalk.green("yipack tpl --type=blog 初始化博客项目模板"));
     console.log("------------------------------");
     console.log(chalk.blueBright("yipack show 查看项目相关信息"));
     console.log(chalk.green("yipack show --pages 查看所有页面"));

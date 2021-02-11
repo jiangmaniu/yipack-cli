@@ -21,7 +21,7 @@ let yipackPackage = require("../../package.json");
 let yipackConfig = require("../../.yipack/yipack.config.js");
 module.exports = async function newComp(cmd) {
     let spinner = ora();
-    let files = fs.readdirSync(path.resolve(myConfig.srcDir, "comps"));
+    let files = fs.readdirSync(path.join(myConfig.srcDir, "comps"));
     files.forEach((item) => {
         console.log(item);
     });
