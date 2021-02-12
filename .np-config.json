@@ -1,7 +1,7 @@
 {
     "anyBranch": false,
     "branch": "master",
-    "cleanup": true,
+    "cleanup": false,
     "tests": false,
     "yolo": false,
     "publish": true,
@@ -9,7 +9,7 @@
     "tag": "latest",
     "yarn": false,
     "contents": ".",
-    "releaseDraft": true,
+    "releaseDraft": false,
     "testScript": "test",
     "2fa": false
 }
