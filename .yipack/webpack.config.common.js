@@ -1,29 +1,29 @@
-let path = require("path");
-let Webpack = require("webpack");
-let HtmlWebpackPlugin = require("html-webpack-plugin");
-let VueLoaderPlugin = require("vue-loader/lib/plugin");
-let { merge } = require("webpack-merge");
-let { CleanWebpackPlugin } = require("clean-webpack-plugin");
-let CopyWebpackPlugin = require("copy-webpack-plugin");
-let MiniCssExtractPlugin = require("mini-css-extract-plugin");
-let ProgressBarPlugin = require("progress-bar-webpack-plugin");
-let Dotenv = require("dotenv-webpack");
-let ESLintPlugin = require("eslint-webpack-plugin");
+let path = require('path');
+let Webpack = require('webpack');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
+let VueLoaderPlugin = require('vue-loader/lib/plugin');
+let { merge } = require('webpack-merge');
+let { CleanWebpackPlugin } = require('clean-webpack-plugin');
+let CopyWebpackPlugin = require('copy-webpack-plugin');
+let MiniCssExtractPlugin = require('mini-css-extract-plugin');
+let ProgressBarPlugin = require('progress-bar-webpack-plugin');
+let Dotenv = require('dotenv-webpack');
+let ESLintPlugin = require('eslint-webpack-plugin');
 
 /**
  * 配置文件
  */
-let myConfig = require("./webpack.config.my.js");
-let yipackConfig = require("./yipack.config.js");
+let myConfig = require('./webpack.config.my.js');
+let yipackConfig = require('./yipack.config.js');
 /**
  * loader配置文件
  */
-let _loaderPostCssConfig = require("./loader/postcss-loader.config.js");
-let _loaderBabelConfig = require("./loader/babel-loader.config.js");
-let _loaderCssConfig = require("./loader/css-loader.config.js");
-let _loaderSassConfig = require("./loader/sass-loader.config.js");
-let _loaderStyleConfig = require("./loader/style-loader.config.js");
-let _loaderSassResourcesConfig = require("./loader/sass-resources-loader.config.js");
+let _loaderPostCssConfig = require('./loader/postcss-loader.config.js');
+let _loaderBabelConfig = require('./loader/babel-loader.config.js');
+let _loaderCssConfig = require('./loader/css-loader.config.js');
+let _loaderSassConfig = require('./loader/sass-loader.config.js');
+let _loaderStyleConfig = require('./loader/style-loader.config.js');
+let _loaderSassResourcesConfig = require('./loader/sass-resources-loader.config.js');
 
 /**
  * plugin 配置文件
@@ -35,52 +35,53 @@ let _loaderSassResourcesConfig = require("./loader/sass-resources-loader.config.
  */
 let commonConfig = {
     mode: process.env.NODE_MODE,
-    name: "yipack-webpack-config",
-    profile: true,
-    recordsPath: path.join(myConfig.cacheDir, "records.json"),
+    name: 'yipack-webpack-config',
+    // TODO: 搞清楚这个参数的含义 2021.2.13
+    profile: false,
+    recordsPath: path.join(myConfig.cacheDir, 'records.json'),
     // 入口
-    entry: path.join(myConfig.srcDir, "main.js"),
+    entry: path.join(myConfig.srcDir, 'main.js'),
     // 基础目录，绝对路径，用于从配置中解析入口点(entry point)和 加载器(loader)。
     context: myConfig.rootDir,
     // 出口
     output: {
         path: myConfig.distDir,
-        filename: "js/[name].[fullhash:7].js",
-        publicPath: "./",
+        filename: 'js/[name].[fullhash:7].js',
+        publicPath: './'
     },
     resolve: {
         alias: {
-            "@src": myConfig.srcDir,
-            "@static": path.join(myConfig.srcDir, "static"),
+            '@src': myConfig.srcDir,
+            '@static': path.join(myConfig.srcDir, 'static')
         },
         modules: [
             //
-            path.join(myConfig.cliDir, "node_modules"),
-            path.join(__dirname, "node_modules"),
-            "node_modules",
+            path.join(myConfig.cliDir, 'node_modules'),
+            path.join(__dirname, 'node_modules'),
+            'node_modules'
         ],
         fallback: {
-            crypto: require.resolve("crypto-browserify"),
-            stream: require.resolve("stream-browserify"),
-        },
+            crypto: require.resolve('crypto-browserify'),
+            stream: require.resolve('stream-browserify')
+        }
     },
     resolveLoader: {
         modules: [
             //
-            path.join(myConfig.cliDir, ".yipack"),
-            path.join(myConfig.cliDir, "node_modules"),
-            "node_modules",
-        ],
+            path.join(myConfig.cliDir, '.yipack'),
+            path.join(myConfig.cliDir, 'node_modules'),
+            'node_modules'
+        ]
     },
 
     infrastructureLogging: {
         // level: "info",
-        level: "verbose",
+        level: 'verbose'
     },
     // stats: "errors-warnings",
     stats: {
         assets: false,
-        assetsSort: "!size",
+        assetsSort: '!size',
         builtAt: false,
         moduleAssets: false,
         cached: false,
@@ -99,7 +100,7 @@ let commonConfig = {
         chunkGroups: false,
         chunkModules: false,
         chunkOrigins: false,
-        chunksSort: "name",
+        chunksSort: 'name',
         colors: false,
         depth: false,
         entrypoints: false,
@@ -109,10 +110,10 @@ let commonConfig = {
         errorDetails: false,
         errorStack: false,
         hash: false,
-        logging: "verbose",
+        logging: 'verbose',
         loggingTrace: false,
         modules: false,
-        modulesSort: "!size",
+        modulesSort: '!size',
         moduleTrace: false,
         outputPath: false,
         performance: false,
@@ -129,18 +130,18 @@ let commonConfig = {
         chunkGroupAuxiliary: false,
         chunkGroupChildren: false,
         chunkGroupMaxAssets: 1,
-        warnings: false,
+        warnings: false
     },
     externals: yipackConfig.externals,
     node: {
         global: true,
         __filename: true,
-        __dirname: true,
+        __dirname: true
     },
     performance: {
-        hints: "warning",
+        hints: 'warning',
         maxEntrypointSize: 1024 * 1024 * 20,
-        maxAssetSize: 1024 * 1024 * 30,
+        maxAssetSize: 1024 * 1024 * 30
     },
     optimization: {
         // 运行时
@@ -149,7 +150,7 @@ let commonConfig = {
         // },
     },
     module: {
-        unsafeCache: process.env.NODE_MODE === "production" ? false : true,
+        unsafeCache: process.env.NODE_MODE === 'production' ? false : true,
         rules: [
             {
                 test: /\.css$/,
@@ -157,9 +158,9 @@ let commonConfig = {
                     //
                     _loaderStyleConfig,
                     _loaderCssConfig,
-                    _loaderPostCssConfig,
+                    _loaderPostCssConfig
                 ],
-                sideEffects: true,
+                sideEffects: true
             },
             {
                 test: /\.scss$/,
@@ -169,69 +170,69 @@ let commonConfig = {
                     _loaderCssConfig,
                     _loaderPostCssConfig,
                     _loaderSassConfig,
-                    _loaderSassResourcesConfig,
+                    _loaderSassResourcesConfig
                 ],
-                sideEffects: true,
+                sideEffects: true
             },
             {
                 test: /\.js$/,
                 use: [_loaderBabelConfig],
-                exclude: /node_modules/,
+                exclude: /node_modules/
             },
             {
                 test: /\.vue$/,
                 use: [
                     {
-                        loader: "vue-loader",
-                    },
-                ],
+                        loader: 'vue-loader'
+                    }
+                ]
             },
             {
                 test: /\.(png|jpg|gif|jpeg|webp)$/,
                 use: {
-                    loader: "url-loader",
+                    loader: 'url-loader',
                     options: {
                         limit: 1000,
-                        name: "[hash:7].[ext]",
-                        outputPath: "assets/images",
-                        esModule: false,
-                    },
-                },
+                        name: '[hash:7].[ext]',
+                        outputPath: 'assets/images',
+                        esModule: false
+                    }
+                }
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
                 use: {
-                    loader: "url-loader",
+                    loader: 'url-loader',
                     options: {
                         limit: 1000,
-                        name: "[hash:7].[ext]",
-                        outputPath: "assets/fonts",
-                        esModule: false,
-                    },
-                },
+                        name: '[hash:7].[ext]',
+                        outputPath: 'assets/fonts',
+                        esModule: false
+                    }
+                }
             },
             {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
                 use: {
-                    loader: "url-loader",
+                    loader: 'url-loader',
                     options: {
                         limit: 1000,
-                        name: "[hash:7].[ext]",
-                        outputPath: "assets/videos",
-                        esModule: false,
-                    },
-                },
+                        name: '[hash:7].[ext]',
+                        outputPath: 'assets/videos',
+                        esModule: false
+                    }
+                }
             },
             {
                 test: /\.(md)$/,
                 use: {
-                    loader: "raw-loader",
+                    loader: 'raw-loader',
                     options: {
-                        esModule: false,
-                    },
-                },
-            },
-        ],
+                        esModule: false
+                    }
+                }
+            }
+        ]
     },
     plugins: [
         //
@@ -239,44 +240,44 @@ let commonConfig = {
         new CopyWebpackPlugin({
             patterns: [
                 {
-                    from: path.join(myConfig.srcDir, "static"),
-                    to: path.join(myConfig.distDir, "static"),
-                },
-            ],
+                    from: path.join(myConfig.srcDir, 'static'),
+                    to: path.join(myConfig.distDir, 'static')
+                }
+            ]
         }),
         new MiniCssExtractPlugin({
-            filename: "css/[name].[fullhash:7].css",
+            filename: 'css/[name].[fullhash:7].css'
         }),
         new HtmlWebpackPlugin({
             minify: false,
-            template: path.join(myConfig.srcDir, "tpls", "index.html"),
+            template: path.join(myConfig.srcDir, 'tpls', 'index.html')
         }),
         new VueLoaderPlugin(),
         new ProgressBarPlugin({}),
         new Webpack.ProvidePlugin(yipackConfig.providePlugin),
-        new ESLintPlugin(yipackConfig.eslint),
-    ],
+        new ESLintPlugin(yipackConfig.eslint)
+    ]
 };
-if (process.env.NODE_ENV && process.env.NODE_ENV !== "undefined") {
+if (process.env.NODE_ENV && process.env.NODE_ENV !== 'undefined') {
     commonConfig.plugins.push(
         new Dotenv({
-            path: path.join(myConfig.srcDir, "env", process.env.NODE_ENV + ".env"),
+            path: path.join(myConfig.srcDir, 'env', process.env.NODE_ENV + '.env'),
             safe: false,
             allowEmptyValues: true,
             systemvars: true,
             silent: false,
-            defaults: false,
+            defaults: false
         })
     );
 } else {
     commonConfig.plugins.push(
         new Dotenv({
-            path: path.join(myConfig.srcDir, "env", process.env.NODE_MODE + ".env"),
+            path: path.join(myConfig.srcDir, 'env', process.env.NODE_MODE + '.env'),
             safe: false,
             allowEmptyValues: true,
             systemvars: true,
             silent: false,
-            defaults: false,
+            defaults: false
         })
     );
 }
