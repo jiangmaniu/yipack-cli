@@ -3,7 +3,7 @@
     "branch": "master",
     "cleanup": false,
     "tests": false,
-    "yolo": false,
+    "yolo": true,
     "publish": true,
     "preview": false,
     "tag": "latest",
