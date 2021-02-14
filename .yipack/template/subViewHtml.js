@@ -29,10 +29,4 @@ export default {
 .page-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %> {
 }
 </style>
-
-<style lang="scss">
-// 样式穿透，修改组件或框架的样式
-.page-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %> {
-}
-</style>
 `;
