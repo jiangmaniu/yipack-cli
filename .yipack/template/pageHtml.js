@@ -8,24 +8,15 @@ module.exports = `<template>
 export default {
     name: "<%= startCaseName %>",
     data(){
-        return {
-
-        }
+        return {};
     },
-    created(){
-
-    },
-    mounted(){
-
-    },
-    methods:{
-
-    }
+    created(){},
+    mounted(){},
+    methods:{}
 };
 </script>
 
 <style lang="scss" scoped>
-// 作用域样式，不影响下级元素
 .page-<%= kebabCaseName %> {
 }
 </style>

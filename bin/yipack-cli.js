@@ -65,12 +65,25 @@ program
     .option('--new-comp <新组件名称>', '新组件')
     .description('修改元素')
     .action((cmd) => {
-        console.log(cmd);
+        // 如果指定了页面参数
         if (cmd.page) {
-            // require("./new/page.js")(cmd);
+            // 如果重命名子页面
+            if (cmd.subPage) {
+                require('./rename/subPage.js')(cmd);
+                return;
+            }
+            // 如果重命名子视图
+            if (cmd.subView) {
+                require('./rename/subView.js')(cmd);
+                return;
+            }
+            // 如果重命名页面
+            require('./rename/page.js')(cmd);
+            return;
         }
-        if (cmd.comp) {
-            // require("./new/comp.js")(cmd);
+        if (cmd.comp && cmd.newComp) {
+            require('./rename/comp.js')(cmd);
+            return;
         }
     });
 program
@@ -119,48 +132,47 @@ program
             return;
         }
     });
-// program
-//     //
-//     .command("format")
-//     .option("-p,--page <name>", "格式化页面")
-//     .option("-c,--comp <name>", "格式化组件")
-//     .description("格式化元素")
-//     .action((cmd) => {
-//         if (cmd.page) {
-//             let names = getNames(cmd.page);
-//             let filePath = path.join(myConfig.srcDir, "pages", names.camelCaseName, "index.vue");
-//             let fileData = fs.readFileSync(filePath).toString("utf-8");
-//             let scriptData = fileData.replace(/<script>([\s\S]+)<\/script>/gim, function(match, p1) {
-//                 console.log(match);
-//                 console.log(p1);
+program
+    //
+    .command('format')
+    .option('-p,--page <name>', '格式化页面')
+    .option('-c,--comp <name>', '格式化组件')
+    .description('格式化元素')
+    .action((cmd) => {
+        if (cmd.page) {
+            // let names = getNames(cmd.page);
+            // let filePath = path.join(myConfig.srcDir, 'pages', names.camelCaseName, 'index.vue');
+            // let fileData = fs.readFileSync(filePath).toString('utf-8');
+            // let scriptData = fileData.replace(/<script>([\s\S]+)<\/script>/gim, function (match, p1) {
+            //     console.log(match);
+            //     console.log(p1);
 
-//                 let data = eval(p1);
+            //     let data = eval(p1);
 
-//                 console.log(data);
-//                 console.log(aaa);
-//             });
-//             // let js = require("vue-loader!" + pageDirPath + ".vue?vue&type=script");
-//             // let ddd = vueTemplateCompiler.compile("<div>1111</div>");
-//             // let js = require("vue-loader");
-//             // console.log(ddd);
-//             // fs.removeSync(pageDirPath);
-//             // let dd = vueCompilerSfc.parse(fs.readFileSync(file));
-//             // console.log(dd);
-//             // console.log(new vueLoader.VueLoaderPlugin(fs.readFileSync(file)));
+            //     console.log(data);
+            //     console.log(aaa);
+            // });
+            // let js = require("vue-loader!" + pageDirPath + ".vue?vue&type=script");
+            // let ddd = vueTemplateCompiler.compile("<div>1111</div>");
+            // let js = require("vue-loader");
+            // console.log(ddd);
+            // fs.removeSync(pageDirPath);
+            // let dd = vueCompilerSfc.parse(fs.readFileSync(file));
+            // console.log(dd);
+            // console.log(new vueLoader.VueLoaderPlugin(fs.readFileSync(file)));
 
-//             console.log("页面元素格式化成功");
-//             return;
-//         }
-//         if (cmd.comp) {
-//             let names = getNames(cmd.comp);
-//             // 创建组件
-//             let htmlFilePath = path.join(myConfig.srcDir, "comps", names.camelCaseName, "index.vue");
-//             fs.removeSync(htmlFilePath, htmlFileData);
-
-//             console.log("组件元素删除成功");
-//             return;
-//         }
-//     });
+            // console.log('页面元素格式化成功');
+            return;
+        }
+        if (cmd.comp) {
+            // let names = getNames(cmd.comp);
+            // // 创建组件
+            // let htmlFilePath = path.join(myConfig.srcDir, 'comps', names.camelCaseName, 'index.vue');
+            // fs.removeSync(htmlFilePath, htmlFileData);
+            // console.log('组件元素删除成功');
+            // return;
+        }
+    });
 program
     //
     .command('doctor')

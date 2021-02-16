@@ -1,6 +1,6 @@
 module.exports = `<template>
     <div class="page-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %>">
-        <%= page.kebabCaseName %>_sub-view-<%= sub.kebabCaseName %>
+        page-<%= page.kebabCaseName %> sub-view-<%= sub.kebabCaseName %>
     </div>
 </template>
 
@@ -8,24 +8,15 @@ module.exports = `<template>
 export default {
     name: "<%= page.startCaseName %><%= sub.startCaseName %>",
     data(){
-        return {
-
-        }
+        return {};
     },
-    created(){
-
-    },
-    mounted(){
-
-    },
-    methods:{
-
-    }
+    created(){},
+    mounted(){},
+    methods:{}
 };
 </script>
 
 <style lang="scss" scoped>
-// 作用域样式，不影响下级元素
 .page-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %> {
 }
 </style>
