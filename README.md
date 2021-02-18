@@ -4,7 +4,7 @@
 
 ## 文档地址
 
-[yipack-cli 文档](https://chensuiyi.com/#/?menuName=%E5%BC%80%E6%BA%90&bookName=yipack&dirName=%E5%85%A5%E9%97%A8%E6%8C%87%E5%BC%95&chapterName=%E5%9F%BA%E6%9C%AC%E7%AE%80%E4%BB%8B)
+[yipack-cli 文档](https://chensuiyi.com)
 
 ## 仓库
 
@@ -60,5 +60,5 @@
 如本项目对同学们的开发和公司的业务开发有帮助，想对作者进行捐助，支持本项目创作的，请添加作者微信 `c91374286` 或扫下方二维码。
 
 | 支付宝收款码                                                                          |                      | 微信收款码                                                                          |
-| ------------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------- |
-| ![支付宝](https://chensuiyi-com-1251319172.cos.ap-guangzhou.myqcloud.com/alipay2.png) | 为中华之崛起而奋斗！ | ![微信](https://chensuiyi-com-1251319172.cos.ap-guangzhou.myqcloud.com/wechat2.png) |  |
+| ------------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------- | --- |
+| ![支付宝](https://chensuiyi-com-1251319172.cos.ap-guangzhou.myqcloud.com/alipay2.png) | 为中华之崛起而奋斗！ | ![微信](https://chensuiyi-com-1251319172.cos.ap-guangzhou.myqcloud.com/wechat2.png) |     |
