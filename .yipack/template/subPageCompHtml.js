@@ -1,6 +1,6 @@
 module.exports = `<template>
     <div class="comp-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %>_<%= comp.kebabCaseName %>">
-        <%= page.kebabCaseName %>_sub-page-<%= sub.kebabCaseName %>_comp-<%= comp.kebabCaseName %>
+        page-<%= page.kebabCaseName %> sub-page-<%= sub.kebabCaseName %> comp-<%= comp.kebabCaseName %>
     </div>
 </template>
 
