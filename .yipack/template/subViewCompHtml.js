@@ -10,9 +10,16 @@ export default {
     data(){
         return {};
     },
-    created(){},
+    created(){
+        this.on_init();
+    },
     mounted(){},
-    methods:{}
+    methods:{
+        // 页面初始化操作
+        on_init(){
+
+        };
+    }
 };
 </script>
 
