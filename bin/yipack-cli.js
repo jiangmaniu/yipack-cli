@@ -56,13 +56,13 @@ program
 program
     .command('rename')
     .option('-p,--page <原页面名称>', '原页面')
-    .option('--new-page <新页面名称>', '新页面')
+    .option('--np,--new-page <新页面名称>', '新页面')
     .option('--sp,--sub-page <原子页面名称>', '原子页面')
-    .option('--new-sp,--new-sub-page <新子页面名称>', '新子页面')
+    .option('--nsp,--new-sub-page <新子页面名称>', '新子页面')
     .option('--sv,--sub-view <原子视图名称>', '原子视图')
-    .option('--new-sv,--new-sub-view <新子视图名称>', '新子视图')
+    .option('--nsv,--new-sub-view <新子视图名称>', '新子视图')
     .option('-c,--comp <原组件名称>', '原组件')
-    .option('--new-comp <新组件名称>', '新组件')
+    .option('--nc,--new-comp <新组件名称>', '新组件')
     .description('修改元素')
     .action((cmd) => {
         // 如果指定了页面参数
