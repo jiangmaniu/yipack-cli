@@ -16,8 +16,6 @@ let yipackConfig = require('../../.yipack/yipack.config.js');
 module.exports = async function newComp(cmd) {
     console.log(chalk.blueBright('yipack all 查看所有命令'));
     console.log('------------------------------');
-    console.log(chalk.blueBright('yipack init 初始化通用前端项目模板'));
-    console.log('------------------------------');
     console.log(chalk.blueBright('yipack dev 启动开发环境'));
     console.log(chalk.green('yipack dev --env <环境配置文件名称>'));
     console.log(chalk.green('yipack dev --write 编译打包写入硬盘'));

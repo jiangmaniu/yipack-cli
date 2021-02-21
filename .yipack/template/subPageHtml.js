@@ -18,7 +18,7 @@ export default {
         // 页面初始化操作
         on_init(){
 
-        };
+        }
     }
 };
 </script>
