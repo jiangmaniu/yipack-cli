@@ -74,6 +74,7 @@
 -   [x] 默认提供 path 模块（path-browserify）
 -   [ ] build 输出美化
 -   [ ] 进一步优化打包输出文件
+-   [ ] yipack readme 命令，一键生成说明文档
 
 ## 社区
 
