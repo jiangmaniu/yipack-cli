@@ -34,10 +34,12 @@ let _loaderSassResourcesConfig = require('./loader/sass-resources-loader.config.
  * 导出配置
  */
 let commonConfig = {
+    // 编译模式
     mode: process.env.NODE_MODE,
     name: 'yipack-webpack-config',
     // TODO: 搞清楚这个参数的含义 2021.2.13
     profile: false,
+    // 编译记录文件记录
     recordsPath: path.join(myConfig.cacheDir, 'records.json'),
     // 入口
     entry: path.join(myConfig.srcDir, 'main.js'),
@@ -49,11 +51,14 @@ let commonConfig = {
         filename: 'js/[name].[fullhash:7].js',
         publicPath: './'
     },
+    // 解析
     resolve: {
+        // 别名
         alias: {
             '@src': myConfig.srcDir,
             '@static': path.join(myConfig.srcDir, 'static')
         },
+        // 模块加载路径
         modules: [
             //
             path.join(myConfig.cliDir, 'node_modules'),
@@ -65,6 +70,7 @@ let commonConfig = {
             stream: require.resolve('stream-browserify')
         }
     },
+    // loader加载路径
     resolveLoader: {
         modules: [
             //
@@ -132,17 +138,21 @@ let commonConfig = {
         chunkGroupMaxAssets: 1,
         warnings: false
     },
+    // 外部扩展
     externals: yipackConfig.externals,
+    // node
     node: {
-        global: true,
+        global: false,
         __filename: true,
         __dirname: true
     },
+    //
     performance: {
         hints: 'warning',
         maxEntrypointSize: 1024 * 1024 * 20,
         maxAssetSize: 1024 * 1024 * 30
     },
+    // 优化
     optimization: {
         // 运行时
         // runtimeChunk: {
@@ -232,6 +242,7 @@ let commonConfig = {
                     }
                 }
             }
+            // TODO: 添加svg和雪碧图的相关loader
         ]
     },
     plugins: [

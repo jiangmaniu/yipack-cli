@@ -1,20 +1,29 @@
 // 自带模块
-let path = require("path");
+let path = require('path');
 // 第三方模块
-let _ = require("lodash");
-let fs = require("fs-extra");
-let webpack = require("webpack");
-let shell = require("shelljs");
-let { table } = require("table");
+let _ = require('lodash');
+let fs = require('fs-extra');
+let webpack = require('webpack');
+let shell = require('shelljs');
+let { table } = require('table');
+let FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 // 配置相关
-let myConfig = require("../../.yipack/webpack.config.my.js");
-let yipackPackage = require("../../package.json");
-let yipackConfig = require("../../.yipack/yipack.config.js");
+let myConfig = require('../../.yipack/webpack.config.my.js');
+let yipackPackage = require('../../package.json');
+let yipackConfig = require('../../.yipack/yipack.config.js');
 module.exports = async function build(cmd) {
-    shell.env["NODE_MODE"] = "production";
-    shell.env["NODE_ANALYZER"] = cmd.analyzer;
-    shell.env["NODE_ENV"] = cmd.env;
-    let webpackConfig = require(path.join(myConfig.cliDir, ".yipack", "webpack.config.pro.js"));
+    shell.env['NODE_MODE'] = 'production';
+    shell.env['NODE_ANALYZER'] = cmd.analyzer;
+    shell.env['NODE_ENV'] = cmd.env;
+    let webpackConfig = require(path.join(myConfig.cliDir, '.yipack', 'webpack.config.pro.js'));
+    webpackConfig.plugins.push(
+        new FriendlyErrorsWebpackPlugin({
+            compilationSuccessInfo: {
+                messages: [`项目编译成功`],
+                notes: ['请将dist目录下的文件发布到服务器']
+            }
+        })
+    );
     webpack(webpackConfig, (err, stats) => {
         /**
              * stats.compilation
@@ -90,17 +99,17 @@ module.exports = async function build(cmd) {
         if (err) {
             console.log(err);
         } else {
-            let fileds = [
-                //
-                "name",
-                "startTime",
-                "endTime",
-                "bail",
-                "profile",
-                "errors",
-            ];
-            let result = _.pick(stats.compilation, fileds);
-            console.log(result);
+            // let fileds = [
+            //     //
+            //     'name',
+            //     'startTime',
+            //     'endTime',
+            //     'bail',
+            //     'profile',
+            //     'errors'
+            // ];
+            // let result = _.pick(stats.compilation, fileds);
+            // console.log(result);
         }
     });
 };

@@ -181,6 +181,14 @@ program
     .action((cmd) => {
         require('./doctor/all.js')(cmd);
     });
+program
+    //
+    .command('fix')
+    .option('-t,--type <元素类型名>', '修复元素')
+    .description('修复元素')
+    .action((cmd) => {
+        require('./fix/rename.js')(cmd);
+    });
 program.version(yipackPackage.version, '-v, --version', '显示yipack版本');
 program.helpInformation();
 program.on('--help', () => {
