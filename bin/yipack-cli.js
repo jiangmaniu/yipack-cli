@@ -40,9 +40,19 @@ program
     .option('-p,--page <name>', '创建页面')
     .option('--sp,--sub-page <name>', '创建子页面')
     .option('--sv,--sub-view <name>', '创建子视图')
-    .option('-c,--comp <name>', '创建组件')
+    .option('-c,--comp <name>', '创建全局组件')
+    .option('-f,--filter <name>', '创建全局过滤器')
+    .option('-d,--directive <name>', '创建全局指令')
     .description('创建元素')
     .action((cmd) => {
+        if (cmd.filter) {
+            require('./new/filter.js')(cmd);
+            return;
+        }
+        if (cmd.directive) {
+            require('./new/directive.js')(cmd);
+            return;
+        }
         if (cmd.comp && !cmd.page && !cmd.subPage && !cmd.subView) {
             require('./new/comp.js')(cmd);
             return;
