@@ -49,7 +49,7 @@ module.exports = async function build(cmd) {
             absolute: true,
             cwd: path.join(tempDir, 'src'),
             onlyFiles: false,
-            ignore: ['comps/**/*', 'pages/**/*', 'directives/**/*', 'filters/**/*']
+            ignore: ['comps/**/*', 'pages/**/*', 'directives/**/*', 'filters/**/*', '**/.gitkeep']
         });
         srcFiles.forEach((file) => {
             let targetPath = path.normalize(path.resolve(myConfig.rootDir, path.relative('.cache\\projectTemp', file)));
