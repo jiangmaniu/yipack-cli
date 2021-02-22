@@ -1,6 +1,6 @@
 {
     "name": "yipack-cli",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "description": "易打包，命令行工具",
     "main": "index.js",
     "bin": {
