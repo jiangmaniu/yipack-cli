@@ -43,6 +43,7 @@ program
     .option('-c,--comp <name>', '创建全局组件')
     .option('-f,--filter <name>', '创建全局过滤器')
     .option('-d,--directive <name>', '创建全局指令')
+    .option('-i,--api <name>', '创建通用接口')
     .description('创建元素')
     .action((cmd) => {
         if (cmd.filter) {
