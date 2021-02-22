@@ -88,12 +88,12 @@ module.exports = async function newPage(cmd) {
         // 如果需要创建子组件
         if (cmd.comp) {
             // 创建子页面组件目录
-            let compDirPath = path.join(currentDirectory, 'comps');
+            let compDirPath = path.join(currentDirectory, 'comps', compNames.camelCaseName);
             if (fs.existsSync(compDirPath) === false) {
                 fs.ensureDirSync(compDirPath);
             }
             // 创建组件
-            let htmlFilePath = path.join(compDirPath, compNames.camelCaseName + '.vue');
+            let htmlFilePath = path.join(compDirPath, 'index.vue');
             if (fs.existsSync(htmlFilePath) === false) {
                 // 创建子页面组件
                 let htmlFileData = _.template(require('../../.yipack/template/subPageCompHtml.js'))(names);
@@ -153,13 +153,13 @@ module.exports = async function newPage(cmd) {
         // 如果需要创建子组件
         if (cmd.comp) {
             // 创建子页面组件目录
-            let compDirPath = path.join(currentDirectory, 'comps');
+            let compDirPath = path.join(currentDirectory, 'comps', compNames.camelCaseName);
             // 确保子视图组件目录存在
             if (fs.existsSync(compDirPath) === false) {
                 fs.ensureDirSync(compDirPath);
             }
 
-            let htmlFilePath = path.join(compDirPath, compNames.camelCaseName + '.vue');
+            let htmlFilePath = path.join(compDirPath, 'index.vue');
             if (fs.existsSync(htmlFilePath) === false) {
                 // 创建子视图组件
                 let htmlFileData = _.template(require('../../.yipack/template/subViewCompHtml.js'))(names);
@@ -184,16 +184,22 @@ module.exports = async function newPage(cmd) {
         let names = tool.getAllNames(rootNames, false, compNames);
 
         // 创建页面组件目录
-        let compDirPath = path.join(pageDirPath, 'comps');
+        let compDirPath = path.join(pageDirPath, 'comps', compNames.camelCaseName);
         if (fs.existsSync(compDirPath) === false) {
             fs.ensureDirSync(compDirPath);
         }
-        // 创建组件
-        let htmlFilePath = path.join(compDirPath, compNames.camelCaseName + '.vue');
+        let htmlFilePath = path.join(compDirPath, 'index.vue');
         if (fs.existsSync(htmlFilePath) === false) {
+            // 创建页面组件
             let htmlFileData = _.template(require('../../.yipack/template/pageCompHtml.js'))(names);
             fs.outputFileSync(htmlFilePath, htmlFileData);
             spinner.succeed(chalk.green('页面组件创建成功'));
+
+            // 创建页面组件说明
+            let readmeFilePath = path.join(compDirPath, 'readme.md');
+            let readmeFileData = _.template(require('../../.yipack/template/readme.js'))(rootNames);
+            fs.outputFileSync(readmeFilePath, readmeFileData);
+            spinner.succeed(chalk.green('页面组件说明创建成功'));
         } else {
             spinner.warn(chalk.green('页面组件已存在'));
         }

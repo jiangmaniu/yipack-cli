@@ -1,5 +1,6 @@
 // TODO: 增加多级目录组件
 // 案例：yipack new --comp a/b/c.vue 创建多级目录组件
+// TODO: 创建局部组件，也需要用文件夹包裹
 // 自带模块
 let path = require('path');
 // 第三方模块
