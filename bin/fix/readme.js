@@ -9,6 +9,7 @@ let ora = require('ora');
 let chalk = require('chalk');
 let { table } = require('table');
 let tool = require('../tool.js');
+let fastGlob = require('fast-glob');
 // 配置相关
 let myConfig = require('../../.yipack/webpack.config.my.js');
 let yipackPackage = require('../../package.json');
@@ -16,34 +17,15 @@ let yipackConfig = require('../../.yipack/yipack.config.js');
 let rootFileNames = [''];
 module.exports = async function build(cmd) {
     let spinner = ora();
-    let compNames = tool.getNames(cmd.comp);
-    let newCompNames = tool.getNames(cmd.newComp);
-    let compFilePath = path.join(myConfig.srcDir, 'comps', compNames.camelCaseName + '.vue');
-    if (fs.existsSync(compFilePath) === false) {
-        spinner.warn(chalk.green('全局组件不存在'));
-        return;
-    } else {
-        let compFileData = fs.readFileSync(compFilePath, { encoding: 'utf-8' });
-        let newCompFileData = compFileData
-            // 替换css样式
-            .replace(
-                //
-                new RegExp('comp-' + compNames.kebabCaseName, 'g'),
-                'comp-' + newCompNames.kebabCaseName
-            )
-            // 替换组件名
-            .replace(
-                //
-                new RegExp('[\'"]' + compNames.startCaseName + '[\'"],', 'g'),
-                "'" + newCompNames.startCaseName + "',"
-            )
-            // 替换组件默认内容
-            .replace(
-                //
-                new RegExp(compNames.kebabCaseName, 'g'),
-                newCompNames.kebabCaseName
-            );
-        fs.writeFileSync(compFilePath, newCompFileData);
-        spinner.succeed(chalk.green('重命名全局组件成功'));
-    }
+    let files = await fastGlob('**/*.vue', { cwd: myConfig.srcDir, dot: true, absolute: true });
+    files.forEach((file) => {
+        // TODO: 判断是否在根目录下操作
+        let dir = path.dirname(file);
+        let readmePath = path.join(dir, 'readme.md');
+        let relativeReadmePath = path.relative(myConfig.srcDir, readmePath);
+        if (fs.existsSync(readmePath) === false) {
+            fs.ensureFileSync(readmePath);
+            spinner.succeed(chalk.green(relativeReadmePath + ' 说明修复成功'));
+        }
+    });
 };

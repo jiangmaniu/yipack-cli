@@ -187,7 +187,9 @@ program
     .option('-t,--type <元素类型名>', '修复元素')
     .description('修复元素')
     .action((cmd) => {
-        require('./fix/rename.js')(cmd);
+        if (cmd.type === 'readme') {
+            require('./fix/readme.js')(cmd);
+        }
     });
 program.version(yipackPackage.version, '-v, --version', '显示yipack版本');
 program.helpInformation();
