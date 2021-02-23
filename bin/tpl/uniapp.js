@@ -8,22 +8,22 @@ let tool = require('../tool.js');
 // 初始化后台管理模板
 module.exports = async function initAdminTemplate() {
     let spinner = ora();
-    spinner.start(chalk.green('yiadmin项目模板下载中...'));
+    spinner.start(chalk.green('yimini项目模板下载中...'));
     try {
         let files = fs.readdirSync(myConfig.rootDir);
         if (files.length > 0) {
-            spinner.fail(chalk.red('请在空目录下载yiadmin后台项目模板'));
+            spinner.fail(chalk.red('请在空目录下载yimini小程序项目模板'));
             return;
         }
 
         fs.removeSync(myConfig.tempDir);
         fs.ensureDirSync(myConfig.tempDir);
-        await tool.downloadProject('https://gitee.com:banshiweichen/yipack-template-admin#master');
+        await tool.downloadProject('https://gitee.com:banshiweichen/yipack-template-uniapp#master');
         fs.copySync(myConfig.tempDir, myConfig.rootDir, { overwrite: true });
         fs.removeSync(myConfig.tempDir);
-        spinner.succeed(chalk.green('yiadmin项目模板下载成功'));
+        spinner.succeed(chalk.green('yimini项目模板下载成功'));
     } catch (err) {
-        spinner.fail(chalk.red('yiadmin项目模板下载失败'));
+        spinner.fail(chalk.red('yimini项目模板下载失败'));
         spinner.stop();
         console.log(err);
     }

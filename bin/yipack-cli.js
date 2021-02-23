@@ -119,7 +119,7 @@ program
     });
 program
     .command('tpl')
-    .addOption(new commander.Option('-t,--type <模板名称>', '初始化项目模板').choices(['init', 'admin', 'api', 'mini', 'blog']))
+    .addOption(new commander.Option('-t,--type <模板名称>', '初始化项目模板').choices(['init', 'admin', 'api', 'uniapp', 'blog']))
     .description('初始化项目模板')
     .action((cmd) => {
         if (cmd.type === 'admin') {
@@ -134,8 +134,8 @@ program
             require('./tpl/init.js')();
             return;
         }
-        if (cmd.type === 'mini') {
-            require('./tpl/mini.js')();
+        if (cmd.type === 'uniapp') {
+            require('./tpl/uniapp.js')();
             return;
         }
         if (cmd.type === 'blog') {
