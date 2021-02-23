@@ -25,6 +25,7 @@ module.exports = async function newComp(cmd) {
     console.log(chalk.green('yipack build --analyzer 启动分析模式'));
     console.log('------------------------------');
     console.log(chalk.blueBright('yipack new 创建元素'));
+    console.log(chalk.green('yipack new -i,--api <通用接口名称> 创建通用接口'));
     console.log(chalk.green('yipack new -f,--filter <过滤器名称> 创建全局过滤器'));
     console.log(chalk.green('yipack new -d,--directive <指令名称> 创建全局指令'));
     console.log(chalk.green('yipack new -p,--page <页面名称> 创建页面'));
