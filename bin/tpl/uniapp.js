@@ -6,7 +6,7 @@ let ora = require('ora');
 let myConfig = require('../../.yipack/webpack.config.my.js');
 let tool = require('../tool.js');
 // 初始化后台管理模板
-module.exports = async function initAdminTemplate() {
+module.exports = async function initUniappTemplate() {
     let spinner = ora();
     spinner.start(chalk.green('yimini项目模板下载中...'));
     try {
