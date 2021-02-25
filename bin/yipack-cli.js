@@ -40,6 +40,8 @@ program
     .option('-p,--page <name>', '创建页面')
     .option('--sp,--sub-page <name>', '创建子页面')
     .option('--sv,--sub-view <name>', '创建子视图')
+    .option('--tp,--tail-page <name>', '创建尾页面')
+    .option('--tv,--tail-view <name>', '创建尾视图')
     .option('-c,--comp <name>', '创建全局组件')
     .option('-f,--filter <name>', '创建全局过滤器')
     .option('-d,--directive <name>', '创建全局指令')

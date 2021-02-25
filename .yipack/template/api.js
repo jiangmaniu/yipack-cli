@@ -2,34 +2,34 @@ module.exports = `
 import request from '@src/request/api.js';
 export default {
     // 添加
-    ins(params) {
+    insert(params) {
         return request({
             method: 'post',
-            url: '/ins',
+            url: '/insert',
             params: params
         });
     },
     // 删除
-    del(params) {
+    delete(params) {
         return request({
             method: 'post',
-            url: '/del',
+            url: '/delete',
             params: params
         });
     },
     // 更新
-    upd(params) {
+    update(params) {
         return request({
             method: 'post',
-            url: '/upd',
+            url: '/update',
             params: params
         });
     },
     // 查询
-    sel(params) {
+    select(params) {
         return request({
             method: 'post',
-            url: '/sel',
+            url: '/select',
             params: params
         });
     }

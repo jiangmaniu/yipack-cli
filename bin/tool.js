@@ -36,8 +36,13 @@ exports.getNames = function getNames(name) {
     };
 };
 
-exports.getAllNames = function getAllNames(rootNames, subNames, compNames) {
-    let hash = {};
+exports.getAllNames = function getAllNames(rootNames = {}, subNames = {}, tailNames = {}, compNames = {}, subType, tailType) {
+    let hash = {
+        // 子类型
+        subType: subType,
+        // 尾类型 tp || tv
+        tailType: tailType
+    };
     if (rootNames) {
         hash.page = {
             lowerCaseName: rootNames.lowerCaseName,
@@ -52,6 +57,14 @@ exports.getAllNames = function getAllNames(rootNames, subNames, compNames) {
             kebabCaseName: subNames.kebabCaseName,
             startCaseName: subNames.startCaseName,
             camelCaseName: subNames.camelCaseName
+        };
+    }
+    if (tailNames) {
+        hash.tail = {
+            lowerCaseName: tailNames.lowerCaseName,
+            kebabCaseName: tailNames.kebabCaseName,
+            startCaseName: tailNames.startCaseName,
+            camelCaseName: tailNames.camelCaseName
         };
     }
     if (compNames) {
