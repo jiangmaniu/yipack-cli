@@ -84,12 +84,72 @@ module.exports = async function build(cmd) {
             }
         });
 
+        let subPageFiles = await fastGlob('**/routePage.js', {
+            dot: true,
+            absolute: true,
+            cwd: path.join(myConfig.srcDir, 'pages'),
+            onlyFiles: true,
+            ignore: []
+        });
+
+        subPageFiles.forEach((file) => {
+            let targetPath = path.join(path.dirname(file), 'subPageRoute.js');
+            let relativePath = path.relative(myConfig.rootDir, targetPath);
+            let originPath = path.normalize(file);
+            if (fs.existsSync(targetPath) === false) {
+                spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
+                fs.moveSync(originPath, targetPath);
+                spinner.succeed(chalk.green(`${relativePath} 已修复...`));
+            } else {
+                spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
+            }
+        });
+
+        let subViewFiles = await fastGlob('**/routeView.js', {
+            dot: true,
+            absolute: true,
+            cwd: path.join(myConfig.srcDir, 'pages'),
+            onlyFiles: true,
+            ignore: []
+        });
+
+        subViewFiles.forEach((file) => {
+            let targetPath = path.join(path.dirname(file), 'subViewRoute.js');
+            let relativePath = path.relative(myConfig.rootDir, targetPath);
+            let originPath = path.normalize(file);
+            if (fs.existsSync(targetPath) === false) {
+                spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
+                fs.moveSync(originPath, targetPath);
+                spinner.succeed(chalk.green(`${relativePath} 已修复...`));
+            } else {
+                spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
+            }
+        });
+
+        let routeFiles = await fastGlob('**/route.js', {
+            dot: true,
+            absolute: true,
+            cwd: path.join(myConfig.srcDir, 'pages'),
+            onlyFiles: true,
+            ignore: []
+        });
+
+        routeFiles.forEach((file) => {
+            let targetPath = path.join(path.dirname(file), 'route.js');
+            let relativePath = path.relative(myConfig.rootDir, targetPath);
+            spinner.warn(chalk.yellow(`${relativePath} 路由导入正在修复...`));
+            let fileData = fs.readFileSync(targetPath, { encoding: 'utf-8' });
+            let newFileData = fileData.replace(/routePage/g, 'subPageRoute').replace(/routeView/g, 'subViewRoute');
+            fs.outputFileSync(targetPath, newFileData);
+            spinner.succeed(chalk.green(`${relativePath} 路由导入已修复...`));
+        });
+
         let apiFiles = await fastGlob('**/index.vue', {
             dot: true,
             absolute: true,
             cwd: path.join(myConfig.srcDir, 'pages'),
             onlyFiles: true,
-            ignore: ['**/comps/**/*']
+            ignore: ['**/comps/**/*', '**/layout/**/*']
         });
 
         apiFiles.forEach((file) => {
@@ -97,7 +157,7 @@ module.exports = async function build(cmd) {
             let relativePath = path.relative(myConfig.rootDir, targetPath);
             if (fs.existsSync(targetPath) === false) {
                 spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
-                fs.copySync(path.join(myConfig.cliDir, '.yipack', 'template', 'pageApi.js'), targetPath);
+                fs.copySync(path.join(myConfig.cliDir, '.yipack', 'template', 'api.js'), targetPath);
                 spinner.succeed(chalk.green(`${relativePath} 已修复...`));
             } else {
                 spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
