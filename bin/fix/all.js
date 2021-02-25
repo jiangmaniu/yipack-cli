@@ -22,7 +22,7 @@ module.exports = async function build(cmd) {
     try {
         fs.removeSync(tempDir);
         fs.ensureDirSync(tempDir);
-        await tool.downloadProject('https://gitee.com:banshiweichen/yipack-template#master', tempDir);
+        await tool.downloadProject('https://gitee.com:banshiweichen/yipack-template-init#master', tempDir);
         spinner.succeed(chalk.green('标准模板下载成功'));
         let rootFiles = await fastGlob('*', {
             dot: true,
