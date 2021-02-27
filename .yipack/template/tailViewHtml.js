@@ -23,7 +23,7 @@ export default {
         },
         // 增加
         on_insert(){
-            this.$Apis.<%= page.camelCaseName %>.<%= tailType %>.<%= sub.camelCaseName %>.tv.<%= tail.camelCaseName %>.insert().then(res => {
+            this.$Apis.<%= page.camelCaseName %>.<%= subType %>.<%= sub.camelCaseName %>.tv.<%= tail.camelCaseName %>.insert().then(res => {
 
             }).catch(err => {
 
@@ -31,7 +31,7 @@ export default {
         },
         // 删除
         on_delete(){
-            this.$Apis.<%= page.camelCaseName %>.<%= tailType %>.<%= sub.camelCaseName %>.tv.<%= tail.camelCaseName %>.delete().then(res => {
+            this.$Apis.<%= page.camelCaseName %>.<%= subType %>.<%= sub.camelCaseName %>.tv.<%= tail.camelCaseName %>.delete().then(res => {
 
             }).catch(err => {
 
@@ -39,7 +39,7 @@ export default {
         },
         // 修改
         on_update(){
-            this.$Apis.<%= page.camelCaseName %>.<%= tailType %>.<%= sub.camelCaseName %>.tv.<%= tail.camelCaseName %>.update().then(res => {
+            this.$Apis.<%= page.camelCaseName %>.<%= subType %>.<%= sub.camelCaseName %>.tv.<%= tail.camelCaseName %>.update().then(res => {
 
             }).catch(err => {
 
@@ -47,7 +47,7 @@ export default {
         },
         // 查询
         on_select(){
-            this.$Apis.<%= page.camelCaseName %>.<%= tailType %>.<%= sub.camelCaseName %>.tv.<%= tail.camelCaseName %>.select().then(res => {
+            this.$Apis.<%= page.camelCaseName %>.<%= subType %>.<%= sub.camelCaseName %>.tv.<%= tail.camelCaseName %>.select().then(res => {
 
             }).catch(err => {
 
