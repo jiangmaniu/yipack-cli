@@ -36,12 +36,9 @@ exports.getNames = function getNames(name) {
     };
 };
 
-exports.getAllNames = function getAllNames(rootNames = {}, subNames = {}, tailNames = {}, compNames = {}, subType, tailType) {
+exports.getAllNames = function getAllNames(rootNames = {}, subNames = {}, tailNames = {}, compNames = {}, options = {}) {
     let hash = {
-        // 子类型
-        subType: subType,
-        // 尾类型 tp || tv
-        tailType: tailType
+        options: options
     };
     if (rootNames) {
         hash.page = {

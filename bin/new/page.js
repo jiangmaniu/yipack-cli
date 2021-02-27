@@ -55,7 +55,7 @@ module.exports = async function newPage(cmd) {
             compNames = tool.getNames(cmd.comp);
         }
         let subNames = tool.getNames(cmd.subPage);
-        let names = tool.getAllNames(rootNames, subNames, {}, compNames, 'subPages');
+        let names = tool.getAllNames(rootNames, subNames, {}, compNames, { subName: 'subPages' });
         let subDirectory = path.join(pageDirPath, 'subPages', subNames.camelCaseName);
         // 创建二级页面
         let htmlFilePath = path.join(subDirectory, 'index.vue');
@@ -100,7 +100,7 @@ module.exports = async function newPage(cmd) {
                 compNames = tool.getNames(cmd.comp);
             }
             let tailNames = tool.getNames(cmd.tailPage);
-            let names = tool.getAllNames(rootNames, subNames, tailNames, compNames, 'subPages', 'tp');
+            let names = tool.getAllNames(rootNames, subNames, tailNames, compNames, { subName: 'subPages', subType: 'sp', tailName: 'tailPages', tailType: 'tp' });
             let tailDirectory = path.join(subDirectory, 'tailPages', tailNames.camelCaseName);
             // 创建二级页面
             let htmlFilePath = path.join(tailDirectory, 'index.vue');
@@ -164,7 +164,7 @@ module.exports = async function newPage(cmd) {
                 compNames = tool.getNames(cmd.comp);
             }
             let tailNames = tool.getNames(cmd.tailView);
-            let names = tool.getAllNames(rootNames, subNames, tailNames, compNames, 'subPages', 'tv');
+            let names = tool.getAllNames(rootNames, subNames, tailNames, compNames, { subName: 'subPages', subType: 'sp', tailName: 'tailViews', tailType: 'tv' });
             let tailDirectory = path.join(subDirectory, 'tailViews', tailNames.camelCaseName);
             // 创建二级页面
             let htmlFilePath = path.join(tailDirectory, 'index.vue');
@@ -301,7 +301,7 @@ module.exports = async function newPage(cmd) {
                 compNames = tool.getNames(cmd.comp);
             }
             let tailNames = tool.getNames(cmd.tailPage);
-            let names = tool.getAllNames(rootNames, subNames, tailNames, compNames, 'subViews', 'tp');
+            let names = tool.getAllNames(rootNames, subNames, tailNames, compNames, { subName: 'subViews', subType: 'sv', tailName: 'tailPages', tailType: 'tp' });
             let tailDirectory = path.join(subDirectory, 'tailPages', tailNames.camelCaseName);
             // 创建二级页面
             let htmlFilePath = path.join(tailDirectory, 'index.vue');
@@ -365,7 +365,7 @@ module.exports = async function newPage(cmd) {
                 compNames = tool.getNames(cmd.comp);
             }
             let tailNames = tool.getNames(cmd.tailView);
-            let names = tool.getAllNames(rootNames, subNames, tailNames, compNames, 'subViews', 'tv');
+            let names = tool.getAllNames(rootNames, subNames, tailNames, compNames, { subName: 'subViews', subType: 'sv', tailName: 'tailViews', tailType: 'tv' });
             let tailDirectory = path.join(subDirectory, 'tailViews', tailNames.camelCaseName);
             // 创建二级页面
             let htmlFilePath = path.join(tailDirectory, 'index.vue');
