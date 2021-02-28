@@ -6,7 +6,7 @@ export default {
         return request({
             method: 'post',
             url: '/insert',
-            params: params
+            data: params
         });
     },
     // 删除
@@ -14,7 +14,7 @@ export default {
         return request({
             method: 'post',
             url: '/delete',
-            params: params
+            data: params
         });
     },
     // 更新
@@ -22,7 +22,7 @@ export default {
         return request({
             method: 'post',
             url: '/update',
-            params: params
+            data: params
         });
     },
     // 查询
