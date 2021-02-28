@@ -1,14 +1,15 @@
-let path = require("path");
-let Webpack = require("webpack");
-let { merge } = require("webpack-merge");
-let configCommon = require("./webpack.config.common.js");
-let myConfig = require("./webpack.config.my.js");
-let yipackConfig = require("./yipack.config.js");
-let shell = require("shelljs");
+let path = require('path');
+let Webpack = require('webpack');
+let { merge } = require('webpack-merge');
+let configCommon = require('./webpack.config.common.js');
+let myConfig = require('./webpack.config.my.js');
+let yipackConfig = require('./yipack.config.js');
+let shell = require('shelljs');
+let ESLintPlugin = require('eslint-webpack-plugin');
 let currentConfig = {
     // 开发环境开启缓存
     cache: true,
-    devtool: "eval-source-map",
+    devtool: 'eval-source-map',
     parallelism: 1,
     // 打包发生错误时停止打包
     bail: false,
@@ -16,8 +17,8 @@ let currentConfig = {
         // minimize: false,
         // namedModules: true,
         // namedChunks: true,
-        moduleIds: "named",
-        chunkIds: "named",
+        moduleIds: 'named',
+        chunkIds: 'named',
         // 在设置为 true 时，告知 webpack 通过将导入修改为更短的字符串，来减少 WASM 大小。
         mangleWasmImports: false,
         // 会影响webpack性能，默认禁用
@@ -45,8 +46,8 @@ let currentConfig = {
         // 先对记录
         portableRecords: false,
         splitChunks: {
-            automaticNameDelimiter: "~",
-            chunks: "all",
+            automaticNameDelimiter: '~',
+            chunks: 'all',
             maxAsyncRequests: 5,
             maxInitialRequests: 30,
             minChunks: 5,
@@ -65,8 +66,8 @@ let currentConfig = {
                     enforce: false,
                     name(_module) {
                         let packageName = _module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                        return `npm.${packageName.replace("@", "")}`;
-                    },
+                        return `npm.${packageName.replace('@', '')}`;
+                    }
                 },
                 default: {
                     priority: -20,
@@ -74,16 +75,17 @@ let currentConfig = {
                     reuseExistingChunk: true,
                     enforce: false,
                     name(_module) {
-                        return "default.vendors";
-                    },
-                },
-            },
-        },
+                        return 'default.vendors';
+                    }
+                }
+            }
+        }
     },
     plugins: [
         //
         new Webpack.HotModuleReplacementPlugin(),
-    ],
+        new ESLintPlugin(yipackConfig.eslint)
+    ]
 };
 let config = merge(configCommon, currentConfig);
 module.exports = config;
