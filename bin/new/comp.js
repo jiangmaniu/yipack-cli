@@ -17,7 +17,7 @@ module.exports = async function newComp(cmd) {
     let spinner = ora();
     let compNames = tool.getNames(cmd.comp);
     // 全局组件目录
-    let compDirectory = path.join(myConfig.srcDir, 'comps', compNames.camelCaseName);
+    let compDirectory = path.join(myConfig.srcDir, 'components', compNames.camelCaseName);
     if (fs.existsSync(compDirectory) === false) {
         fs.ensureDirSync(compDirectory);
         // 创建全局组件
