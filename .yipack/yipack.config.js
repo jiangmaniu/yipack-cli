@@ -30,6 +30,15 @@ let yipackConfig = {
         // 是否缓存
         cache: true,
         overrideConfigFile: path.join(myConfig.cliDir, '.eslintrc.js')
+    },
+    stylelint: {
+        options: {
+            configFile: path.join(myConfig.cliDir, 'stylelint.config.js'),
+            context: myConfig.srcDir,
+            configBasedir: myConfig.cliDir,
+            cache: true,
+            fix: true
+        }
     }
 };
 if (fs.existsSync(projectConfigPath)) {

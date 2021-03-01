@@ -6,6 +6,7 @@ let myConfig = require('./webpack.config.my.js');
 let yipackConfig = require('./yipack.config.js');
 let shell = require('shelljs');
 let ESLintPlugin = require('eslint-webpack-plugin');
+let StylelintPlugin = require('stylelint-webpack-plugin');
 let currentConfig = {
     // 开发环境开启缓存
     cache: true,
@@ -84,7 +85,8 @@ let currentConfig = {
     plugins: [
         //
         new Webpack.HotModuleReplacementPlugin(),
-        new ESLintPlugin(yipackConfig.eslint)
+        new ESLintPlugin(yipackConfig.eslint),
+        new StylelintPlugin(yipackConfig.stylelint.options)
     ]
 };
 let config = merge(configCommon, currentConfig);
