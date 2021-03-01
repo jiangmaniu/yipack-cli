@@ -27,7 +27,20 @@ module.exports = {
         'vue/component-tags-order': [
             'warn',
             {
-                order: ['script', 'template', 'style']
+                order: ['template', 'script', 'style']
+            }
+        ],
+        'vue/html-end-tags': 'warn',
+        'vue/html-self-closing': [
+            'warn',
+            {
+                html: {
+                    void: 'never',
+                    normal: 'never',
+                    component: 'never'
+                },
+                svg: 'never',
+                math: 'never'
             }
         ],
         'vue/order-in-components': [
