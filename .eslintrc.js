@@ -24,6 +24,12 @@ module.exports = {
         'no-unused-vars': 'off',
         'no-var': 'warn',
         eqeqeq: 'warn',
+        'vue/component-tags-order': [
+            'warn',
+            {
+                order: ['script', 'template', 'style']
+            }
+        ],
         'vue/order-in-components': [
             'warn',
             {
