@@ -43,6 +43,8 @@ module.exports = {
                 math: 'never'
             }
         ],
+        'vue/prop-name-casing': ['warn', 'camelCase'],
+        'vue/require-default-prop': 'warn',
         'vue/order-in-components': [
             'warn',
             {
