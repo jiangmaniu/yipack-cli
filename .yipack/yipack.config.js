@@ -38,7 +38,8 @@ let yipackConfig = {
             context: myConfig.srcDir,
             configBasedir: myConfig.cliDir,
             cache: true,
-            fix: true
+            fix: true,
+            cacheLocation: path.join(myConfig.rootDir, '.cache')
         }
     }
 };
