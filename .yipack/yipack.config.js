@@ -29,6 +29,7 @@ let yipackConfig = {
         fixTypes: ['problem', 'suggestion', 'layout'],
         // 是否缓存
         cache: true,
+        cacheLocation: path.join(myConfig.rootDir, '.cache', '.eslintcache'),
         overrideConfigFile: path.join(myConfig.cliDir, '.eslintrc.js')
     },
     stylelint: {
