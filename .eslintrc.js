@@ -1,3 +1,5 @@
+let path = require('path');
+let myConfig = require('./.yipack/webpack.config.my.js');
 module.exports = {
     // 找到当前目录就不往上找了
     root: true,
@@ -9,16 +11,20 @@ module.exports = {
         es2017: true
     },
     parserOptions: {
-        parser: 'babel-eslint',
+        parser: path.join(myConfig.cliDir, 'node_modules', '@babel/eslint-parser'),
         ecmaVersion: 6,
-        sourceType: 'module'
+        sourceType: 'module',
+        // 指定babel的参数 https://github.com/babel/babel/tree/main/eslint/babel-eslint-parser#additional-parser-configuration
+        babelOptions: {
+            configFile: path.join(myConfig.cliDir, 'babel.config.js')
+        }
     },
+    plugins: ['@babel'],
     extends: [
         //
         'plugin:vue/recommended',
         'eslint:recommended',
-        'prettier',
-        'prettier/vue'
+        'plugin:prettier/recommended'
     ],
     rules: {
         'no-unused-vars': 'off',
