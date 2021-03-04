@@ -1,4 +1,5 @@
 // 自带模块
+let os = require('os');
 let path = require('path');
 let fs = require('fs-extra');
 let _ = require('lodash');
@@ -17,20 +18,26 @@ let yipackConfig = {
     // 开发配置
     devServer: {},
     eslint: {
-        // 检测根目录
-        cwd: myConfig.srcDir,
-        // 检测的扩展文件
-        extensions: ['.js', '.vue'],
-        // 解析插件的相对路径，指定为yipck-cli目录，可以减少项目的依赖
-        resolvePluginsRelativeTo: myConfig.cliDir,
-        // 是否自动修复
-        fix: false,
-        // 修复的类型
-        fixTypes: ['problem', 'suggestion', 'layout'],
-        // 是否缓存
-        cache: true,
-        cacheLocation: path.join(myConfig.rootDir, '.cache', '.eslintcache'),
-        overrideConfigFile: path.join(myConfig.cliDir, '.eslintrc.js')
+        options: {
+            // 检测根目录
+            cwd: myConfig.srcDir,
+            // 检测的扩展文件
+            extensions: ['.js', '.vue'],
+            // 解析插件的相对路径，指定为yipck-cli目录，可以减少项目的依赖
+            resolvePluginsRelativeTo: myConfig.cliDir,
+            // 是否自动修复
+            fix: false,
+            // 修复的类型
+            fixTypes: ['problem', 'suggestion', 'layout'],
+            // 是否缓存
+            cache: true,
+            cacheLocation: path.join(myConfig.rootDir, '.cache', '.eslintcache'),
+            overrideConfigFile: path.join(myConfig.cliDir, '.eslintrc.js'),
+            // 只检测改变的文件，一开始启动不检测
+            lintDirtyModulesOnly: true,
+            // 并行数量
+            threads: os.cpus().length
+        }
     },
     stylelint: {
         options: {
@@ -39,7 +46,9 @@ let yipackConfig = {
             configBasedir: myConfig.cliDir,
             cache: true,
             fix: true,
-            cacheLocation: path.join(myConfig.rootDir, '.cache')
+            cacheLocation: path.join(myConfig.rootDir, '.cache'),
+            // 只检测改变的文件
+            lintDirtyModulesOnly: true
         }
     }
 };

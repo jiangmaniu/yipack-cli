@@ -8,18 +8,23 @@ module.exports = {
         es6: true,
         browser: true,
         node: true,
-        es2017: true
+        es2017: false
     },
     parserOptions: {
-        parser: path.join(myConfig.cliDir, 'node_modules', '@babel/eslint-parser'),
-        ecmaVersion: 6,
+        parser: '@babel/eslint-parser',
+        ecmaVersion: 2016,
         sourceType: 'module',
         // 指定babel的参数 https://github.com/babel/babel/tree/main/eslint/babel-eslint-parser#additional-parser-configuration
         babelOptions: {
             configFile: path.join(myConfig.cliDir, 'babel.config.js')
         }
     },
-    plugins: ['@babel'],
+    plugins: [
+        //
+        '@babel/eslint-plugin',
+        'eslint-plugin-vue',
+        'eslint-plugin-prettier'
+    ],
     extends: [
         //
         'plugin:vue/recommended',
@@ -27,6 +32,20 @@ module.exports = {
         'plugin:prettier/recommended'
     ],
     rules: {
+        'prettier/prettier': [
+            'warn',
+            {
+                printWidth: 80,
+                singleQuote: true,
+                semi: true,
+                tabWidth: 4,
+                trailingComma: 'none',
+                bracketSpacing: true
+            },
+            {
+                usePrettierrc: false
+            }
+        ],
         'no-unused-vars': 'off',
         'no-var': 'warn',
         eqeqeq: 'warn',

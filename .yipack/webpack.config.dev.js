@@ -84,9 +84,9 @@ let currentConfig = {
     },
     plugins: [
         //
-        new Webpack.HotModuleReplacementPlugin(),
-        new ESLintPlugin(yipackConfig.eslint),
-        new StylelintPlugin(yipackConfig.stylelint.options)
+        new Webpack.HotModuleReplacementPlugin()
+        // new ESLintPlugin(yipackConfig.eslint.options),
+        // new StylelintPlugin(yipackConfig.stylelint.options)
     ]
 };
 let config = merge(configCommon, currentConfig);

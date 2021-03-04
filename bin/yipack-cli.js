@@ -8,11 +8,13 @@ let commander = require('commander');
 let program = new commander.Command();
 let shell = require('shelljs');
 let { table } = require('table');
+let execa = require('execa');
 // 配置相关
 let myConfig = require('../.yipack/webpack.config.my.js');
 let yipackPackage = require('../package.json');
 let yipackConfig = require('../.yipack/yipack.config.js');
 let tool = require('./tool.js');
+const { exec } = require('child_process');
 program
     .storeOptionsAsProperties(false) // ；屏蔽参数作为cmd的属性
     .allowExcessArguments(false) // 严格控制参数顺序
@@ -145,47 +147,7 @@ program
             return;
         }
     });
-program
-    //
-    .command('format')
-    .option('-p,--page <name>', '格式化页面')
-    .option('-c,--comp <name>', '格式化组件')
-    .description('格式化元素')
-    .action((cmd) => {
-        if (cmd.page) {
-            // let names = getNames(cmd.page);
-            // let filePath = path.join(myConfig.srcDir, 'pages', names.camelCaseName, 'index.vue');
-            // let fileData = fs.readFileSync(filePath).toString('utf-8');
-            // let scriptData = fileData.replace(/<script>([\s\S]+)<\/script>/gim, function (match, p1) {
-            //     console.log(match);
-            //     console.log(p1);
 
-            //     let data = eval(p1);
-
-            //     console.log(data);
-            //     console.log(aaa);
-            // });
-            // let js = require("vue-loader!" + pageDirPath + ".vue?vue&type=script");
-            // let ddd = vueTemplateCompiler.compile("<div>1111</div>");
-            // let js = require("vue-loader");
-            // console.log(ddd);
-            // fs.removeSync(pageDirPath);
-            // let dd = vueCompilerSfc.parse(fs.readFileSync(file));
-            // console.log(dd);
-            // console.log(new vueLoader.VueLoaderPlugin(fs.readFileSync(file)));
-
-            // console.log('页面元素格式化成功');
-            return;
-        }
-        if (cmd.comp) {
-            // let names = getNames(cmd.comp);
-            // // 创建组件
-            // let htmlFilePath = path.join(myConfig.srcDir, 'comps', names.camelCaseName, 'index.vue');
-            // fs.removeSync(htmlFilePath, htmlFileData);
-            // console.log('组件元素删除成功');
-            // return;
-        }
-    });
 program
     //
     .command('doctor')
@@ -193,6 +155,37 @@ program
     .description('检测元素')
     .action((cmd) => {
         require('./doctor/all.js')(cmd);
+    });
+program
+    //
+    .command('lint')
+    .option('-t,--type <规范类型>', '规范类型')
+    .description('检测规范')
+    .action((cmd) => {
+        // 检测脚本规范
+        if (cmd.type === 'script') {
+            require('./lint/script.js')(cmd);
+            return;
+        }
+
+        // 检测样式规范
+        if (cmd.type === 'style') {
+            require('./lint/style.js')(cmd);
+            return;
+        }
+
+        // 检测所有规范
+        require('./lint/all.js')(cmd);
+        return;
+    });
+program
+    //
+    .command('format <file>')
+    .description('格式化文件')
+    .action((file) => {
+        // 检测所有规范
+        require('./format/all.js')(file);
+        return;
     });
 program
     //
@@ -206,6 +199,21 @@ program
         if (cmd.type === 'readme') {
             require('./fix/readme.js')(cmd);
         }
+    });
+program
+    //
+    .command('test')
+    .description('测试')
+    .action(async (cmd) => {
+        let dd = await execa.commandSync('ls -al --color=always');
+        process.stdout.write(dd.stdout);
+    });
+program
+    //
+    .command('print')
+    .description('测试')
+    .action((cmd) => {
+        console.log('test');
     });
 program.version(yipackPackage.version, '-v, --version', '显示yipack版本');
 program.helpInformation();
