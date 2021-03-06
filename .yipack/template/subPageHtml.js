@@ -2,7 +2,6 @@ module.exports = `<template>
     <div class="page-<%= page.kebabCaseName %>_<%= sub.kebabCaseName %>">
         page-<%= page.kebabCaseName %>
         sub-page-<%= sub.kebabCaseName %>
-        <router-view></router-view>
     </div>
 </template>
 

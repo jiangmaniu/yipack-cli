@@ -28,7 +28,7 @@ export default {
     // 查询
     select(params) {
         return request({
-            method: 'post',
+            method: 'get',
             url: '/select',
             params: params
         });
