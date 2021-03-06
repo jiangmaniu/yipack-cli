@@ -1,12 +1,13 @@
-module.exports = `<template>
-    <div class="comp-<%= page.kebabCaseName %>_<%= comp.kebabCaseName %>">
-        page-<%= page.kebabCaseName %> comp-<%= comp.kebabCaseName %>
+module.exports = `
+<template>
+    <div class="comp-<%= names.kebabCaseName %>">
+        comp-<%= names.kebabCaseName %>
     </div>
 </template>
 
 <script>
 export default {
-    name: "<%= comp.startCaseName %>",
+    name: "<%= names.startCaseName %>",
     data(){
         return {};
     },
@@ -16,15 +17,13 @@ export default {
     mounted(){},
     methods:{
         // 页面初始化操作
-        on_init(){
-
-        }
+        on_init(){}
     }
 };
 </script>
 
 <style lang="scss" scoped>
-.comp-<%= page.kebabCaseName %>_<%= comp.kebabCaseName %> {
+.comp-<%= names.kebabCaseName %> {
 }
 </style>
 `;

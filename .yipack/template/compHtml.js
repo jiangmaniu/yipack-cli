@@ -1,12 +1,12 @@
 module.exports = `<template>
-    <div class="comp-<%= kebabCaseName %>">
-        <%= kebabCaseName %>
+    <div class="comp-<%= names.kebabCaseName %>">
+        <%= names.kebabCaseName %>
     </div>
 </template>
 
 <script>
 export default {
-    name: "<%= startCaseName %>",
+    name: "<%= names.startCaseName %>",
     data(){
         return {};
     },
@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.comp-<%= kebabCaseName %> {
+.comp-<%= names.kebabCaseName %> {
 }
 </style>
 `;

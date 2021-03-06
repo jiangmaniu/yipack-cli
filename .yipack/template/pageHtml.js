@@ -1,60 +1,80 @@
 module.exports = `<template>
-    <div class="page-<%= page.kebabCaseName %>">
-        <%= page.kebabCaseName %>
+    <div class="page-<%= names.kebabCaseName %>">
+        <%= names.kebabCaseName %>
     </div>
 </template>
 
 <script>
 export default {
-    name: "<%= page.startCaseName %>",
+    name: "<%= names.startCaseName %>",
     data(){
         return {};
     },
-    created(){},
+    created(){
+        this.on_init();
+    },
     mounted(){},
     methods:{
         // 页面初始化操作
-        on_init(){
-
+        on_init() {},
+        // 接口-增加
+        api_insert() {
+            return new Promise((resolve, reject) => {
+                this.$Apis.p1
+                    .insert()
+                    .then((res) => {
+                        resolve(res);
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
+            });
         },
-        // 增加
-        on_insert(){
-            this.$Apis.<%= page.camelCaseName %>.insert().then(res => {
-
-            }).catch(err => {
-
-            })
+        // 接口-删除
+        api_delete() {
+            return new Promise((resolve, reject) => {
+                this.$Apis.p1
+                    .delete()
+                    .then((res) => {
+                        resolve(res);
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
+            });
         },
-        // 删除
-        on_delete(){
-            this.$Apis.<%= page.camelCaseName %>.delete().then(res => {
-
-            }).catch(err => {
-
-            })
+        // 接口-修改
+        api_update() {
+            return new Promise((resolve, reject) => {
+                this.$Apis.p1
+                    .update()
+                    .then((res) => {
+                        resolve(res);
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
+            });
         },
-        // 修改
-        on_update(){
-            this.$Apis.<%= page.camelCaseName %>.update().then(res => {
-
-            }).catch(err => {
-
-            })
-        },
-        // 查询
-        on_select(){
-            this.$Apis.<%= page.camelCaseName %>.select().then(res => {
-
-            }).catch(err => {
-
-            })
+        // 接口-查询
+        api_select() {
+            return new Promise((resolve, reject) => {
+                this.$Apis.p1
+                    .select()
+                    .then((res) => {
+                        resolve(res);
+                    })
+                    .catch((err) => {
+                        reject(err);
+                    });
+            });
         }
     }
 };
 </script>
 
 <style lang="scss" scoped>
-.page-<%= page.kebabCaseName %> {
+.page-<%= names.kebabCaseName %> {
 }
 </style>
 `;
