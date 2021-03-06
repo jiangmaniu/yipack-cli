@@ -39,39 +39,65 @@ module.exports = async function newPage(cmd) {
         // 路径路径拼接
         pageParams.routePath = '/' + pageParams.routeBackslash;
         // 如果页面目录还不存在，则创建页面目录
-        if (fs.existsSync(pageParams.path) === false) {
-            fs.ensureDirSync(pageParams.path);
+        fs.ensureDirSync(pageParams.path);
 
-            // 创建页面
-            let htmlFilePath = path.join(pageParams.path, 'index.vue');
+        // 创建页面
+        let htmlFilePath = path.join(pageParams.path, 'index.vue');
+        if (fs.existsSync(htmlFilePath) === false) {
             let htmlFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageHtml.js')))(pageParams);
             fs.outputFileSync(htmlFilePath, htmlFileData);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash) + ' 页面创建成功'));
+            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/index.vue') + ' 页面创建成功'));
+        } else {
+            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/index.vue') + ' 页面已存在'));
+        }
 
-            // 创建页面路由
-            let routeFilePath = path.join(pageParams.path, 'route.js');
+        // 创建页面路由
+        let routeFilePath = path.join(pageParams.path, 'route.js');
+        if (fs.existsSync(routeFilePath) === false) {
             let routeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageRoute.js')))(pageParams);
             fs.outputFileSync(routeFilePath, routeFileData);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash) + ' 页面路由创建成功'));
+            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/route.js') + ' 页面路由创建成功'));
+        } else {
+            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/route.js') + ' 页面路由已存在'));
+        }
 
-            // 创建页面接口
-            let apiFilePath = path.join(pageParams.path, 'api.js');
+        // 创建页面接口
+        let apiFilePath = path.join(pageParams.path, 'api.js');
+        if (fs.existsSync(apiFilePath) === false) {
             let apiFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'api.js')))(pageParams);
             fs.outputFileSync(apiFilePath, apiFileData);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash) + ' 页面接口创建成功'));
+            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/api.js') + ' 页面接口创建成功'));
+        } else {
+            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/api.js') + ' 页面接口已存在'));
+        }
 
-            // 创建页面说明
-            let readmeFilePath = path.join(pageParams.path, 'readme.md');
+        // 创建页面说明
+        let readmeFilePath = path.join(pageParams.path, 'readme.md');
+        if (fs.existsSync(readmeFilePath) === false) {
             let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))(pageParams);
             fs.outputFileSync(readmeFilePath, readmeFileData);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash) + ' 页面说明书创建成功'));
-
-            // 创建页面组件目录
-            let componentDirectory = path.join(pageParams.path, 'components');
-            fs.ensureDirSync(componentDirectory);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash) + ' 页面组件目录创建成功'));
+            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/readme.md') + ' 页面说明书创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash) + ' 页面已存在'));
+            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/readme.md') + ' 页面说明书已存在'));
+        }
+
+        // 创建页面组件目录
+        let componentDirectory = path.join(pageParams.path, 'components');
+        if (fs.existsSync(componentDirectory) === false) {
+            fs.ensureDirSync(componentDirectory);
+            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/components') + ' 页面组件目录创建成功'));
+        } else {
+            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/components') + ' 页面组件目录已存在'));
+        }
+
+        // 创建页面组件目录说明
+        let componentReadmeFilePath = path.join(componentDirectory, 'readme.md');
+        if (fs.existsSync(componentReadmeFilePath) === false) {
+            let componentReadmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))(pageParams);
+            fs.outputFileSync(componentReadmeFilePath, componentReadmeFileData);
+            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/readme.md') + ' 页面组件目录说明书创建成功'));
+        } else {
+            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/readme.md') + ' 页面组件目录说明书已存在'));
         }
     });
     let compParams = {
@@ -83,20 +109,24 @@ module.exports = async function newPage(cmd) {
         // 创建页面组件目录
         let componentDirectory = path.join(pageParams.path, 'components', compParams.names.lowerCaseName);
         fs.ensureDirSync(componentDirectory);
+        // 创建页面组件
         let htmlFilePath = path.join(componentDirectory, 'index.vue');
         if (fs.existsSync(htmlFilePath) === false) {
-            // 创建页面组件
             let htmlFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageCompHtml.js')))(compParams);
             fs.outputFileSync(htmlFilePath, htmlFileData);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/' + compParams.names.lowerCaseName) + ' 页面组件创建成功'));
+            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/' + compParams.names.lowerCaseName + '/index.vue') + ' 页面组件创建成功'));
+        } else {
+            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/' + compParams.names.lowerCaseName + '/index.vue') + ' 页面组件已存在'));
+        }
 
-            // 创建页面组件说明
-            let readmeFilePath = path.join(componentDirectory, 'readme.md');
+        // 创建页面组件说明
+        let readmeFilePath = path.join(componentDirectory, 'readme.md');
+        if (fs.existsSync(readmeFilePath) === false) {
             let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageReadme.js')))(compParams);
             fs.outputFileSync(readmeFilePath, readmeFileData);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/' + compParams.names.lowerCaseName) + ' 页面组件说明书创建成功'));
+            spinner.succeed(chalk.green(chalk.blue(pageParams.routeBackslash + '/' + compParams.names.lowerCaseName + '/readme.md') + ' 页面组件说明书创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/' + compParams.names.lowerCaseName) + ' 页面组件已存在'));
+            spinner.warn(chalk.green(chalk.red(pageParams.routeBackslash + '/' + compParams.names.lowerCaseName + '/readme.md') + ' 页面组件已存在'));
         }
     }
 };
