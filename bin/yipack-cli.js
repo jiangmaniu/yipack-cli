@@ -50,6 +50,10 @@ program
     .option('-i,--api <name>', '创建通用接口')
     .description('创建元素')
     .action((cmd) => {
+        if (cmd.api) {
+            require('./new/api.js')(cmd);
+            return;
+        }
         if (cmd.filter) {
             require('./new/filter.js')(cmd);
             return;

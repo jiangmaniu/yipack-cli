@@ -15,25 +15,25 @@ let yipackPackage = require('../../package.json');
 let yipackConfig = require(path.join(myConfig.webpackDir, 'yipack.config.js'));
 module.exports = async function newComp(cmd) {
     let spinner = ora();
-    let compParams = {
+    let dataParams = {
         names: tool.getNames(cmd.comp)
     };
     // 全局组件目录
-    let compDirectory = path.join(myConfig.srcDir, 'components', compParams.names.kebabCaseName);
+    let compDirectory = path.join(myConfig.srcDir, 'components', dataParams.names.lowerCaseName);
     if (fs.existsSync(compDirectory) === false) {
         fs.ensureDirSync(compDirectory);
         // 创建全局组件
         let compFilePath = path.join(compDirectory, 'index.vue');
-        let compFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'compHtml.js')))(compParams);
+        let compFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'compHtml.js')))(dataParams);
         fs.outputFileSync(compFilePath, compFileData);
-        spinner.succeed(chalk.green('全局组件创建成功'));
+        spinner.succeed(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局组件创建成功'));
 
         // 创建全局组件说明
         let readmeFilePath = path.join(compDirectory, 'readme.md');
-        let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'compReadme.js')))(compParams);
+        let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))(dataParams);
         fs.outputFileSync(readmeFilePath, readmeFileData);
-        spinner.succeed(chalk.green('全局组件说明创建成功'));
+        spinner.succeed(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局组件说明书创建成功'));
     } else {
-        spinner.warn(chalk.green('组件目录已存在'));
+        spinner.warn(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局组件已存在'));
     }
 };

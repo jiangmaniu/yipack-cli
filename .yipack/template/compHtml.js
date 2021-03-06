@@ -6,7 +6,7 @@ module.exports = `<template>
 
 <script>
 export default {
-    name: "<%= names.startCaseName %>",
+    name: "Yi<%= names.startCaseName %>",
     data(){
         return {};
     },

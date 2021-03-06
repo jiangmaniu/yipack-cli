@@ -1,5 +1,5 @@
 module.exports = `import Vue from 'vue';
-Vue.filter('<%= startCaseName %>', function (value) {
-    return value;
+Vue.filter('<%= names.startCaseName %>', function (value) {
+    return value + ' 过滤器 <%= names.startCaseName %>';
 });
 `;

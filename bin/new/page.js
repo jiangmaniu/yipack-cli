@@ -24,7 +24,7 @@ module.exports = async function newPage(cmd) {
         // 页面参数
         pageParams.names = tool.getNames(page);
         // 当前页面路径
-        pageParams.path = path.join(pageParams.path, pageParams.names.kebabCaseName);
+        pageParams.path = path.join(pageParams.path, pageParams.names.lowerCaseName);
         // 页面相对路径
         pageParams.relativePath = path.relative(myConfig.pageDir, pageParams.path).replace(/\\/g, '/');
         pageParams.route = pageParams.route + '/' + pageParams.names.kebabCaseName;
@@ -52,9 +52,9 @@ module.exports = async function newPage(cmd) {
 
             // 创建页面说明
             let readmeFilePath = path.join(pageParams.path, 'readme.md');
-            let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageReadme.js')))(pageParams);
+            let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))(pageParams);
             fs.outputFileSync(readmeFilePath, readmeFileData);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.relativePath) + ' 页面说明创建成功'));
+            spinner.succeed(chalk.green(chalk.blue(pageParams.relativePath) + ' 页面说明书创建成功'));
 
             // 创建页面组件目录
             let componentDirectory = path.join(pageParams.path, 'components');
@@ -71,7 +71,7 @@ module.exports = async function newPage(cmd) {
     if (cmd.comp) {
         compParams.names = tool.getNames(cmd.comp);
         // 创建页面组件目录
-        let componentDirectory = path.join(pageParams.path, 'components', compParams.names.kebabCaseName);
+        let componentDirectory = path.join(pageParams.path, 'components', compParams.names.lowerCaseName);
         fs.ensureDirSync(componentDirectory);
         let htmlFilePath = path.join(componentDirectory, 'index.vue');
         if (fs.existsSync(htmlFilePath) === false) {
@@ -84,7 +84,7 @@ module.exports = async function newPage(cmd) {
             let readmeFilePath = path.join(componentDirectory, 'readme.md');
             let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageReadme.js')))(compParams);
             fs.outputFileSync(readmeFilePath, readmeFileData);
-            spinner.succeed(chalk.green(chalk.blue(pageParams.relativePath + '/' + compParams.names.camelCaseName) + ' 页面组件说明创建成功'));
+            spinner.succeed(chalk.green(chalk.blue(pageParams.relativePath + '/' + compParams.names.camelCaseName) + ' 页面组件说明书创建成功'));
         } else {
             spinner.warn(chalk.green(chalk.red(pageParams.relativePath + '/' + compParams.names.camelCaseName) + ' 页面组件已存在'));
         }

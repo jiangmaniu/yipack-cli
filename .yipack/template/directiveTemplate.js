@@ -1,5 +1,5 @@
 module.exports = `import Vue from 'vue';
-Vue.directive('<%= startCaseName %>', {
+Vue.directive('<%= names.startCaseName %>', {
 
 });
 `;
