@@ -1,11 +1,11 @@
 module.exports = `
 export default {
-    path: '<%= route %>',
+    path: '<%= routePath %>',
     component: () => import('@src/layout/default/index.vue'),
     children: [
         {
             path: '/',
-            component: () => import('@src/pages/<%= relativePath %>/index.vue')
+            component: () => import('@src/pages/<%= routeBackslash %>/index.vue')
         }
     ]
 };

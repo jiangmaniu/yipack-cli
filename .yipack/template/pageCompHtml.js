@@ -1,7 +1,7 @@
 module.exports = `
 <template>
-    <div class="comp-<%= names.kebabCaseName %>">
-        comp-<%= names.kebabCaseName %>
+    <div class="comp-<%= names.lowerCaseName %>">
+        comp-<%= names.lowerCaseName %>
     </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.comp-<%= names.kebabCaseName %> {
+.comp-<%= names.lowerCaseName %> {
 }
 </style>
 `;

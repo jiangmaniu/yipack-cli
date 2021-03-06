@@ -5,7 +5,7 @@ module.exports = `
 
 ## 名称
 
-<%= names.kebabCaseName %>
+<%= names.lowerCaseName %>
 
 ## 含义
 

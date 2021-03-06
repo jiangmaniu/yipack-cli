@@ -25,14 +25,14 @@ module.exports = async function newComp(cmd) {
         let apiFilePath = path.join(apiDirectory, 'index.js');
         let apiFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'api.js')))(dataParams);
         fs.outputFileSync(apiFilePath, apiFileData);
-        spinner.succeed(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局接口创建成功'));
+        spinner.succeed(chalk.green(chalk.blue(dataParams.names.lowerCaseName) + ' 全局接口创建成功'));
 
         // 创建全局组件说明
         let readmeFilePath = path.join(apiDirectory, 'readme.md');
         let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))(dataParams);
         fs.outputFileSync(readmeFilePath, readmeFileData);
-        spinner.succeed(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局接口说明书创建成功'));
+        spinner.succeed(chalk.green(chalk.blue(dataParams.names.lowerCaseName) + ' 全局接口说明书创建成功'));
     } else {
-        spinner.warn(chalk.green(chalk.red(dataParams.names.kebabCaseName) + ' 全局接口已存在'));
+        spinner.warn(chalk.green(chalk.red(dataParams.names.lowerCaseName) + ' 全局接口已存在'));
     }
 };

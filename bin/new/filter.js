@@ -24,14 +24,14 @@ module.exports = async function newComp(cmd) {
         let filterFilePath = path.join(currentDirectory, 'index.js');
         let filterFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'filterTemplate.js')))(dataParams);
         fs.outputFileSync(filterFilePath, filterFileData);
-        spinner.succeed(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局过滤器创建成功'));
+        spinner.succeed(chalk.green(chalk.blue(dataParams.names.lowerCaseName) + ' 全局过滤器创建成功'));
 
         // 创建全局组件说明
         let readmeFilePath = path.join(currentDirectory, 'readme.md');
         let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))(dataParams);
         fs.outputFileSync(readmeFilePath, readmeFileData);
-        spinner.succeed(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局过滤器说明书创建成功'));
+        spinner.succeed(chalk.green(chalk.blue(dataParams.names.lowerCaseName) + ' 全局过滤器说明书创建成功'));
     } else {
-        spinner.warn(chalk.green(chalk.red(dataParams.names.kebabCaseName) + ' 全局过滤器已存在'));
+        spinner.warn(chalk.green(chalk.red(dataParams.names.lowerCaseName) + ' 全局过滤器已存在'));
     }
 };

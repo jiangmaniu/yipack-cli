@@ -1,5 +1,5 @@
 module.exports = `<template>
-    <div class="page-<%= names.kebabCaseName %>">
+    <div class="page-<%= names.lowerCaseName %>">
         <%= names.kebabCaseName %>
     </div>
 </template>
@@ -20,7 +20,7 @@ export default {
         // 接口-增加
         api_insert() {
             return new Promise((resolve, reject) => {
-                this.$Apis.p1
+                this.$Apis.<%= routeDot %>
                     .insert()
                     .then((res) => {
                         resolve(res);
@@ -33,7 +33,7 @@ export default {
         // 接口-删除
         api_delete() {
             return new Promise((resolve, reject) => {
-                this.$Apis.p1
+                this.$Apis.<%= routeDot %>
                     .delete()
                     .then((res) => {
                         resolve(res);
@@ -46,7 +46,7 @@ export default {
         // 接口-修改
         api_update() {
             return new Promise((resolve, reject) => {
-                this.$Apis.p1
+                this.$Apis.<%= routeDot %>
                     .update()
                     .then((res) => {
                         resolve(res);
@@ -59,7 +59,7 @@ export default {
         // 接口-查询
         api_select() {
             return new Promise((resolve, reject) => {
-                this.$Apis.p1
+                this.$Apis.<%= routeDot %>
                     .select()
                     .then((res) => {
                         resolve(res);
@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-<%= names.kebabCaseName %> {
+.page-<%= names.lowerCaseName %> {
 }
 </style>
 `;

@@ -23,14 +23,14 @@ module.exports = async function newComp(cmd) {
         let directiveFilePath = path.join(currentDirectory, 'index.js');
         let directiveFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'directiveTemplate.js')))(dataParams);
         fs.outputFileSync(directiveFilePath, directiveFileData);
-        spinner.succeed(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局指令创建成功'));
+        spinner.succeed(chalk.green(chalk.blue(dataParams.names.lowerCaseName) + ' 全局指令创建成功'));
 
         // 创建全局组件说明
         let readmeFilePath = path.join(currentDirectory, 'readme.md');
         let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))(dataParams);
         fs.outputFileSync(readmeFilePath, readmeFileData);
-        spinner.succeed(chalk.green(chalk.blue(dataParams.names.kebabCaseName) + ' 全局指令说明创建成功'));
+        spinner.succeed(chalk.green(chalk.blue(dataParams.names.lowerCaseName) + ' 全局指令说明创建成功'));
     } else {
-        spinner.warn(chalk.green(chalk.red(dataParams.names.kebabCaseName) + ' 全局指令目录已存在'));
+        spinner.warn(chalk.green(chalk.red(dataParams.names.lowerCaseName) + ' 全局指令目录已存在'));
     }
 };
