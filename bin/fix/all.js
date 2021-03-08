@@ -36,18 +36,18 @@ module.exports = async function build(cmd) {
             onlyFiles: true,
             ignore: ['package-lock.json', 'CHANGELOG.md', 'LICENSE']
         });
-        // rootFiles.forEach((file) => {
-        //     let targetPath = path.normalize(path.resolve(myConfig.rootDir, path.relative('.cache\\projectTemp', file)));
-        //     let relativePath = path.relative(myConfig.rootDir, targetPath);
-        //     let originPath = path.normalize(file);
-        //     if (fs.existsSync(targetPath) === false) {
-        //         spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
-        //         fs.copySync(originPath, targetPath);
-        //         spinner.succeed(chalk.green(`${relativePath} 已修复...`));
-        //     } else {
-        //         spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
-        //     }
-        // });
+        rootFiles.forEach((file) => {
+            let targetPath = path.normalize(path.resolve(myConfig.rootDir, path.relative('.cache\\projectTemp', file)));
+            let relativePath = path.relative(myConfig.rootDir, targetPath);
+            let originPath = path.normalize(file);
+            if (fs.existsSync(targetPath) === false) {
+                spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
+                fs.copySync(originPath, targetPath);
+                spinner.succeed(chalk.green(`${relativePath} 已修复...`));
+            } else {
+                spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
+            }
+        });
 
         /**
          * 修复源码目录下的文件结构
@@ -60,18 +60,18 @@ module.exports = async function build(cmd) {
             // 排除文件，只修复目录
             ignore: ['components/**/*', 'pages/**/*', '**/.gitkeep']
         });
-        // srcFiles.forEach((file) => {
-        //     let targetPath = path.normalize(path.resolve(myConfig.rootDir, path.relative('.cache\\projectTemp', file)));
-        //     let relativePath = path.relative(myConfig.rootDir, targetPath);
-        //     let originPath = path.normalize(file);
-        //     if (fs.existsSync(targetPath) === false) {
-        //         spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
-        //         fs.copySync(originPath, targetPath);
-        //         spinner.succeed(chalk.green(`${relativePath} 已修复...`));
-        //     } else {
-        //         spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
-        //     }
-        // });
+        srcFiles.forEach((file) => {
+            let targetPath = path.normalize(path.resolve(myConfig.rootDir, path.relative('.cache\\projectTemp', file)));
+            let relativePath = path.relative(myConfig.rootDir, targetPath);
+            let originPath = path.normalize(file);
+            if (fs.existsSync(targetPath) === false) {
+                spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
+                fs.copySync(originPath, targetPath);
+                spinner.succeed(chalk.green(`${relativePath} 已修复...`));
+            } else {
+                spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
+            }
+        });
 
         /**
          * 修复说明文件
@@ -84,17 +84,19 @@ module.exports = async function build(cmd) {
             ignore: []
         });
 
-        // readmeFiles.forEach((file) => {
-        //     let targetPath = path.join(path.dirname(file), 'readme.md');
-        //     let relativePath = path.relative(myConfig.rootDir, targetPath);
-        //     if (fs.existsSync(targetPath) === false) {
-        //         spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
-        //         fs.ensureFileSync(targetPath);
-        //         spinner.succeed(chalk.green(`${relativePath} 已修复...`));
-        //     } else {
-        //         spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
-        //     }
-        // });
+        readmeFiles.forEach((file) => {
+            let readmeFilePath = path.join(path.dirname(file), 'readme.md');
+            let relativePath = path.relative(myConfig.rootDir, readmeFilePath);
+            if (fs.existsSync(readmeFilePath) === false) {
+                spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
+                // fs.ensureFileSync(readmeFilePath);
+                let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))({ names: { lowerCaseName: 'readme' } });
+                fs.outputFileSync(readmeFilePath, readmeFileData);
+                spinner.succeed(chalk.green(`${relativePath} 已修复...`));
+            } else {
+                spinner.succeed(chalk.green(`${relativePath} 检测通过...`));
+            }
+        });
 
         // 修复页面相关的文件
         let apiFiles = await fastGlob('**/index.vue', {
@@ -125,41 +127,75 @@ module.exports = async function build(cmd) {
             startCaseNameRoutePath: ''
         };
         apiFiles.forEach((file) => {
+            // 重置参数
+            pageParams = {
+                names: {},
+                path: myConfig.pageDir,
+                // 小写短横线文件名数组
+                lowerCaseNameRoute: [],
+                lowerCaseNameRouteDot: '', // 点号拼接
+                lowerCaseNameRouteBackslash: '', // 反斜杠拼接
+                lowerCaseNameRoutePath: '', // 路径路径
+                // 小驼峰文件名数组
+                camelCaseNameRoute: [],
+                camelCaseNameRouteDot: '',
+                camelCaseNameRouteBackslash: '',
+                camelCaseNameRoutePath: '',
+                // 大驼峰文件名数组
+                startCaseNameRoute: [],
+                startCaseNameRouteDot: '',
+                startCaseNameRouteBackslash: '',
+                startCaseNameRoutePath: ''
+            };
+
+            // 标准化路径
             file = path.normalize(file);
-            let apiPath = path.join(path.dirname(file), 'api.js');
-            let pageName = path.relative(path.dirname(path.dirname(file)), path.dirname(file));
+            // let pageName = path.relative(path.dirname(path.dirname(file)), path.dirname(file));
             let pagePath = path.relative(myConfig.pageDir, path.dirname(file));
-            console.log(pagePath);
-            // 页面参数
-            // pageParams.names = tool.getNames(pageName);
-            // // 当前页面路径
-            // pageParams.path = path.join(pageParams.path, pageParams.names.lowerCaseName);
-            // // 页面相对路径
-            // pageParams.lowerCaseNameRoute.push(pageParams.names.lowerCaseName);
-            // pageParams.camelCaseNameRoute.push(pageParams.names.camelCaseName);
-            // pageParams.startCaseNameRoute.push(pageParams.names.startCaseName);
-            // // 点号拼接
-            // pageParams.lowerCaseNameRouteDot = pageParams.lowerCaseNameRoute.join('.');
-            // pageParams.camelCaseNameRouteDot = pageParams.camelCaseNameRoute.join('.');
-            // pageParams.startCaseNameRouteDot = pageParams.startCaseNameRoute.join('.');
-            // // 反斜杠拼接
-            // pageParams.lowerCaseNameRouteBackslash = pageParams.lowerCaseNameRoute.join('/');
-            // pageParams.camelCaseNameRouteBackslash = pageParams.camelCaseNameRoute.join('/');
-            // pageParams.startCaseNameRouteBackslash = pageParams.startCaseNameRoute.join('/');
-            // // 路径路径拼接
-            // pageParams.lowerCaseNameRoutePath = '/' + pageParams.lowerCaseNameRouteBackslash;
-            // pageParams.camelCaseNameRoutePath = '/' + pageParams.camelCaseNameRouteBackslash;
-            // pageParams.startCaseNameRoutePath = '/' + pageParams.startCaseNameRouteBackslash;
-            // if (fs.existsSync(apiPath) === false) {
-            //     let apiRelativePath = path.relative(myConfig.rootDir, apiPath);
-            //     spinner.warn(chalk.yellow(`${apiRelativePath} 不存在，正在修复...`));
-            //     let apiFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'api.js')))(pageParams);
-            //     fs.outputFileSync(apiFilePath, apiFileData);
-            //     fs.copySync(path.join(myConfig.cliDir, '.yipack', 'template', 'api.js'), apiPath);
-            //     spinner.succeed(chalk.green(`${apiRelativePath} 已修复...`));
-            // } else {
-            //     spinner.succeed(chalk.green(`${apiRelativePath} 检测通过...`));
-            // }
+
+            pagePath.split(path.sep).forEach((page) => {
+                // 页面参数
+                pageParams.names = tool.getNames(page);
+                // 当前页面路径
+                pageParams.path = path.join(pageParams.path, pageParams.names.lowerCaseName);
+                // 页面相对路径
+                pageParams.lowerCaseNameRoute.push(pageParams.names.lowerCaseName);
+                pageParams.camelCaseNameRoute.push(pageParams.names.camelCaseName);
+                pageParams.startCaseNameRoute.push(pageParams.names.startCaseName);
+                // 点号拼接
+                pageParams.lowerCaseNameRouteDot = pageParams.lowerCaseNameRoute.join('.');
+                pageParams.camelCaseNameRouteDot = pageParams.camelCaseNameRoute.join('.');
+                pageParams.startCaseNameRouteDot = pageParams.startCaseNameRoute.join('.');
+                // 反斜杠拼接
+                pageParams.lowerCaseNameRouteBackslash = pageParams.lowerCaseNameRoute.join('/');
+                pageParams.camelCaseNameRouteBackslash = pageParams.camelCaseNameRoute.join('/');
+                pageParams.startCaseNameRouteBackslash = pageParams.startCaseNameRoute.join('/');
+                // 路径路径拼接
+                pageParams.lowerCaseNameRoutePath = '/' + pageParams.lowerCaseNameRouteBackslash;
+                pageParams.camelCaseNameRoutePath = '/' + pageParams.camelCaseNameRouteBackslash;
+                pageParams.startCaseNameRoutePath = '/' + pageParams.startCaseNameRouteBackslash;
+            });
+            let apiFilePath = path.join(path.dirname(file), 'api.js');
+            let apiRelativePath = path.relative(myConfig.rootDir, apiFilePath);
+            if (fs.existsSync(apiFilePath) === false) {
+                spinner.warn(chalk.yellow(`${apiRelativePath} 不存在，正在修复...`));
+                let apiFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'api.js')))(pageParams);
+                fs.outputFileSync(apiFilePath, apiFileData);
+                spinner.succeed(chalk.green(`${apiRelativePath} 已修复...`));
+            } else {
+                spinner.succeed(chalk.green(`${apiRelativePath} 检测通过...`));
+            }
+
+            let routeFilePath = path.join(path.dirname(file), 'route.js');
+            let routeRelativePath = path.relative(myConfig.rootDir, routeFilePath);
+            if (fs.existsSync(routeFilePath) === false) {
+                spinner.warn(chalk.yellow(`${routeRelativePath} 不存在，正在修复...`));
+                let routeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageRoute.js')))(pageParams);
+                fs.outputFileSync(routeFilePath, routeFileData);
+                spinner.succeed(chalk.green(`${routeRelativePath} 已修复...`));
+            } else {
+                spinner.succeed(chalk.green(`${routeRelativePath} 检测通过...`));
+            }
         });
     } catch (err) {
         spinner.fail(chalk.red('标准模板下载失败'));
