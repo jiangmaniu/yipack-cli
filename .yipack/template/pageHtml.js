@@ -20,7 +20,7 @@ export default {
         // 接口-增加
         api_insert() {
             return new Promise((resolve, reject) => {
-                this.$Apis.<%= routeDot %>
+                this.$Apis.<%= startCaseNameRouteDot %>
                     .insert()
                     .then((res) => {
                         resolve(res);
@@ -33,7 +33,7 @@ export default {
         // 接口-删除
         api_delete() {
             return new Promise((resolve, reject) => {
-                this.$Apis.<%= routeDot %>
+                this.$Apis.<%= startCaseNameRouteDot %>
                     .delete()
                     .then((res) => {
                         resolve(res);
@@ -46,7 +46,7 @@ export default {
         // 接口-修改
         api_update() {
             return new Promise((resolve, reject) => {
-                this.$Apis.<%= routeDot %>
+                this.$Apis.<%= startCaseNameRouteDot %>
                     .update()
                     .then((res) => {
                         resolve(res);
@@ -59,7 +59,7 @@ export default {
         // 接口-查询
         api_select() {
             return new Promise((resolve, reject) => {
-                this.$Apis.<%= routeDot %>
+                this.$Apis.<%= startCaseNameRouteDot %>
                     .select()
                     .then((res) => {
                         resolve(res);
