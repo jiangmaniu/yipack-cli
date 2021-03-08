@@ -31,14 +31,6 @@ module.exports = async function newComp(cmd) {
     console.log(chalk.green('yipack new -p,--page <页面名称> 创建页面'));
     console.log(chalk.green('yipack new -c,--comp <组件名称> 创建全局组件'));
     console.log(chalk.green('yipack new -p,--page <页面名称> -c,--comp <组件名称> 创建页面组件'));
-    console.log(chalk.green('yipack new --sp,--sub-page <子页面名称> 创建子页面'));
-    console.log(chalk.green('yipack new --sv,--sub-view <子视图名称> 创建子视图'));
-    console.log(chalk.green('yipack new -p,--page <页面名称> --sp,--sub-page <子页面名称> -c,--comp <组件名称> 创建子页面组件'));
-    console.log(chalk.green('yipack new -p,--page <页面名称> --sv,--sub-view <子视图名称> -c,--comp <组件名称> 创建子视图组件'));
-    console.log(chalk.green('yipack new -p,--page <页面名称> --sp,--sub-page <子页面名称> -tp,--tail-page <尾页面名称> 创建尾页面'));
-    console.log(chalk.green('yipack new -p,--page <页面名称> --sp,--sub-page <子页面名称> -tv,--tail-view <尾页面名称> 创建尾视图'));
-    console.log(chalk.green('yipack new -p,--page <页面名称> --sp,--sub-page <子页面名称> -tp,--tail-page <尾页面名称> 创建尾页面 -c,--comp <组件名称> 创建尾页面组件'));
-    console.log(chalk.green('yipack new --page <页面名称> --sv,--sub-view <子视图名称> -tv,--tail-view <尾页面名称> 创建尾视图 -c,--comp <组件名称> 创建尾视图组件'));
     console.log('------------------------------');
     console.log(chalk.blueBright('yipack rename 重命名元素'));
     console.log(chalk.green('yipack rename -p,--page <页面名称> --np,--new-page <新页面名称> 重命名页面'));
