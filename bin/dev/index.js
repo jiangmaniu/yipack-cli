@@ -42,7 +42,7 @@ module.exports = async function dev(cmd) {
         open: false,
         // stats: "normal",
         stats: 'errors-warnings',
-        // watchContentBase: false,
+        watchContentBase: false,
         writeToDisk: cmd.write
     };
     // 获取端口
