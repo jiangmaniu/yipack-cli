@@ -53,6 +53,7 @@ let commonConfig = {
     resolve: {
         // 别名
         alias: {
+            '@': myConfig.srcDir,
             '@src': myConfig.srcDir,
             '@static': path.join(myConfig.srcDir, 'static')
         },
