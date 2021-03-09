@@ -1,5 +1,5 @@
 module.exports = `
-import request from '@src/request/api.js';
+import request from '<%= aliasNames.src %>/request/api.js';
 export default {
     // 添加
     insert(params) {

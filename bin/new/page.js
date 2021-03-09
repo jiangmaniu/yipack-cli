@@ -10,12 +10,22 @@ let tool = require('../tool.js');
 let myConfig = require('../../.yipack/webpack.config.my.js');
 let yipackPackage = require('../../package.json');
 let yipackConfig = require(path.join(myConfig.webpackDir, 'yipack.config.js'));
+let aliasObject = {
+    init: {
+        src: '@src'
+    },
+    uniapp: {
+        src: '@'
+    }
+};
+let aliasNames = aliasObject[yipackConfig.type] || {};
 
 module.exports = async function newPage(cmd) {
     let spinner = ora();
     let pages = cmd.page.split('/');
     let pageParams = {
         names: {},
+        aliasNames: aliasNames,
         path: myConfig.pageDir,
         // 小写短横线文件名数组
         lowerCaseNameRoute: [],
@@ -70,7 +80,13 @@ module.exports = async function newPage(cmd) {
         // 创建页面路由
         let routeFilePath = path.join(pageParams.path, 'route.js');
         if (fs.existsSync(routeFilePath) === false) {
-            let routeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageRoute.js')))(pageParams);
+            let routeFileData = '';
+            if (yipackConfig.type === 'uniapp') {
+                routeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'miniPageRoute.js')))(pageParams);
+            }
+            if (yipackConfig.type === 'init') {
+                routeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageRoute.js')))(pageParams);
+            }
             fs.outputFileSync(routeFilePath, routeFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/route.js') + ' 页面路由创建成功'));
         } else {
