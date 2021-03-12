@@ -12,13 +12,13 @@ let yipackPackage = require('../../package.json');
 let yipackConfig = require(path.join(myConfig.webpackDir, 'yipack.config.js'));
 let aliasObject = {
     init: {
-        src: '@src'
+        src: '@'
     },
     uniapp: {
         src: '@'
     }
 };
-let aliasNames = aliasObject[yipackConfig.type] || {};
+let aliasNames = aliasObject[yipackConfig.type] || { src: '@' };
 
 module.exports = async function newPage(cmd) {
     let spinner = ora();

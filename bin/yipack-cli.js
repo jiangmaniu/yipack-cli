@@ -15,6 +15,7 @@ let yipackPackage = require('../package.json');
 let yipackConfig = require('../.yipack/yipack.config.js');
 let tool = require('./tool.js');
 const { exec } = require('child_process');
+// TODO: 还需要严格验证yipack.config.js文件的有效性
 program
     .storeOptionsAsProperties(false) // ；屏蔽参数作为cmd的属性
     .allowExcessArguments(false) // 严格控制参数顺序
