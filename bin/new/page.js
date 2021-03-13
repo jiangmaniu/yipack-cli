@@ -154,7 +154,7 @@ module.exports = async function newPage(cmd) {
         // 创建页面组件说明
         let readmeFilePath = path.join(componentDirectory, 'readme.md');
         if (fs.existsSync(readmeFilePath) === false) {
-            let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageReadme.js')))(compParams);
+            let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))(compParams);
             fs.outputFileSync(readmeFilePath, readmeFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/' + compParams.names.lowerCaseName + '/readme.md') + ' 页面组件说明书创建成功'));
         } else {
