@@ -159,7 +159,7 @@ let commonConfig = {
         // },
     },
     module: {
-        unsafeCache: process.env.NODE_MODE === 'production' ? false : true,
+        // unsafeCache: process.env.NODE_MODE === 'production' ? false : true,
         rules: [
             {
                 test: /\.css$/,
