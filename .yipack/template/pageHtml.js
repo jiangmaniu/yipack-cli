@@ -1,7 +1,7 @@
 module.exports = `<template>
-    <div class="page-<%= names.lowerCaseName %>">
+    <<%= aliasNames.tag %> class="page-<%= names.lowerCaseName %>">
         <%= names.kebabCaseName %>
-    </div>
+    </<%= aliasNames.tag %>>
 </template>
 
 <script>

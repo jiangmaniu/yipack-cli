@@ -1,8 +1,8 @@
 module.exports = `
 <template>
-    <div class="comp-<%= names.lowerCaseName %>">
+    <<%= aliasNames.tag %> class="comp-<%= names.lowerCaseName %>">
         comp-<%= names.lowerCaseName %>
-    </div>
+    </<%= aliasNames.tag %>>
 </template>
 
 <script>

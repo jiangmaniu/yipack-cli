@@ -12,13 +12,15 @@ let yipackPackage = require('../../package.json');
 let yipackConfig = require(path.join(myConfig.webpackDir, 'yipack.config.js'));
 let aliasObject = {
     init: {
-        src: '@'
+        src: '@',
+        tag: 'div'
     },
     uniapp: {
-        src: '@'
+        src: '@',
+        tag: 'view'
     }
 };
-let aliasNames = aliasObject[yipackConfig.type] || { src: '@' };
+let aliasNames = aliasObject[yipackConfig.type || 'init'];
 
 module.exports = async function newPage(cmd) {
     let spinner = ora();
@@ -74,7 +76,7 @@ module.exports = async function newPage(cmd) {
             fs.outputFileSync(htmlFilePath, htmlFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/index.vue') + ' 页面创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.lowerCaseNameRouteBackslash + '/index.vue') + ' 页面已存在'));
+            spinner.warn(chalk.green(chalk.yellow(pageParams.lowerCaseNameRouteBackslash + '/index.vue') + ' 页面已存在'));
         }
 
         // 创建页面路由
@@ -90,7 +92,7 @@ module.exports = async function newPage(cmd) {
             fs.outputFileSync(routeFilePath, routeFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/route.js') + ' 页面路由创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.lowerCaseNameRouteBackslash + '/route.js') + ' 页面路由已存在'));
+            spinner.warn(chalk.green(chalk.yellow(pageParams.lowerCaseNameRouteBackslash + '/route.js') + ' 页面路由已存在'));
         }
 
         // 创建页面接口
@@ -100,7 +102,7 @@ module.exports = async function newPage(cmd) {
             fs.outputFileSync(apiFilePath, apiFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/api.js') + ' 页面接口创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.lowerCaseNameRouteBackslash + '/api.js') + ' 页面接口已存在'));
+            spinner.warn(chalk.green(chalk.yellow(pageParams.lowerCaseNameRouteBackslash + '/api.js') + ' 页面接口已存在'));
         }
 
         // 创建页面说明
@@ -110,7 +112,7 @@ module.exports = async function newPage(cmd) {
             fs.outputFileSync(readmeFilePath, readmeFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/readme.md') + ' 页面说明书创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.lowerCaseNameRouteBackslash + '/readme.md') + ' 页面说明书已存在'));
+            spinner.warn(chalk.green(chalk.yellow(pageParams.lowerCaseNameRouteBackslash + '/readme.md') + ' 页面说明书已存在'));
         }
 
         // 创建页面组件目录
@@ -119,7 +121,7 @@ module.exports = async function newPage(cmd) {
             fs.ensureDirSync(componentDirectory);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/components') + ' 页面组件目录创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.lowerCaseNameRouteBackslash + '/components') + ' 页面组件目录已存在'));
+            spinner.warn(chalk.green(chalk.yellow(pageParams.lowerCaseNameRouteBackslash + '/components') + ' 页面组件目录已存在'));
         }
 
         // 创建页面组件目录说明
@@ -129,7 +131,7 @@ module.exports = async function newPage(cmd) {
             fs.outputFileSync(componentReadmeFilePath, componentReadmeFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/readme.md') + ' 页面组件目录说明书创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.lowerCaseNameRouteBackslash + '/readme.md') + ' 页面组件目录说明书已存在'));
+            spinner.warn(chalk.green(chalk.yellow(pageParams.lowerCaseNameRouteBackslash + '/readme.md') + ' 页面组件目录说明书已存在'));
         }
     });
     let compParams = {
@@ -148,7 +150,7 @@ module.exports = async function newPage(cmd) {
             fs.outputFileSync(htmlFilePath, htmlFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/' + compParams.names.lowerCaseName + '/index.vue') + ' 页面组件创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.lowerCaseNameRouteBackslash + '/' + compParams.names.lowerCaseName + '/index.vue') + ' 页面组件已存在'));
+            spinner.warn(chalk.green(chalk.yellow(pageParams.lowerCaseNameRouteBackslash + '/' + compParams.names.lowerCaseName + '/index.vue') + ' 页面组件已存在'));
         }
 
         // 创建页面组件说明
@@ -158,7 +160,7 @@ module.exports = async function newPage(cmd) {
             fs.outputFileSync(readmeFilePath, readmeFileData);
             spinner.succeed(chalk.green(chalk.blue(pageParams.lowerCaseNameRouteBackslash + '/' + compParams.names.lowerCaseName + '/readme.md') + ' 页面组件说明书创建成功'));
         } else {
-            spinner.warn(chalk.green(chalk.red(pageParams.lowerCaseNameRouteBackslash + '/' + compParams.names.lowerCaseName + '/readme.md') + ' 页面组件已存在'));
+            spinner.warn(chalk.green(chalk.yellow(pageParams.lowerCaseNameRouteBackslash + '/' + compParams.names.lowerCaseName + '/readme.md') + ' 页面组件已存在'));
         }
     }
 };
