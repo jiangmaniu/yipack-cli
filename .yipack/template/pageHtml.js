@@ -79,7 +79,7 @@ export default {
                         resolve(res);
                     })
                     .catch((err) => {
-                        console.log('api_select(res): 接口描述');
+                        console.log('api_select(err): 接口描述');
                         console.dir(err)
                         reject(err);
                     });
