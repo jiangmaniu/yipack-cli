@@ -13,10 +13,22 @@ let tool = require('../tool.js');
 let myConfig = require('../../.yipack/webpack.config.my.js');
 let yipackPackage = require('../../package.json');
 let yipackConfig = require(path.join(myConfig.webpackDir, 'yipack.config.js'));
+let aliasObject = {
+    init: {
+        src: '@',
+        tag: 'div'
+    },
+    uniapp: {
+        src: '@',
+        tag: 'view'
+    }
+};
+let aliasNames = aliasObject[yipackConfig.type || 'init'];
 module.exports = async function newComp(cmd) {
     let spinner = ora();
     let dataParams = {
-        names: tool.getNames(cmd.comp)
+        names: tool.getNames(cmd.comp),
+        aliasNames: aliasNames
     };
     // 全局组件目录
     let compDirectory = path.join(myConfig.srcDir, 'components', dataParams.names.lowerCaseName);
