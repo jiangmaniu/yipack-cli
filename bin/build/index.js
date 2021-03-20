@@ -14,7 +14,7 @@ let yipackConfig = require('../../.yipack/yipack.config.js');
 module.exports = async function build(cmd) {
     shell.env['NODE_MODE'] = 'production';
     shell.env['NODE_ANALYZER'] = cmd.analyzer;
-    shell.env['NODE_ENV'] = cmd.env;
+    shell.env['NODE_ENV_FILE'] = cmd.env;
     let webpackConfig = require(path.join(myConfig.cliDir, '.yipack', 'webpack.config.pro.js'));
     webpackConfig.plugins.push(
         new FriendlyErrorsWebpackPlugin({

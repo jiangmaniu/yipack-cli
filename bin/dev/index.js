@@ -17,7 +17,7 @@ let yipackPackage = require('../../package.json');
 let yipackConfig = require('../../.yipack/yipack.config.js');
 module.exports = async function dev(cmd) {
     shell.env['NODE_MODE'] = 'development';
-    shell.env['NODE_ENV'] = cmd.env;
+    shell.env['NODE_ENV_FILE'] = cmd.env;
     shell.env['NODE_COUNT'] = 'start';
     updateNotifier({ pkg: yipackPackage }).notify();
     let webpackConfig = require(path.join(myConfig.cliDir, '.yipack', 'webpack.config.dev.js'));

@@ -267,10 +267,10 @@ let commonConfig = {
         new Webpack.ProvidePlugin(yipackConfig.providePlugin)
     ]
 };
-if (process.env.NODE_ENV && process.env.NODE_ENV !== 'undefined') {
+if (process.env.NODE_ENV_FILE && process.env.NODE_ENV_FILE !== 'undefined') {
     commonConfig.plugins.push(
         new Dotenv({
-            path: path.join(myConfig.srcDir, 'env', process.env.NODE_ENV + '.env'),
+            path: path.join(myConfig.srcDir, 'env', process.env.NODE_ENV_FILE + '.env'),
             safe: false,
             allowEmptyValues: true,
             systemvars: true,
