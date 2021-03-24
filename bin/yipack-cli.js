@@ -126,15 +126,15 @@ program
     });
 program
     .command('tpl')
-    .addOption(new commander.Option('-t,--type <模板名称>', '初始化项目模板').choices(['init', 'admin', 'api', 'uniapp', 'blog']))
+    .addOption(new commander.Option('-t,--type <模板名称>', '初始化项目模板').choices(['init', 'admin', 'phalapi', 'uniapp', 'blog']))
     .description('初始化项目模板')
     .action((cmd) => {
         if (cmd.type === 'admin') {
             require('./tpl/admin.js')();
             return;
         }
-        if (cmd.type === 'api') {
-            require('./tpl/api.js')();
+        if (cmd.type === 'phalapi') {
+            require('./tpl/phalapi.js')();
             return;
         }
         if (cmd.type === 'init') {
