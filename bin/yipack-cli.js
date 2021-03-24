@@ -38,13 +38,13 @@ program
     .action((cmd) => {
         require('./build/index.js')(cmd);
     });
+
+/**
+ * 创建命令
+ */
 program
     .command('new')
     .option('-p,--page <name>', '创建页面')
-    .option('--sp,--sub-page <name>', '创建子页面')
-    .option('--sv,--sub-view <name>', '创建子视图')
-    .option('--tp,--tail-page <name>', '创建尾页面')
-    .option('--tv,--tail-view <name>', '创建尾视图')
     .option('-c,--comp <name>', '创建全局组件')
     .option('-f,--filter <name>', '创建全局过滤器')
     .option('-d,--directive <name>', '创建全局指令')
@@ -76,11 +76,6 @@ program
 program
     .command('rename')
     .option('-p,--page <原页面名称>', '原页面')
-    .option('--np,--new-page <新页面名称>', '新页面')
-    .option('--sp,--sub-page <原子页面名称>', '原子页面')
-    .option('--nsp,--new-sub-page <新子页面名称>', '新子页面')
-    .option('--sv,--sub-view <原子视图名称>', '原子视图')
-    .option('--nsv,--new-sub-view <新子视图名称>', '新子视图')
     .option('-c,--comp <原组件名称>', '原组件')
     .option('--nc,--new-comp <新组件名称>', '新组件')
     .description('修改元素')
@@ -120,6 +115,9 @@ program
         }
     });
 
+/**
+ * 查看所有命令
+ */
 program
     .command('all')
     .description('查看所有命令')

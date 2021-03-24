@@ -10,16 +10,7 @@ let tool = require('../tool.js');
 let myConfig = require('../../.yipack/webpack.config.my.js');
 let yipackPackage = require('../../package.json');
 let yipackConfig = require(path.join(myConfig.webpackDir, 'yipack.config.js'));
-let aliasObject = {
-    init: {
-        src: '@',
-        tag: 'div'
-    },
-    uniapp: {
-        src: '@',
-        tag: 'view'
-    }
-};
+let aliasObject = require('../../.yipack/config/alias.js');
 let aliasNames = aliasObject[yipackConfig.type || 'init'];
 
 module.exports = async function newPage(cmd) {

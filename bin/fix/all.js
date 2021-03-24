@@ -16,6 +16,8 @@ let yipackPackage = require('../../package.json');
 let yipackConfig = require('../../.yipack/yipack.config.js');
 let rootFileNames = [''];
 let spinner = ora();
+let aliasObject = require('../../.yipack/config/alias.js');
+let aliasNames = aliasObject[yipackConfig.type || 'init'];
 module.exports = async function build(cmd) {
     spinner.start(chalk.green('标准模板下载中...'));
     // 项目临时目录
@@ -89,7 +91,6 @@ module.exports = async function build(cmd) {
             let relativePath = path.relative(myConfig.rootDir, readmeFilePath);
             if (fs.existsSync(readmeFilePath) === false) {
                 spinner.warn(chalk.yellow(`${relativePath} 不存在，正在修复...`));
-                // fs.ensureFileSync(readmeFilePath);
                 let readmeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'readme.js')))({ names: { lowerCaseName: 'readme' } });
                 fs.outputFileSync(readmeFilePath, readmeFileData);
                 spinner.succeed(chalk.green(`${relativePath} 已修复...`));
@@ -109,6 +110,7 @@ module.exports = async function build(cmd) {
 
         let pageParams = {
             names: {},
+            aliasNames: aliasNames,
             path: myConfig.pageDir,
             // 小写短横线文件名数组
             lowerCaseNameRoute: [],
@@ -130,6 +132,7 @@ module.exports = async function build(cmd) {
             // 重置参数
             pageParams = {
                 names: {},
+                aliasNames: aliasNames,
                 path: myConfig.pageDir,
                 // 小写短横线文件名数组
                 lowerCaseNameRoute: [],

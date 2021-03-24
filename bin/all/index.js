@@ -50,7 +50,6 @@ module.exports = async function newComp(cmd) {
     console.log('------------------------------');
     console.log(chalk.blueBright('yipack fix 修复元素'));
     console.log(chalk.green('yipack fix --type=all 修复所有元素'));
-    console.log(chalk.green('yipack fix --type=readme 修复说明文件'));
     console.log('------------------------------');
     console.log(chalk.blueBright('yipack show 查看项目相关信息'));
     console.log(chalk.green('yipack show --pages 查看所有页面'));
