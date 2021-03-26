@@ -56,7 +56,7 @@ module.exports = async function dev(cmd) {
         new FriendlyErrorsWebpackPlugin({
             compilationSuccessInfo: {
                 messages: [`应用已启动：${protocol}://${devServerConfig.host}:${port}`],
-                notes: ['yipack-cli脚手架使用文档请访问域名 [ chensuiyi.com ]']
+                notes: ['使用文档请访问网址 [ yipack-cli.com ]']
             }
         })
     );
