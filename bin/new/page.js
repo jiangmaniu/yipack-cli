@@ -74,10 +74,10 @@ module.exports = async function newPage(cmd) {
         let routeFilePath = path.join(pageParams.path, 'route.js');
         if (fs.existsSync(routeFilePath) === false) {
             let routeFileData = '';
-            if (yipackConfig.type === 'uniapp') {
+            if (aliasNames.platform === 'uniapp') {
                 routeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'miniPageRoute.js')))(pageParams);
             }
-            if (yipackConfig.type === 'init') {
+            if (aliasNames.platform === 'web') {
                 routeFileData = _.template(require(path.join(myConfig.webpackDir, 'template', 'pageRoute.js')))(pageParams);
             }
             fs.outputFileSync(routeFilePath, routeFileData);
