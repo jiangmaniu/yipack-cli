@@ -34,7 +34,7 @@ let _loaderSassResourcesConfig = require('./loader/sass-resources-loader.config.
 let commonConfig = {
     // 编译模式
     mode: process.env.NODE_MODE,
-    name: 'yipack-webpack-config',
+    name: 'yipack-cli',
     // TODO: 搞清楚这个参数的含义 2021.2.13
     profile: false,
     // 编译记录文件记录
