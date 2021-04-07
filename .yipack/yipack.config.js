@@ -13,7 +13,8 @@ let yipackConfig = {
      * 默认值：false
      */
     px2viewport: {
-        enable: false
+        enable: false,
+        options: {}
     },
     providePlugin: {},
     externals: {},
