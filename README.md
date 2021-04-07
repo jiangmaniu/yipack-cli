@@ -1,30 +1,37 @@
 # yipack (易打包)
 
-> 一个神奇的 vue.js 单页应用，项目开发脚手架
+> 一个神奇的项目开发脚手架，一个强大的 yipack 生态。
 
 ## 文档地址
 
-[yipack-cli 文档](https://chensuiyi.com)
+[yipack-cli 文档](https://yipack-cli.com)
 
 ## 仓库
 
-[gitee 仓库地址（https://gitee.com/banshiweichen/yipack-cli）](https://gitee.com/banshiweichen/yipack-cli)
-
-[github 仓库地址（https://github.com/chenbimo/yipack-cli）](https://github.com/chenbimo/yipack-cli)
+| 项目代号           | 项目名称                | github 仓库地址                                               | gitee 仓库地址                                                   |
+| ------------------ | ----------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------- |
+| yipack-cli 脚手架  | yipack-cli              | [github](https://github.com/chenbimo/yipack-cli)              | [gitee](https://gitee.com/banshiweichen/yipack-cli)              |
+| web 项目初始化模板 | yipack-template-init    | [github](https://github.com/chenbimo/yipack-template-init)    | [gitee](https://gitee.com/banshiweichen/yipack-template-init)    |
+| web 后台管理模板   | yipack-template-admin   | [github](https://github.com/chenbimo/yipack-template-admin)   | [gitee](https://gitee.com/banshiweichen/yipack-template-admin)   |
+| web 博客模板       | yipack-template-blog    | [github](https://github.com/chenbimo/yipack-template-blog)    | [gitee](https://gitee.com/banshiweichen/yipack-template-blog)    |
+| uniapp 项目模板    | yipack-template-uniapp  | [github](https://github.com/chenbimo/yipack-template-uniapp)  | [gitee](https://gitee.com/banshiweichen/yipack-template-uniapp)  |
+| uniapp 项目插件    | yipack-plugin-uniapp    | [github](https://github.com/chenbimo/yipack-template-uniapp)  | [gitee](https://gitee.com/banshiweichen/yipack-template-uniapp)  |
+| phalapi 接口模板   | yipack-template-phalapi | [github](https://github.com/chenbimo/yipack-template-phalapi) | [gitee](https://gitee.com/banshiweichen/yipack-template-phalapi) |
+| utils 项目工具函数 | yipack-plugin-utils     | [github](https://github.com/chenbimo/yipack-template-utils)   | [gitee](https://gitee.com/banshiweichen/yipack-template-utils)   |
 
 喜欢的同学请点个 star，您的支持就是我最大的动力。
 
 ## 概述
 
-`yipack` 可以帮你快速生成项目开发骨架，不同于 `vue-cli`，`yipack` 不会给你太多选择。`yipack` 崇尚的是【约定大于配置】的开发理念，所有的一切，都已经准备好了。
+`yipack` 是一个以 `yipack-cli` 脚手架为核心驱动的快速、便捷，强大的软件项目开发生态。
 
 ## 定位
 
-`yipack` 的定位，介于 `vue-cli` 这种没有明确的，比较自由的项目组织结构开发方式和 `vue-element-admin` 这种拿来就用，无需重头写页面代码和数据对接逻辑的项目成品之间的 vue 项目开发 `脚手架`,旨在提供规范度更高的开发方式和更为自由的代码管控工具。
+`yipack` 致力于提高中小企业、外包公司、软件工作室/团队、个人接单的开发效率，稳定性和可维护性。
 
 ## 声明
 
-`yipack` 致力于解决中小型项目的快速开发和维护问题，大型项目请谨慎调研再做决定。
+`yipack` 致力于解决中小型项目的快速开发和维护问题，大型项目请谨慎调研再做决定！！！
 
 ## 特性
 
@@ -94,3 +101,13 @@
 ## 微信收款码
 
 ![微信](https://chensuiyi-com-1251319172.cos.ap-guangzhou.myqcloud.com/wechat2.png)
+
+## 捐赠列表
+
+感谢大家对 yipack 开源项目的支持！
+
+| 捐赠者               | 捐赠金额 |
+| -------------------- | -------- |
+| 音乐符号             | 1 元     |
+| Rs                   | 1 元     |
+| Taloys（三维可视化） | 68 元    |
