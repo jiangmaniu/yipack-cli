@@ -1,3 +1,6 @@
+/**
+ * 小程序路由模板
+ */
 module.exports = `
 module.exports = {
     style: {

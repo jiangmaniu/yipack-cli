@@ -12,12 +12,16 @@ export default {
         return {};
     },
     created(){
-        this.on_init();
+        this.init();
     },
     mounted(){},
     methods:{
         // 页面初始化操作
-        on_init(){}
+        init() {},
+        // 通用简单事件注册中心
+        on(){
+
+        },
     }
 };
 </script>
